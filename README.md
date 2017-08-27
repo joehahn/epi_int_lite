@@ -128,15 +128,15 @@ Then configure aws-cli by adding the following lines to ~/.aws/config on your la
 and note the two ClusterIDs reported, the first ClusterID is for the EMR cluster where the spark job
 will be executed, that ClusterID will resemble
 
-        ClusterId=j-3UBU30LF4O84P
+        ClusterId=j-1FJ6NW850PBUO
 
 and is used to browse the EMR cluster's dashboard at
 
-        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-3UBU30LF4O84P
+        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-1FJ6NW850PBUO
 
 Use that dashboard plus the EC2 console to infer the master node's public IP, which will resemble:
 
-        masterIP=54.245.49.80
+        masterIP=54.200.0.3
 
 All cluster instances are named oneoff in the AWS/EC2 console.
 This cluster will cycle through Starting and Bootstrapping phases
@@ -173,7 +173,7 @@ terminates, so if you need to ssh into the master node to debug any issues, you 
 persistent datasci instance that hosts the jupyter dashboard. Use the AWS console to get
 its public IP and ssh into datasci:
 
-        datasciIP=54.202.136.200
+        datasciIP=54.200.0.3
         ssh -i private/datasci.pem hadoop@$datasciIP
 
 8 The piggyback and provision_datasci scripts are executed on the datasci instance, with
@@ -185,7 +185,7 @@ provision_datasci setting up the jupyter dashboard, check its logs via
 on the datasci instance. Use the EC2 console to get that machine's
 public IP and then browse
 
-        http://54.202.136.200
+        http://54.200.0.3:8765
 
 and enter password=oneoff.
 
@@ -279,7 +279,7 @@ for now...
 and do the same or use the EMR console to kill the datasci instance.
 After the EMR clusters are terminated then it is safe to delete the s3 bucket:
 
-        aws s3 rb s3://spark-one-off --force --profile spiralwaves
+        aws s3 rb s3://spiralwaves --force --profile spiralwaves
 
 and use AWS > Athena > Catalog Manager to drop the oneoff database.
 

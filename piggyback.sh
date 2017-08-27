@@ -14,7 +14,7 @@ echo $(pwd)
 #can read & write notebooks to this directory
 echo 'installing spiral-waves repo...'
 bucket_name="spiralwaves"
-aws s3 cp s3://$bucket_name/spark-one-off.tar.gz /home/hadoop/.
+aws s3 cp s3://$bucket_name/spiral-waves.tar.gz /home/hadoop/.
 cd /home/hadoop
 gunzip --force spiral-waves.tar.gz
 tar -xvf spiral-waves.tar
