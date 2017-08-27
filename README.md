@@ -113,13 +113,13 @@ on your laptop):
 
 Then configure aws-cli by adding the following lines to ~/.aws/config on your laptop:
 
-    [profile oneoff]
+    [profile spiralwaves]
     region = us-west-2
 
 (keeping in mind that athena is not available in all AWS regions). Then tell aws-cli to use your aws access keys:
 
     cat private/accessKeys.csv
-    aws configure --profile oneoff
+    aws configure --profile spiralwaves
 
 2 Launch the EMR Hadoop cluster by executing the following on your laptop: 
 
@@ -164,7 +164,7 @@ that script take about 8 minutes to complete, and you can monitor its progress b
 
 These logs are also stored in this s3 folder:
 
-        oneoff/elasticmapreduce/$ClusterId/steps/s-something
+        spiralwaves/elasticmapreduce/$ClusterId/steps/s-something
 
 6 The final task in piggyback.sh is to sleep for 10 minutes, after which the cluster auto
 terminates, so if you need to ssh into the master node to debug any issues, you have 10 minutes to do so
@@ -199,7 +199,7 @@ jupyter can also save its notebooks in a directory owned by user=hadoop:
         cd spark-one-off
         chmod 777 *.ipynb
         mkdir private
-        aws s3 cp s3://spark-one-off/accessKeys.csv private/accessKeys.csv
+        aws s3 cp s3://spiralwaves/accessKeys.csv private/accessKeys.csv
 
 11 To regenerate the training data on the EMR's master node and store in hdfs:
 
@@ -216,13 +216,13 @@ jupyter can also save its notebooks in a directory owned by user=hadoop:
 
 13 To export input & output data to s3, on master:
 
-        aws s3 rm --recursive s3://spark-one-off/data
-        hadoop distcp data s3a://spark-one-off/data
+        aws s3 rm --recursive s3://spiralwaves/data
+        hadoop distcp data s3a://spiralwaves/data
 
 14 To rebuild the athena tables, on master:
 
         mkdir private
-        aws s3 cp s3://spark-one-off/accessKeys.csv private/accessKeys.csv
+        aws s3 cp s3://spiralwaves/accessKeys.csv private/accessKeys.csv
         ./athena_tables.sh
 
 15 To view any of the cluster's UIs, first establish an ssh tunnel into the master node:
@@ -274,12 +274,12 @@ for now...
 
 18 To terminate this cluster using laptop's aws-cli:
 
-        aws emr terminate-clusters --cluster-ids $ClusterId --profile oneoff
+        aws emr terminate-clusters --cluster-ids $ClusterId --profile spiralwaves
 
 and do the same or use the EMR console to kill the datasci instance.
 After the EMR clusters are terminated then it is safe to delete the s3 bucket:
 
-        aws s3 rb s3://spark-one-off --force --profile oneoff
+        aws s3 rb s3://spark-one-off --force --profile spiralwaves
 
 and use AWS > Athena > Catalog Manager to drop the oneoff database.
 

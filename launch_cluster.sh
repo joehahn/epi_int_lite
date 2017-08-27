@@ -9,13 +9,13 @@
 
 
 #choose aws-cli profile (no dashes plz)
-profile_str="oneoff"
+profile_str="spiralwaves"
 
 #set aws region...note athena is available in us-west-2 (oregon) but not in us-west-1
 aws_region="us-west-2"
 
 #create s3 bucket
-bucket_name="spark-one-off"
+bucket_name="spiralwaves"
 aws s3 mb "s3://$bucket_name" --profile "$profile_str"
 
 #copy bootstrap script to s3
@@ -33,10 +33,10 @@ aws s3 cp private/accessKeys.csv "s3://$bucket_name/accessKeys.csv" --profile "$
 #upload this repo to s3...I rather that the provision_datasci script clone this repo,
 #but i couldn't resolve ssh issues...
 cd ..
-tar --exclude='spark-one-off/private' --exclude='spark-one-off/.git' \
-    -zcvf /tmp/spark-one-off.tar.gz spark-one-off &> /dev/null
-aws s3 cp /tmp/spark-one-off.tar.gz "s3://$bucket_name/spark-one-off.tar.gz" --profile "$profile_str"
-cd spark-one-off
+tar --exclude='spiral-waves/private' --exclude='spiral-waves/.git' \
+    -zcvf /tmp/spiral-waves.tar.gz spiral-waves &> /dev/null
+aws s3 cp /tmp/spiral-waves.tar.gz "s3://$bucket_name/spiral-waves.tar.gz" --profile "$profile_str"
+cd spiral-waves
 
 #select hadoop applications to be installed
 #noting that spark also provides beeline that will be used to talk to athena
@@ -50,7 +50,7 @@ ec2_attributes='{"KeyName":"datasci","InstanceProfile":"EMR_EC2_DefaultRole","Su
 #m4.2xlarge (8cpu & 32Gb) costs $10.34/day=$310/month
 #using EMR bumps cost up by 23%
 #athena and s3 charges are negligible
-instance_groups='[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m4.2xlarge","Name":"Master - 1"},{"InstanceCount":4,"InstanceGroupType":"CORE","InstanceType":"m4.2xlarge","Name":"Core - 2"}]'
+instance_groups='[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m3.xlarge","Name":"Master - 1"},{"InstanceCount":2,"InstanceGroupType":"CORE","InstanceType":"m3.xlarge","Name":"Core - 2"}]'
 
 #launch the cluster...change to --no-auto-terminate to persist the cluster
 echo 'launching EMR cluster...'
@@ -69,9 +69,9 @@ aws emr create-cluster \
     --region "$aws_region" \
     --bootstrap-action Path="s3://$bucket_name/scripts/bootstrap.sh" \
     --steps Type=CUSTOM_JAR,Name=CustomJAR,ActionOnFailure=CONTINUE,Jar=s3://$aws_region.elasticmapreduce/libs/script-runner/script-runner.jar,Args=["s3://$bucket_name/scripts/piggyback.sh"] \
-    --auto-terminate \
+    --no-auto-terminate \
     --no-termination-protected
 
-#launch the datascience instance
-echo 'launching datasci instance...'
-./launch_datasci.sh
+##launch the datascience instance
+#echo 'launching datasci instance...'
+#./launch_datasci.sh
