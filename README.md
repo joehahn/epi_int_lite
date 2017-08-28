@@ -42,7 +42,7 @@ visualizes that output.
 To browse that Jupyter dashboard, first use the AWS EC2 console to determine the public IP
 address of the datasci instance and then browse
 
-        http://54.202.136.200:8765/notebooks/dashboard.ipynb?dashboard
+        http://54.244.130.242:8765/notebooks/dashboard.ipynb?dashboard
 
 keeping in mind that you will need to update the IP address in the above URL, and
 log in using password=oneoff. On first visit, refresh that dashboard via
@@ -128,15 +128,15 @@ Then configure aws-cli by adding the following lines to ~/.aws/config on your la
 and note the two ClusterIDs reported, the first ClusterID is for the EMR cluster where the spark job
 will be executed, that ClusterID will resemble
 
-        ClusterId=j-1FJ6NW850PBUO
+        ClusterId=j-30QKT1S4EFDQE
 
 and is used to browse the EMR cluster's dashboard at
 
-        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-1FJ6NW850PBUO
+        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-30QKT1S4EFDQE
 
 Use that dashboard plus the EC2 console to infer the master node's public IP, which will resemble:
 
-        masterIP=54.200.0.3
+        masterIP=54.244.130.242
 
 All cluster instances are named oneoff in the AWS/EC2 console.
 This cluster will cycle through Starting and Bootstrapping phases
@@ -173,7 +173,7 @@ terminates, so if you need to ssh into the master node to debug any issues, you 
 persistent datasci instance that hosts the jupyter dashboard. Use the AWS console to get
 its public IP and ssh into datasci:
 
-        datasciIP=54.200.0.3
+        datasciIP=54.244.130.242
         ssh -i private/datasci.pem hadoop@$datasciIP
 
 8 The piggyback and provision_datasci scripts are executed on the datasci instance, with
@@ -185,7 +185,7 @@ provision_datasci setting up the jupyter dashboard, check its logs via
 on the datasci instance. Use the EC2 console to get that machine's
 public IP and then browse
 
-        http://54.200.0.3:8765
+        http://54.244.130.242:8765
 
 and enter password=oneoff.
 
