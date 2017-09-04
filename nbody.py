@@ -18,7 +18,7 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.1
-timesteps_per_output = 10
+timesteps_per_output = 5
 total_number_of_outputs = 11
 
 #radial width assuming circular orbits
@@ -105,10 +105,10 @@ while (number_of_outputs < total_number_of_outputs):
     number_of_timesteps = 0
     while (number_of_timesteps < timesteps_per_output):
         particles = drift(particles, dt)
-        particles = elem2coord(particles)
+        particles = elem2coord(particles).cache()
         t += dt
         number_of_timesteps += 1
     number_of_outputs += 1
-    particles.cache()
+    #particles.cache()
     print 't, number_of_outputs = ', t, number_of_outputs
 particles.show()
