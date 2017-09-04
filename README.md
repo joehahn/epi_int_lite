@@ -128,15 +128,15 @@ Then configure aws-cli by adding the following lines to ~/.aws/config on your la
 and note the two ClusterIDs reported, the first ClusterID is for the EMR cluster where the spark job
 will be executed, that ClusterID will resemble
 
-        ClusterId=j-30QKT1S4EFDQE
+        ClusterId=j-1RI01BDUNQVKM
 
 and is used to browse the EMR cluster's dashboard at
 
-        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-30QKT1S4EFDQE
+        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-1RI01BDUNQVKM
 
 Use that dashboard plus the EC2 console to infer the master node's public IP, which will resemble:
 
-        masterIP=54.244.130.242
+        masterIP=54.191.235.155
 
 All cluster instances are named oneoff in the AWS/EC2 console.
 This cluster will cycle through Starting and Bootstrapping phases
@@ -173,7 +173,7 @@ terminates, so if you need to ssh into the master node to debug any issues, you 
 persistent datasci instance that hosts the jupyter dashboard. Use the AWS console to get
 its public IP and ssh into datasci:
 
-        datasciIP=54.244.130.242
+        datasciIP=54.191.235.155
         ssh -i private/datasci.pem hadoop@$datasciIP
 
 8 The piggyback and provision_datasci scripts are executed on the datasci instance, with
@@ -185,7 +185,7 @@ provision_datasci setting up the jupyter dashboard, check its logs via
 on the datasci instance. Use the EC2 console to get that machine's
 public IP and then browse
 
-        http://54.244.130.242:8765
+        http://54.191.235.155:8765
 
 and enter password=oneoff.
 
