@@ -6,7 +6,7 @@
 
 #to execute in pyspark's ipython shell:
 #    PYSPARK_DRIVER_PYTHON=/emr/miniconda2/bin/ipython pyspark
-#to run locally on master node:
+#to run locally on master node....can have memory issues...:
 #    PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[*] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 #to submit spark job to yarn:
 #    PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master yarn --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py

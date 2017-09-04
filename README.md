@@ -194,9 +194,9 @@ jupyter can also save its notebooks in a directory owned by user=hadoop:
 
         git config --global user.email "jmh.datasciences@gmail.com"
         git config --global user.name "joehahn"
-        git clone https://github.com/joehahn/spark-one-off.git
-        chmod 777 spark-one-off
-        cd spark-one-off
+        git clone https://github.com/joehahn/spiral-waves.git
+        chmod 777 spiral-waves
+        cd spiral-waves
         chmod 777 *.ipynb
         mkdir private
         aws s3 cp s3://spiralwaves/accessKeys.csv private/accessKeys.csv
