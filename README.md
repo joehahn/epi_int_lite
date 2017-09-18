@@ -128,15 +128,15 @@ Then configure aws-cli by adding the following lines to ~/.aws/config on your la
 and note the two ClusterIDs reported, the first ClusterID is for the EMR cluster where the spark job
 will be executed, that ClusterID will resemble
 
-        ClusterId=j-36L3BR4K38BE0
+        ClusterId=j-3A2V9AGIOCGVD
 
 and is used to browse the EMR cluster's dashboard at
 
-        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-36L3BR4K38BE0
+        https://us-west-2.console.aws.amazon.com/elasticmapreduce/home?region=us-west-2#cluster-details:j-3A2V9AGIOCGVD
 
 Use that dashboard plus the EC2 console to infer the master node's public IP, which will resemble:
 
-        masterIP=54.244.29.249
+        masterIP=54.202.168.146
 
 All cluster instances are named oneoff in the AWS/EC2 console.
 This cluster will cycle through Starting and Bootstrapping phases
