@@ -137,9 +137,9 @@ while (number_of_outputs < total_number_of_outputs):
         particles = particles_elem
         timesteps_since_output += 1
     number_of_outputs += 1
-    particles.cache()
-    print 'number_of_outputs = ', number_of_outputs
-    print particles.show()
+    #particles.cache()
+    #print 'number_of_outputs = ', number_of_outputs
+    #print particles.show()
 
 #display results
 cols = ['id', 'time', 'a', 'e', 'wt', 'M']
