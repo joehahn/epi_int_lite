@@ -12,6 +12,8 @@
 #74 sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master yarn --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 #53 sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[*] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 #48 sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[1] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
+#42 sec#cache every dt    # PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[1] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
+#42 sec#no cache          # PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[1] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
@@ -140,8 +142,8 @@ while (number_of_outputs < total_number_of_outputs):
         particles_elem = coords2elem(particles_coords)
         #updates
         particles = particles_elem
-        particles.cache()
         timesteps_since_output += 1
+    #particles.cache()
     number_of_outputs += 1
     print 'number_of_outputs = ', number_of_outputs
     #print particles.show()
