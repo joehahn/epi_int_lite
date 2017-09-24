@@ -147,7 +147,7 @@ while (number_of_outputs < total_number_of_outputs):
     #print particles.show()
 
 #display results
-cols = ['id', 'time', 'a', 'e', 'wt', 'M']
+cols = ['id', 'timestep', 'a', 'e', 'wt', 'M']
 particles.show()
 time_stop = time.time()
 print 'execution time (sec) = ', time_stop - time_start
