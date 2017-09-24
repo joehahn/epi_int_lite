@@ -28,6 +28,10 @@ radial_width = 1.0e-3
 initial_orbits = 'breathing mode'
 initial_e = 1.0e-3
 
+#start time
+import time
+time_start = time.time()
+
 #angular frequency
 def Omega(a):
     GM = 1.0
@@ -137,10 +141,12 @@ while (number_of_outputs < total_number_of_outputs):
         particles = particles_elem
         timesteps_since_output += 1
     number_of_outputs += 1
-    #particles.cache()
-    #print 'number_of_outputs = ', number_of_outputs
+    particles.cache()
+    print 'number_of_outputs = ', number_of_outputs
     #print particles.show()
 
 #display results
 cols = ['id', 'time', 'a', 'e', 'wt', 'M']
 particles.show()
+time_stop = time.time()
+print 'execution time (sec) = ', time_stop - time_start
