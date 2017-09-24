@@ -9,7 +9,9 @@
 #to run locally on master node....can have memory issues...:
 #    PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[*] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 #to submit spark job to yarn:
-#    PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master yarn --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
+#40.8 sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master yarn --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
+#XX sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[*] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
+#XX sec#cache every output# PYSPARK_PYTHON=/emr/miniconda2/bin/python spark-submit --master local[1] --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file:./log4j.properties" nbody.py
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
@@ -125,7 +127,6 @@ if (initial_orbits == 'breathing mode'):
 print 'evolving system...'
 timestep = 0
 number_of_outputs = 0
-time = 0.0
 particles = particles_init
 while (number_of_outputs < total_number_of_outputs):
     timesteps_since_output = 0
