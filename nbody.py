@@ -11,133 +11,94 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.1
-timesteps_per_output = 5
+timesteps_per_output = 1
 total_number_of_outputs = 3
 
 #radial width assuming circular orbits
 radial_width = 1.0e-3
 
+#total ring mass
+total_ring_mass = 1.0e-10
+
 #choose initial orbits
 initial_orbits = 'breathing mode'
 initial_e = 1.0e-3
 
+#choose initial orbits
+initial_orbits = 'eccentric'
+
+#choose initial orbits
+initial_orbits = 'circular'
+
 #start time
-import time
-time_start = time.time()
-
-#angular frequency
-def Omega(a):
-    GM = 1.0
-    Omega2 = GM/a/a/a
-    Omega = Omega2**0.5
-    return Omega
-
-#epicyclic frequency
-def Kappa(a):
-    return Omega(a)
-
-#adjust angles to live between -Pi and Pi
-import numpy as np
-def adjust_angle(angle):
-    twopi = 2.0*np.pi
-    if (angle > np.pi):
-        angle -= twopi
-    if (angle < -np.pi):
-        angle += twopi     
-    return angle
-
-#drift step advances M and timestep
-def drift(df, dt):
-    df = df.withColumn('Kappa', Kappa_udf(df['a']))
-    M = adjust_angle_udf(df['M'] + df['Kappa']*dt)
-    df = df.withColumn('M', M)
-    df = df.withColumn('timestep', df['timestep'] + 1)
-    return df
-
-#convert orbit elements to coordinates
-from pyspark.sql.functions import sin, cos
-def elem2coord(df):
-    df = df.withColumn('e_sin_M', df['e']*sin(df['M']))
-    df = df.withColumn('e_cos_M', df['e']*cos(df['M']))
-    df = df.withColumn('r', df['a']*(1 - df['e_cos_M']))
-    df = df.withColumn('Omega', Omega_udf(df['a']))
-    df = df.withColumn('Kappa', Kappa_udf(df['a']))
-    df = df.withColumn('t', (df['Omega']/df['Kappa'])*(df['M'] + 2.0*df['e_sin_M']) + df['wt'])
-    df = df.withColumn('vr', df['a']*df['Kappa']*df['e_sin_M'])
-    df = df.withColumn('vt', df['a']*df['Omega']*(1.0 + df['e_cos_M']))
-    cols = ['id', 'timestep', 'streamline', 'a', 'r', 't', 'vr', 'vt']
-    return df.select(cols)
-
-#convert coordinates to elements assuming a remains constant
-from pyspark.sql.functions import sqrt, atan2
-def coords2elem(df):
-    df = df.withColumn('Omega', Omega_udf(df['a']))
-    df = df.withColumn('Kappa', Kappa_udf(df['a']))
-    df = df.withColumn('e_sin_M', df['vr']/(df['a']*df['Kappa']))
-    df = df.withColumn('e_cos_M', 1.0 - df['r']/df['a'])
-    e2 = df['e_sin_M']**2 + df['e_cos_M']**2
-    df = df.withColumn('e', sqrt(e2))
-    df = df.withColumn('M', atan2(df['e_sin_M'], df['e_cos_M']))
-    wt = df['t'] - (df['Omega']/df['Kappa'])*(df['M'] + 2.0*df['e_sin_M'])
-    df = df.withColumn('wt', adjust_angle_udf(wt))
-    cols = ['id', 'timestep', 'streamline', 'a', 'e', 'M', 'wt']
-    return df.select(cols)
-
-#create SparkSession
-from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName('nbody').getOrCreate()
+import time as tm
+time_start = tm.time()
 
 #initialize particles in circular orbits
-a = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
-
-a = np.zeros((number_of_streamlines, particles_per_streamline))
-
-from pyspark.sql.types import Row
-ids = [Row(id=idx) for idx in range(number_of_particles)]
-df = spark.createDataFrame(ids)
-from pyspark.sql.functions import lit
-df = df.withColumn('timestep', lit(0))
-df = df.withColumn('streamline', (df['id']/particles_per_streamline).cast(IntegerType()) )
-df = df.withColumn('longitude_index', df['id']%particles_per_streamline)
-df = df.withColumn('a', lit(1.0))
-if (number_of_streamlines > 1):
-    df = df.withColumn('a', 1.0 + df['streamline']*radial_width/(number_of_streamlines - 1))
-df = df.withColumn('e', lit(0.0))
-df = df.withColumn('M', lit(0.0))
-df = df.withColumn('wt', math.pi*(2.0*df['longitude_index']/particles_per_streamline - 1.0))
-cols = ['id', 'timestep', 'streamline', 'a', 'e', 'M', 'wt']
-particles_init = df.select(cols)
+import numpy as np
+a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
+a_list = []
+for a_s in a_streamlines:
+    a_list.append(np.zeros(particles_per_streamline) + a_s)
+a0 = np.array(a_list)
+e0 = np.zeros_like(a0)
+M0 = np.zeros_like(a0)
+wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+wt_list = []
+for idx in range(number_of_streamlines):
+    wt_list.append(wt_streamline)
+wt0 = np.array(wt_list)
 
 #alter initial orbits as needed
+if (initial_orbits == 'circular'):
+    pass
+if (initial_orbits == 'eccentric'):
+    pass
 if (initial_orbits == 'breathing mode'):
-    particles_init = particles_init.withColumn('e', lit(initial_e))
-    particles_init = particles_init.withColumn('M', lit(0.0))
+    e0[:] = initial_e
+    M0[:] = 0.0
+
+#lambda=streamline mass-per-lenth
+mass_per_streamline = total_ring_mass/number_of_streamlines
+lambda0 = np.zeros_like(a0) + mass_per_streamline/(2.0*np.pi*a0)
+print 'this lambda-check should equal one = ', \
+    (lambda0[:,0]*2.0*np.pi*a_streamlines).sum()/total_ring_mass
+
+#prep for main loop
+timestep = 0
+the_time = 0.0
+number_of_outputs = 0
+(a, e, wt, M) = (a0, e0, wt0, M0)
+(a_store, e_store, wt_store, M_store) = ([a], [e], [wt], [M])
+from helper_fns import *
 
 #evolve system
 print 'evolving system...'
-timestep = 0
-number_of_outputs = 0
-particles = particles_init
 while (number_of_outputs < total_number_of_outputs):
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
-        #drift orbit elements and advance timestep
-        particles_drifted = drift(particles, dt)
+        #mean anomaly advances during drift step
+        M = drift(a, M, dt)
         #update coordinates
-        particles_coords = elem2coord(particles_drifted)
+        r, t, vr, vt = elem2coords(a, e, wt, M)
+        #check longitude ordering
         #compute accelerations
+        #update a
         #convert coordinates to elements
-        particles_elem = coords2elem(particles_coords)
+        e, wt, M = coords2elem(r, t, vr, vt, a)
         #updates
-        particles = particles_elem
+        timestep += 1
         timesteps_since_output += 1
-    #particles.cache()
+    #save output
+    a_store, e_store, wt_store, M_store = save_arrays(a_store, e_store, wt_store, \
+        M_store, a, e, wt, M)
     number_of_outputs += 1
     print 'number_of_outputs = ', number_of_outputs
-    #print particles.show()
+    print 'number of timesteps = ', timestep
+    print 'time = ', timestep*dt
+    print t
 
-#display results
-cols = ['id', 'timestep', 'a', 'e', 'wt', 'M']
-particles.show()
-time_stop = time.time()
+#save results
+time_stop = tm.time()
 print 'execution time (sec) = ', time_stop - time_start

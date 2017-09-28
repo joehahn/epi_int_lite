@@ -17,6 +17,7 @@ blah blah blah...
     chmod +x ./Miniconda2-4.3.21-MacOSX-x86_64.sh
     rm -rf /Users/joe/miniconda2
     ./Miniconda2-4.3.21-MacOSX-x86_64.sh -b -p /Users/joe/miniconda2
+    rm Miniconda2-4.3.21-MacOSX-x86_64.sh
 
 add this to ~/.bash_profile
 
