@@ -6,13 +6,13 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 3
-particles_per_streamline = 2
+particles_per_streamline = 20
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.1
-timesteps_per_output = 1
-total_number_of_outputs = 3
+dt = 0.2
+timesteps_per_output = 100
+total_number_of_outputs = 100
 
 #radial width assuming circular orbits
 radial_width = 1.0e-3
@@ -24,11 +24,11 @@ total_ring_mass = 1.0e-10
 initial_orbits = 'breathing mode'
 initial_e = 1.0e-3
 
-#choose initial orbits
-initial_orbits = 'eccentric'
+##choose initial orbits
+#initial_orbits = 'eccentric'
 
-#choose initial orbits
-initial_orbits = 'circular'
+##choose initial orbits
+#initial_orbits = 'circular'
 
 #start time
 import time as tm
@@ -67,10 +67,9 @@ print 'this lambda-check should equal one = ', \
 
 #prep for main loop
 timestep = 0
-the_time = 0.0
 number_of_outputs = 0
 (a, e, wt, M) = (a0, e0, wt0, M0)
-(a_store, e_store, wt_store, M_store) = ([a], [e], [wt], [M])
+(az, ez, wtz, Mz, timestepz) = ([a], [e], [wt], [M], [timestep])
 from helper_fns import *
 
 #evolve system
@@ -91,14 +90,65 @@ while (number_of_outputs < total_number_of_outputs):
         timestep += 1
         timesteps_since_output += 1
     #save output
-    a_store, e_store, wt_store, M_store = save_arrays(a_store, e_store, wt_store, \
-        M_store, a, e, wt, M)
     number_of_outputs += 1
+    az, ez, wtz, Mz = save_arrays(az, ez, wtz, Mz, timestep, timestepz, 
+        a, e, wt, M)
     print 'number_of_outputs = ', number_of_outputs
     print 'number of timesteps = ', timestep
     print 'time = ', timestep*dt
-    print t
 
 #save results
+times = np.array(timestepz)*dt
+save_output(az, ez, wtz, Mz, times)
 time_stop = tm.time()
 print 'execution time (sec) = ', time_stop - time_start
+
+#restore saved data & compare
+ar, er, wtr, Mr, timesr = restore_output()
+rz, tz, vrz, vtz = elem2coords(ar, er, wtr, Mr)
+
+#
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
+
+#this function returns tuple of plot's xy=(x[i],y[i]) coordinates
+def xyt(i):
+    a = ar[i]
+    e = er[i]
+    wt = wtr[i]
+    M = Mr[i]
+    r, t, vr, vt = elem2coords(a, e, wt, M)
+    x = t/np.pi
+    y = r - 1.0
+    tm = timesr[i]
+    return (x, y, tm)
+
+#this iterator provides the animation's xyt coordinates
+def update():
+    for idx in range(len(ar)):
+        yield xyt(idx)
+
+#draw frame
+def draw(xyt):
+    x, y, tm = xyt
+    ax.set_title('t = ' + str(tm))
+    for idx in range(len(x)):
+        line = lines[idx]
+        line.set_data(x[idx], y[idx])
+    return lines
+
+#show animation
+fig = plt.figure()
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=(-0.0013, 0.0023), 
+    xlabel='$\\theta/\pi$', ylabel='$(r - r_o)/r_o$', title='t = 0.0')
+x, y, tm = xyt(0)
+ax.set_title('t = ' + str(tm))
+colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+lines = [ax.plot([],[], 'o-', markersize=3, color=colors[idx], linewidth=1)[0]
+    for idx in range(number_of_streamlines)]
+for line in lines:
+    line.set_data([],[])
+ani = animation.FuncAnimation(fig, draw, update, interval=200, blit=False, repeat=False)
+plt.show()

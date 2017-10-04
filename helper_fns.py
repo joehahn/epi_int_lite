@@ -51,9 +51,29 @@ def coords2elem(r, t, vr, vt, a):
     return e, wt, M
 
 #stash current a,e,wt,M at the end of list e_store etc
-def save_arrays(a_store, e_store, wt_store, M_store, a, e, wt, M):
-    a_store.append(a)
-    e_store.append(e)
-    wt_store.append(wt)
-    M_store.append(M)
-    return a_store, e_store, wt_store, M_store
+def save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M):
+    az.append(a)
+    ez.append(e)
+    wtz.append(wt)
+    Mz.append(M)
+    timestepz.append(timestep)
+    return az, ez, wtz, Mz
+
+#save orbit element arrays in files
+def save_output(a, e, wt, M, times):
+    np.save('output/a.npy', a)
+    np.save('output/e.npy', e)
+    np.save('output/wt.npy', wt)
+    np.save('output/M.npy', M)
+    np.save('output/times.npy', times)
+
+#restore orbit elements from files
+def restore_output():
+    a = np.load('output/a.npy')
+    e = np.load('output/e.npy')
+    wt = np.load('output/wt.npy')
+    M = np.load('output/M.npy')
+    times = np.load('output/times.npy')
+    return a, e, wt, M, times
+
+
