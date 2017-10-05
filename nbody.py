@@ -5,24 +5,25 @@
 #this...
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 3
-particles_per_streamline = 20
+number_of_streamlines = 5
+particles_per_streamline = 31
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.2
-timesteps_per_output = 100
-total_number_of_outputs = 100
+dt = 0.1
+timesteps_per_output = 10
+total_number_of_outputs = 650
 
 #radial width assuming circular orbits
 radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 1.0e-10
+#total_ring_mass = 1.0e-7
+total_ring_mass = 0.0
 
 #choose initial orbits
 initial_orbits = 'breathing mode'
-initial_e = 1.0e-3
+initial_e = 1.5e-3
 
 ##choose initial orbits
 #initial_orbits = 'eccentric'
@@ -61,9 +62,10 @@ if (initial_orbits == 'breathing mode'):
 
 #lambda=streamline mass-per-lenth
 mass_per_streamline = total_ring_mass/number_of_streamlines
-lambda0 = np.zeros_like(a0) + mass_per_streamline/(2.0*np.pi*a0)
+twopi = 2.0*np.pi
+lambda0 = np.zeros_like(a0) + mass_per_streamline/(twopi*a0)
 print 'this lambda-check should equal one = ', \
-    (lambda0[:,0]*2.0*np.pi*a_streamlines).sum()/total_ring_mass
+    (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
 
 #prep for main loop
 timestep = 0
@@ -77,12 +79,12 @@ print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
-        #mean anomaly advances during drift step
+        #advance mean anomaly during drift step
         M = drift(a, M, dt)
         #update coordinates
         r, t, vr, vt = elem2coords(a, e, wt, M)
-        #check longitude ordering
-        #compute accelerations
+        #kick velocities
+        vr = kick(lambda0, r, vr, dt)
         #update a
         #convert coordinates to elements
         e, wt, M = coords2elem(r, t, vr, vt, a)
@@ -105,13 +107,26 @@ print 'execution time (sec) = ', time_stop - time_start
 
 #restore saved data & compare
 ar, er, wtr, Mr, timesr = restore_output()
-rz, tz, vrz, vtz = elem2coords(ar, er, wtr, Mr)
+rz, tz, vrz, vtz = elem2coords(ar, er, wtr, Mr, sort_particle_longitudes=False)
 
 #
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
+
+#pad array
+def pad_array(t, longitudes=False):
+    Nr, Nt = t.shape
+    tp = np.zeros((Nr, Nt+2))
+    tp[:, 1:-1] = t
+    if (longitudes == True):
+        offset = 2.0*np.pi
+    else:
+        offset = 0.0
+    tp[:, 0] = t[:, -1] - offset
+    tp[:, -1] = t[:, 0] + offset
+    return tp
 
 #this function returns tuple of plot's xy=(x[i],y[i]) coordinates
 def xyt(i):
@@ -120,8 +135,13 @@ def xyt(i):
     wt = wtr[i]
     M = Mr[i]
     r, t, vr, vt = elem2coords(a, e, wt, M)
-    x = t/np.pi
-    y = r - 1.0
+    tp = pad_array(t, longitudes=True)
+    rp = pad_array(r, longitudes=False)
+    x = tp/np.pi
+    y = rp - 1.0
+    #y_mid = y[2].copy()
+    #for ys in y:
+    #    ys -= y_mid
     tm = timesr[i]
     return (x, y, tm)
 
@@ -141,7 +161,7 @@ def draw(xyt):
 
 #show animation
 fig = plt.figure()
-ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=(-0.0013, 0.0023), 
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=(-0.002, 0.003), 
     xlabel='$\\theta/\pi$', ylabel='$(r - r_o)/r_o$', title='t = 0.0')
 x, y, tm = xyt(0)
 ax.set_title('t = ' + str(tm))
@@ -150,5 +170,5 @@ lines = [ax.plot([],[], 'o-', markersize=3, color=colors[idx], linewidth=1)[0]
     for idx in range(number_of_streamlines)]
 for line in lines:
     line.set_data([],[])
-ani = animation.FuncAnimation(fig, draw, update, interval=200, blit=False, repeat=False)
+ani = animation.FuncAnimation(fig, draw, update, interval=1, blit=False, repeat=False)
 plt.show()

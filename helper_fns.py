@@ -27,8 +27,20 @@ def adjust_angle(angle):
 def drift(a, M, dt):
     return adjust_angle(M + Kappa(a)*dt)
 
+#velocity kicks
+def kick(lambda0, r, vr, dt):
+    #radial acceleration due to streamline gravity
+    G = 1.0
+    Nr, Nt = vr.shape
+    Ar = np.zeros((Nr, Nt))
+    for shft in range(1, Nr):
+        dr = np.roll(r, -shft, axis=0) - r
+        Ar += 2.0*G*lambda0/dr
+    vr += Ar*dt
+    return vr
+
 #convert orbit elements to coordinates
-def elem2coords(a, e, wt, M):
+def elem2coords(a, e, wt, M, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
     r = a*(1.0 - e_cos_M)
@@ -37,6 +49,9 @@ def elem2coords(a, e, wt, M):
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
     vr = a*Kap*e_sin_M
     vt = a*Omg*(1.0 + e_cos_M)
+    #sort each streamline's particles by longitude as needed
+    if (sort_particle_longitudes):
+        r, t, vr, vt = sort_particles(r, t, vr, vt)
     return r, t, vr, vt
 
 #convert coordinates to orbit elements
@@ -49,6 +64,16 @@ def coords2elem(r, t, vr, vt, a):
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )
     return e, wt, M
+
+#order particles in each streamline by their longitudes
+def sort_particles(r, t, vr, vt):
+    for streamline_idx in range(len(t)):
+        longitude_idx = t[streamline_idx].argsort()
+        r[streamline_idx] = r[streamline_idx][longitude_idx]
+        t[streamline_idx] = t[streamline_idx][longitude_idx]
+        vr[streamline_idx] = vr[streamline_idx][longitude_idx]
+        vt[streamline_idx] = vt[streamline_idx][longitude_idx]
+    return r, t, vr, vt
 
 #stash current a,e,wt,M at the end of list e_store etc
 def save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M):
@@ -75,5 +100,3 @@ def restore_output():
     M = np.load('output/M.npy')
     times = np.load('output/times.npy')
     return a, e, wt, M, times
-
-
