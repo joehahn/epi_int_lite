@@ -18,8 +18,12 @@ total_number_of_outputs = 650
 radial_width = 1.0e-3
 
 #total ring mass
-#total_ring_mass = 1.0e-7
-total_ring_mass = 0.0
+total_ring_mass = 1.0e-7
+#total_ring_mass = 0.0
+
+#oblateness parameters
+Rp = 0.5
+J2 = 0.02
 
 #choose initial orbits
 initial_orbits = 'breathing mode'
@@ -60,12 +64,13 @@ if (initial_orbits == 'breathing mode'):
     e0[:] = initial_e
     M0[:] = 0.0
 
-#lambda=streamline mass-per-lenth
+#lambda0=streamline mass-per-lenth
 mass_per_streamline = total_ring_mass/number_of_streamlines
 twopi = 2.0*np.pi
 lambda0 = np.zeros_like(a0) + mass_per_streamline/(twopi*a0)
-print 'this lambda-check should equal one = ', \
-    (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+if (total_ring_mass > 0):
+    print 'this lambda-check should equal one = ', \
+        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
 
 #prep for main loop
 timestep = 0
@@ -80,14 +85,14 @@ while (number_of_outputs < total_number_of_outputs):
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #advance mean anomaly during drift step
-        M = drift(a, M, dt)
+        M = drift(a, M, J2, Rp, dt)
         #update coordinates
-        r, t, vr, vt = elem2coords(a, e, wt, M)
+        r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick velocities
         vr = kick(lambda0, r, vr, dt)
         #update a
         #convert coordinates to elements
-        e, wt, M = coords2elem(r, t, vr, vt, a)
+        e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
         #updates
         timestep += 1
         timesteps_since_output += 1
@@ -107,7 +112,7 @@ print 'execution time (sec) = ', time_stop - time_start
 
 #restore saved data & compare
 ar, er, wtr, Mr, timesr = restore_output()
-rz, tz, vrz, vtz = elem2coords(ar, er, wtr, Mr, sort_particle_longitudes=False)
+rz, tz, vrz, vtz = elem2coords(J2, Rp, ar, er, wtr, Mr, sort_particle_longitudes=False)
 
 #
 import matplotlib.pyplot as plt
@@ -134,14 +139,14 @@ def xyt(i):
     e = er[i]
     wt = wtr[i]
     M = Mr[i]
-    r, t, vr, vt = elem2coords(a, e, wt, M)
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     tp = pad_array(t, longitudes=True)
     rp = pad_array(r, longitudes=False)
     x = tp/np.pi
     y = rp - 1.0
-    #y_mid = y[2].copy()
-    #for ys in y:
-    #    ys -= y_mid
+    y_mid = 0*y[len(y)/2].copy()
+    for ys in y:
+        ys -= y_mid
     tm = timesr[i]
     return (x, y, tm)
 

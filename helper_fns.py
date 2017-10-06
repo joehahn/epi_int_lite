@@ -5,14 +5,20 @@
 #helper functions used by nbody.py
 
 #angular frequency
-def Omega(a):
+def Omega(J2, Rp, a):
     GM = 1.0
-    Omega_0 = np.sqrt(GM/a)/a
-    return Omega_0
+    a2 = a*a
+    Ra2 = (Rp*Rp)/a2
+    Omega2 = (GM/a2/a)*(1.0 + (1.5*J2)*Ra2)
+    return np.sqrt(Omega2)
 
 #epicyclic frequency
-def Kappa(a):
-    return Omega(a)
+def Kappa(J2, Rp, a):
+    GM = 1.0
+    a2 = a*a
+    Ra2 = (Rp*Rp)/a2
+    Kappa2 = (GM/a2/a)*(1.0 - (1.5*J2)*Ra2)
+    return np.sqrt(Kappa2)
 
 #adjust angles to live between -Pi and Pi
 import numpy as np
@@ -24,8 +30,8 @@ def adjust_angle(angle):
     return angle
 
 #drift step advances M
-def drift(a, M, dt):
-    return adjust_angle(M + Kappa(a)*dt)
+def drift(a, M, J2, Rp, dt):
+    return adjust_angle(M + Kappa(J2, Rp, a)*dt)
 
 #velocity kicks
 def kick(lambda0, r, vr, dt):
@@ -40,12 +46,12 @@ def kick(lambda0, r, vr, dt):
     return vr
 
 #convert orbit elements to coordinates
-def elem2coords(a, e, wt, M, sort_particle_longitudes=True):
+def elem2coords(J2, Rp, a, e, wt, M, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
     r = a*(1.0 - e_cos_M)
-    Omg = Omega(a)
-    Kap = Kappa(a)
+    Omg = Omega(J2, Rp, a)
+    Kap = Kappa(J2, Rp, a)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
     vr = a*Kap*e_sin_M
     vt = a*Omg*(1.0 + e_cos_M)
@@ -55,9 +61,9 @@ def elem2coords(a, e, wt, M, sort_particle_longitudes=True):
     return r, t, vr, vt
 
 #convert coordinates to orbit elements
-def coords2elem(r, t, vr, vt, a):
-    Omg = Omega(a)
-    Kap = Kappa(a)
+def coords2elem(J2, Rp, r, t, vr, vt, a):
+    Omg = Omega(J2, Rp, a)
+    Kap = Kappa(J2, Rp, a)
     e_sin_M = vr/(a*Kap)
     e_cos_M = 1.0 - r/a
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
