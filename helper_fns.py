@@ -33,17 +33,45 @@ def adjust_angle(angle):
 def drift(a, M, J2, Rp, dt):
     return adjust_angle(M + Kappa(J2, Rp, a)*dt)
 
-#velocity kicks
-def kick(lambda0, r, vr, dt):
-    #radial acceleration due to streamline gravity
+#radial acceleration due to ring self-gravity
+def ring_gravity(lambda0, r):
     G = 1.0
-    Nr, Nt = vr.shape
-    Ar = np.zeros((Nr, Nt))
+    two_G_lambda = 2.0*G*lambda0
+    Ar = np.zeros_like(r)
+    Nr, Nt = r.shape
     for shft in range(1, Nr):
         dr = np.roll(r, -shft, axis=0) - r
-        Ar += 2.0*G*lambda0/dr
+        Ar += two_G_lambda/dr
+    return Ar
+
+#tangential acceleration due to ring viscosity
+def ring_viscosity(shear_viscosity, r, vt):
+    factor = 1.5*shear_viscosity*vt/r
+    #acceleration that each streamline exerts on exterior neighbor
+    dr = np.roll(r, -1, axis=0) - r
+    At_ext = factor/dr
+    At_ext[dr < 0.0] = 0.0
+    At_ext = np.roll(At_ext, 1, axis=0)
+    #acceleration that each streamline exerts on interior neighbor
+    dr = r - np.roll(r, 1, axis=0)
+    At_int = factor/dr
+    At_int[dr < 0.0] = 0.0
+    At_int = -np.roll(At_ext, -1, axis=0)
+    At = At_ext + At_int
+    return At
+
+#velocity kicks
+def kick(lambda0, shear_viscosity, r, vr, vt, dt):
+    Ar = np.zeros_like(r)
+    At = np.zeros_like(r)
+    #acceleration due to streamline gravity
+    Ar += ring_gravity(lambda0, r)
+    #acceleration due to streamline viscosity
+    At += ring_viscosity(shear_viscosity, r, vt)
+    #kick velocity
     vr += Ar*dt
-    return vr
+    vt += At*dt
+    return vr, vt
 
 #convert orbit elements to coordinates
 def elem2coords(J2, Rp, a, e, wt, M, sort_particle_longitudes=True):
@@ -106,3 +134,40 @@ def restore_output():
     M = np.load('output/M.npy')
     times = np.load('output/times.npy')
     return a, e, wt, M, times
+
+#initialize numpy arrays
+def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
+    initial_e, radial_width, total_ring_mass):
+
+    #initialize particles in circular orbits
+    import numpy as np
+    a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
+    a_list = []
+    for a_s in a_streamlines:
+        a_list.append(np.zeros(particles_per_streamline) + a_s)
+    a0 = np.array(a_list)
+    e0 = np.zeros_like(a0)
+    M0 = np.zeros_like(a0)
+    wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+    wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+    wt_list = []
+    for idx in range(number_of_streamlines):
+        wt_list.append(wt_streamline)
+    wt0 = np.array(wt_list)
+
+    #alter initial orbits as needed
+    if (initial_orbits == 'eccentric'):
+        pass
+    if (initial_orbits == 'breathing mode'):
+        e0[:] = initial_e
+        M0[:] = 0.0
+
+    #lambda0=streamline mass-per-lenth
+    mass_per_streamline = total_ring_mass/number_of_streamlines
+    twopi = 2.0*np.pi
+    lambda0 = np.zeros_like(a0) + mass_per_streamline/(twopi*a0)
+    if (total_ring_mass > 0):
+        print 'this lambda-check should equal one = ', \
+            (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+
+    return a0, e0, M0, wt0, lambda0
