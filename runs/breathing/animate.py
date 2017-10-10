@@ -9,7 +9,7 @@
 #restore saved data & compare
 from helper_fns import *
 execfile('inputs.py')
-ar, er, wtr, Mr, timesr = restore_output()
+ar, er, wtr, Mr, timesr = restore_output(output_folder)
 rz, tz, vrz, vtz = elem2coords(J2, Rp, ar, er, wtr, Mr, sort_particle_longitudes=False)
 
 #get plotting packages

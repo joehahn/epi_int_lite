@@ -13,12 +13,15 @@ def Omega(J2, Rp, a):
     return np.sqrt(Omega2)
 
 #epicyclic frequency
-def Kappa(J2, Rp, a):
+def Kappa(J2, Rp, a, kappa_squared=False):
     GM = 1.0
     a2 = a*a
     Ra2 = (Rp*Rp)/a2
     Kappa2 = (GM/a2/a)*(1.0 - (1.5*J2)*Ra2)
-    return np.sqrt(Kappa2)
+    if (kappa_squared):
+        return Kappa2
+    else:
+        return np.sqrt(Kappa2)
 
 #adjust angles to live between -Pi and Pi
 import numpy as np
@@ -60,8 +63,17 @@ def ring_viscosity(shear_viscosity, r, vt):
     At = At_ext + At_int
     return At
 
+#compute semimajor drift due to orbit-averaged torque
+def orbit_averaged_da(At, a, J2, Rp, dt):
+    Omg = Omega(J2, Rp, a)
+    Kap2 = Kappa(J2, Rp, a, kappa_squared=True)
+    for At_streamline in At:
+        At_streamline[:] = At_streamline.mean()
+    da = (Omg/Kap2)*(2.0*dt)*At
+    return da
+    
 #velocity kicks
-def kick(lambda0, shear_viscosity, r, vr, vt, dt):
+def kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, dt):
     Ar = np.zeros_like(r)
     At = np.zeros_like(r)
     #acceleration due to streamline gravity
@@ -71,7 +83,9 @@ def kick(lambda0, shear_viscosity, r, vr, vt, dt):
     #kick velocity
     vr += Ar*dt
     vt += At*dt
-    return vr, vt
+    #orbit-averaged kick to a
+    a += orbit_averaged_da(At, a, J2, Rp, dt)
+    return vr, vt, a
 
 #convert orbit elements to coordinates
 def elem2coords(J2, Rp, a, e, wt, M, sort_particle_longitudes=True):
@@ -119,20 +133,23 @@ def save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M):
     return az, ez, wtz, Mz
 
 #save orbit element arrays in files
-def save_output(a, e, wt, M, times):
-    np.save('output/a.npy', a)
-    np.save('output/e.npy', e)
-    np.save('output/wt.npy', wt)
-    np.save('output/M.npy', M)
-    np.save('output/times.npy', times)
+def save_output(a, e, wt, M, times, output_folder):
+    import os
+    cmd = 'mkdir -p ' + output_folder
+    r = os.system(cmd)
+    np.save(output_folder + '/a.npy', a)
+    np.save(output_folder + '/e.npy', e)
+    np.save(output_folder + '/wt.npy', wt)
+    np.save(output_folder + '/M.npy', M)
+    np.save(output_folder + '/times.npy', times)
 
 #restore orbit elements from files
-def restore_output():
-    a = np.load('output/a.npy')
-    e = np.load('output/e.npy')
-    wt = np.load('output/wt.npy')
-    M = np.load('output/M.npy')
-    times = np.load('output/times.npy')
+def restore_output(output_folder):
+    a = np.load(output_folder + '/a.npy')
+    e = np.load(output_folder + '/e.npy')
+    wt = np.load(output_folder + '/wt.npy')
+    M = np.load(output_folder + '/M.npy')
+    times = np.load(output_folder + '/times.npy')
     return a, e, wt, M, times
 
 #initialize numpy arrays

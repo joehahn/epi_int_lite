@@ -43,3 +43,7 @@ initial_e = 1.5e-3
 ##choose initial orbits
 #initial_orbits = 'circular'
 #initial_e = 0.0
+
+#output folder ends in /
+output_folder = 'output/'
+

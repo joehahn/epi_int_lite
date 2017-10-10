@@ -9,8 +9,6 @@
 #set number of streamlins and particles per streamline
 number_of_streamlines = 5
 particles_per_streamline = 31
-#number_of_streamlines = 3
-#particles_per_streamline = 5
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
@@ -26,7 +24,8 @@ total_ring_mass = 1.0e-7
 #total_ring_mass = 0.0
 
 #ring kinematic shear viscosity
-shear_viscosity = 0.0e-15
+shear_viscosity = 0.0
+#shear_viscosity = 5.0e-11
 
 #oblateness parameters
 Rp = 0.5
@@ -36,10 +35,5 @@ J2 = 0.02
 initial_orbits = 'breathing mode'
 initial_e = 1.5e-3
 
-##choose initial orbits
-#initial_orbits = 'eccentric'
-#initial_e = 1.5e-3
-
-##choose initial orbits
-#initial_orbits = 'circular'
-#initial_e = 0.0
+#output folder
+output_folder = 'output'

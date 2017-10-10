@@ -24,6 +24,7 @@ print 'Rp =', Rp
 print 'J2 =', J2
 print 'initial_orbits =', initial_orbits
 print 'initial_e =', initial_e
+print 'output_folder =', output_folder
 
 #initialize orbits
 from helper_fns import *
@@ -35,7 +36,7 @@ a0, e0, M0, wt0, lambda0 = initialize_orbits(number_of_streamlines, particles_pe
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
-(a, e, wt, M) = (a0, e0, wt0, M0)
+(a, e, wt, M) = (a0.copy(), e0.copy(), wt0.copy(), M0.copy())
 (az, ez, wtz, Mz, timestepz) = ([a], [e], [wt], [M], [timestep])
 
 #evolve system
@@ -45,11 +46,10 @@ while (number_of_outputs < total_number_of_outputs):
     while (timesteps_since_output < timesteps_per_output):
         #advance mean anomaly during drift step
         M = drift(a, M, J2, Rp, dt)
-        #update coordinates
+        #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-        #kick velocities
-        vr, vt = kick(lambda0, shear_viscosity, r, vr, vt, dt)
-        #update a
+        #kick velocities and evolve a
+        vr, vt, a = kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, dt)
         #convert coordinates to elements
         e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
         #updates
@@ -65,6 +65,6 @@ while (number_of_outputs < total_number_of_outputs):
 
 #save results
 times = np.array(timestepz)*dt
-save_output(az, ez, wtz, Mz, times)
+save_output(az, ez, wtz, Mz, times, output_folder)
 time_stop = tm.time()
 print 'execution time (sec) = ', time_stop - time_start
