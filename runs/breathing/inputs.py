@@ -21,7 +21,7 @@ radial_width = 1.0e-3
 
 #total ring mass
 total_ring_mass = 1.0e-7
-#total_ring_mass = 0.0
+total_ring_mass = 0.0
 
 #ring kinematic shear viscosity
 shear_viscosity = 0.0

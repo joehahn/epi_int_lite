@@ -123,7 +123,7 @@ def sort_particles(r, t, vr, vt):
         vt[streamline_idx] = vt[streamline_idx][longitude_idx]
     return r, t, vr, vt
 
-#stash current a,e,wt,M at the end of list e_store etc
+#append current a,e,wt,M to the end of lists az,ez etc
 def save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M):
     az.append(a)
     ez.append(e)

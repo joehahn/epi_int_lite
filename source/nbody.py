@@ -39,9 +39,17 @@ number_of_outputs = 0
 (a, e, wt, M) = (a0.copy(), e0.copy(), wt0.copy(), M0.copy())
 (az, ez, wtz, Mz, timestepz) = ([a], [e], [wt], [M], [timestep])
 
-#evolve system
+#evolve system...this follows Chamber's (1993) 2nd order drift-kick scheme but assumes
+#the central mass has no significant motion about system's center-of-mass ie the ring is nearly
+#circular and there are no point-mass satellites such that Chamber's exp(tau*C/2)=1
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
+    #convert orbit elements to coordinates
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    #kick velocities and evolve a forwards by +dt/2
+    vr, vt, a = kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, dt/2.0)
+    #convert coordinates to elements
+    e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #advance mean anomaly during drift step
@@ -55,10 +63,15 @@ while (number_of_outputs < total_number_of_outputs):
         #updates
         timestep += 1
         timesteps_since_output += 1
+    #convert orbit elements to coordinates
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    #kick velocities and evolve a backwards by -dt/2
+    vr, vt, a = kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, -dt/2.0)
+    #convert coordinates to elements
+    e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
     #save output
     number_of_outputs += 1
-    az, ez, wtz, Mz = save_arrays(az, ez, wtz, Mz, timestep, timestepz, 
-        a, e, wt, M)
+    az, ez, wtz, Mz = save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M)
     print 'number_of_outputs = ', number_of_outputs
     print 'number of timesteps = ', timestep
     print 'time = ', timestep*dt
