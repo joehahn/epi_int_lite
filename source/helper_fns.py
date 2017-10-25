@@ -34,7 +34,7 @@ def adjust_angle(angle):
 
 #drift step advances M
 def drift(a, M, J2, Rp, dt):
-    return adjust_angle(M + Kappa(J2, Rp, a)*dt)
+    return M + Kappa(J2, Rp, a)*dt
 
 #radial acceleration due to ring self-gravity
 def ring_gravity(lambda0, r):
@@ -155,9 +155,8 @@ def restore_output(output_folder):
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
     initial_e, radial_width, total_ring_mass):
-
+    
     #initialize particles in circular orbits
-    import numpy as np
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
     a_list = []
     for a_s in a_streamlines:
@@ -166,7 +165,10 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     e0 = np.zeros_like(a0)
     M0 = np.zeros_like(a0)
     wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-    wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+    if (particles_per_streamline > 1): 
+        wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+    else:
+        wt_streamline = np.zeros(particles_per_streamline)
     wt_list = []
     for idx in range(number_of_streamlines):
         wt_list.append(wt_streamline)
@@ -178,7 +180,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     if (initial_orbits == 'breathing mode'):
         e0[:] = initial_e
         M0[:] = 0.0
-
+    if (initial_orbits == 'random'):
+        e0 = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=e0.shape)   )
+        M0 = np.random.uniform(low=-np.pi, high=np.pi, size=M0.shape)
+        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
+        wt0 = np.zeros_like(a0)
+    
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
@@ -186,5 +193,5 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
             (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
-
+    
     return a0, e0, M0, wt0, lambda0

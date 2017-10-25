@@ -27,18 +27,19 @@ print 'initial_e =', initial_e
 print 'output_folder =', output_folder
 
 #initialize orbits
+import numpy as np
 from helper_fns import *
 a0, e0, M0, wt0, lambda0 = initialize_orbits(number_of_streamlines, particles_per_streamline,
     initial_orbits, initial_e, radial_width, total_ring_mass)
 
-#need to kick vt to balance Ar
+#boost vt and a? due to Ar
 
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
 (a, e, wt, M) = (a0.copy(), e0.copy(), wt0.copy(), M0.copy())
 (az, ez, wtz, Mz, timestepz) = ([a], [e], [wt], [M], [timestep])
-
+        
 #evolve system...this follows Chamber's (1993) 2nd order drift-kick scheme but assumes
 #the central mass has no significant motion about system's center-of-mass ie the ring is nearly
 #circular and there are no point-mass satellites such that Chamber's exp(tau*C/2)=1
@@ -72,9 +73,10 @@ while (number_of_outputs < total_number_of_outputs):
     #save output
     number_of_outputs += 1
     az, ez, wtz, Mz = save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M)
-    print 'number_of_outputs = ', number_of_outputs
-    print 'number of timesteps = ', timestep
-    print 'time = ', timestep*dt
+    if (20*number_of_outputs%total_number_of_outputs == 0):
+        print 'time = ' + str(timestep*dt) + '    number of timesteps = ' + str(timestep) + \
+            '    number of outputs = ' + str(number_of_outputs) + \
+            '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi))
 
 #save results
 times = np.array(timestepz)*dt

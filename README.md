@@ -30,11 +30,13 @@ and then install these libraries:
     conda install -y scipy
     conda install -y pandas
     conda install -y matplotlib
-    #conda install -y seaborn
-    #conda install -y jupyter
-    #conda install -y jupyter_dashboards -c conda-forge
+    conda install -y seaborn
+    conda install -y jupyter
+    conda install -y jupyter_dashboards -c conda-forge
 
+2 fire up Jupyter via
 
+    
 ### Intro:
 
 
