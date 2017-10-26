@@ -32,6 +32,18 @@ def adjust_angle(angle):
     angle[idx] += 2.0*np.pi    
     return angle
 
+#unwrap angle that lives between -Pi and Pi
+def unwrap_angle(angle):
+    angle_unw = angle.copy()
+    twopi = 2.0*np.pi
+    for idx in range(1, len(angle)):
+        delta = angle_unw[idx] - angle_unw[idx - 1]
+        if (delta < -np.pi):
+            angle_unw[idx:] += twopi 
+        if (delta > np.pi):
+            angle_unw[idx:] -= twopi 
+    return angle_unw
+
 #drift step advances M
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt

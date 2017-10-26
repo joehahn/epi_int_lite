@@ -31,7 +31,7 @@ J2 = 0.02
 
 #choose initial orbits
 initial_orbits = 'random'
-initial_e = (0.15, 0.25)
+initial_e = (1.0e-6, 1.0e-2)
 
 #output folder
 output_folder = 'output'
