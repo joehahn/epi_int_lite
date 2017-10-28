@@ -1,4 +1,4 @@
-## spark-one-off 
+## spiral-waves
 
 by Joe Hahn,<br />
 jmh.datasciences@gmail.com,<br />
@@ -34,7 +34,6 @@ and then install these libraries:
     conda install -y jupyter
     conda install -y jupyter_dashboards -c conda-forge
 
-2 fire up Jupyter via
 
     
 ### Intro:
