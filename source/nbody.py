@@ -74,7 +74,7 @@ while (number_of_outputs < total_number_of_outputs):
     number_of_outputs += 1
     az, ez, wtz, Mz = save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M)
     if (20*number_of_outputs%total_number_of_outputs == 0):
-        print 'time = ' + str(timestep*dt) + '    number of timesteps = ' + str(timestep) + \
+        print 'time = ' + str(timestep*dt) + \
             '    number of outputs = ' + str(number_of_outputs) + \
             '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi))
 

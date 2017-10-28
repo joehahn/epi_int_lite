@@ -193,10 +193,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         e0[:] = initial_e
         M0[:] = 0.0
     if (initial_orbits == 'random'):
+        #initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
+        #while M0 and wt0 are randomized between -pi and pi
         e0 = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=e0.shape)   )
         M0 = np.random.uniform(low=-np.pi, high=np.pi, size=M0.shape)
-        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
-        wt0 = np.zeros_like(a0)
+        wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
+        #wt0 = np.zeros_like(a0)
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
