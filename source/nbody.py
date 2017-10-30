@@ -30,7 +30,7 @@ print 'output_folder =', output_folder
 import numpy as np
 from helper_fns import *
 a0, e0, M0, wt0, lambda0 = initialize_orbits(number_of_streamlines, particles_per_streamline,
-    initial_orbits, initial_e, radial_width, total_ring_mass)
+    initial_orbits, initial_e, radial_width, total_ring_mass, J2, Rp)
 
 #boost vt and a? due to Ar
 

@@ -5,19 +5,19 @@
 #helper functions used by nbody.py
 
 #angular frequency
-def Omega(J2, Rp, a):
+def Omega(J2, Rp, a, Ar=0.0):
     GM = 1.0
     a2 = a*a
     Ra2 = (Rp*Rp)/a2
-    Omega2 = (GM/a2/a)*(1.0 + (1.5*J2)*Ra2)
+    Omega2 = (GM/a2/a)*(1.0 + (1.5*J2)*Ra2 + Ar*a2/GM)
     return np.sqrt(Omega2)
 
 #epicyclic frequency
-def Kappa(J2, Rp, a, kappa_squared=False):
+def Kappa(J2, Rp, a, Ar=0.0, kappa_squared=False):
     GM = 1.0
     a2 = a*a
     Ra2 = (Rp*Rp)/a2
-    Kappa2 = (GM/a2/a)*(1.0 - (1.5*J2)*Ra2)
+    Kappa2 = (GM/a2/a)*(1.0 - (1.5*J2)*Ra2 + 3.0*Ar*a2/GM)
     if (kappa_squared):
         return Kappa2
     else:
@@ -166,9 +166,9 @@ def restore_output(output_folder):
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
-    initial_e, radial_width, total_ring_mass):
+    initial_e, radial_width, total_ring_mass, J2, Rp):
     
-    #initialize particles in circular orbits
+    #initialize particles in circular orbits assuming zero ring mass
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
     a_list = []
     for a_s in a_streamlines:
@@ -204,8 +204,18 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
     lambda0 = np.zeros_like(a0) + mass_per_streamline/(twopi*a0)
-    if (total_ring_mass > 0):
-        print 'this lambda-check should equal one = ', \
-            (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+    #if (total_ring_mass > 0):
+    #    print 'this lambda-check should equal one = ', \
+    #        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+    
+    #adjust orbit elements to compensate for ring gravity...this doesnt work...
+    #need to adjust a0 and e0
+    r, t, vr, vt = elem2coords(J2, Rp, a0, e0, wt0, M0, sort_particle_longitudes=False)
+    Ar = ring_gravity(lambda0, r)
+    #e0, wt0, M0 = coords2elem(J2, Rp, r, t, vr, vt, a0, Ar=Ar)
+    Omg0 = Omega(J2, Rp, r)
+    Omg1 = Omega(J2, Rp, r, Ar=Ar)
+    vt1 = r*Omg1
+    a1 = a0*Omg0/Omg1
     
     return a0, e0, M0, wt0, lambda0
