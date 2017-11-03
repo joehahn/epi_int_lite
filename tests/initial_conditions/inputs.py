@@ -13,14 +13,14 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 320
-total_number_of_outputs = 100
+timesteps_per_output = 1
+total_number_of_outputs = 320
 
 #ring radial width assuming circular orbits
 radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 3.0e-8
+total_ring_mass = 4.0e-8
 
 #ring kinematic shear viscosity
 shear_viscosity = 0.0
