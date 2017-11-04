@@ -157,12 +157,13 @@ def save_output(r, t, vr, vt, a, times, output_folder):
 
 #restore orbit elements from files
 def restore_output(output_folder):
+    r = np.load(output_folder + '/r.npy')
+    t = np.load(output_folder + '/t.npy')
+    vr = np.load(output_folder + '/vr.npy')
+    vt = np.load(output_folder + '/vt.npy')
     a = np.load(output_folder + '/a.npy')
-    e = np.load(output_folder + '/e.npy')
-    wt = np.load(output_folder + '/wt.npy')
-    M = np.load(output_folder + '/M.npy')
     times = np.load(output_folder + '/times.npy')
-    return a, e, wt, M, times
+    return r, t, vr, vt, a, times
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
@@ -187,8 +188,13 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     
     #tangential velocity
     Ar = ring_gravity(lambda0, r)
-    Omg = Omega(J2, Rp, r, Ar=Ar)
-    vt = r*Omg
+    Omg_A = Omega(J2, Rp, r, Ar=Ar)
+    vt = r*Omg_A
+    Omg_0 = Omega(J2, Rp, r, Ar=0.0)
+    a = 0.5*r*(1.0 + Omg_A/Omg_0)
+    
+    #vt=r*Omg_0
+    #a=r
     
     #longitude theta t
     t = np.zeros_like(r)
