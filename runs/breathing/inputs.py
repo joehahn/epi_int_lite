@@ -8,7 +8,7 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 5
-particles_per_streamline = 31
+particles_per_streamline = 3#31
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
@@ -20,8 +20,8 @@ total_number_of_outputs = 650
 radial_width = 1.0e-3
 
 #total ring mass
-#total_ring_mass = 1.0e-7
-total_ring_mass = 0.0
+total_ring_mass = 1.0e-7
+#total_ring_mass = 0.0
 
 #ring kinematic shear viscosity
 shear_viscosity = 0.0

@@ -42,7 +42,7 @@ def xyt(i):
     rp = pad_array(r, longitudes=False)
     x = tp/np.pi
     y = rp - 1.0
-    y_mid = 0*y[len(y)/2].copy()
+    y_mid = y[len(y)/2].copy()
     for ys in y:
         ys -= y_mid
     tm = timesr[i]
