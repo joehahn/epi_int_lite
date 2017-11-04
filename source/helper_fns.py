@@ -83,9 +83,9 @@ def orbit_averaged_da(At, a, J2, Rp, dt):
         At_streamline[:] = At_streamline.mean()
     da = (Omg/Kap2)*(2.0*dt)*At
     return da
-    
-#velocity kicks
-def kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, dt):
+
+#velocity kicks due to ring gravity and viscosity
+def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt): 
     Ar = np.zeros_like(r)
     At = np.zeros_like(r)
     #acceleration due to streamline gravity
@@ -95,17 +95,15 @@ def kick(lambda0, shear_viscosity, J2, Rp, r, vr, vt, a, dt):
     #kick velocity
     vr += Ar*dt
     vt += At*dt
-    #orbit-averaged kick to a
-    a += orbit_averaged_da(At, a, J2, Rp, dt)
-    return vr, vt, a
+    return vr, vt, At
 
 #convert orbit elements to coordinates
-def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
+def elem2coords(J2, Rp, a, e, wt, M, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
     r = a*(1.0 - e_cos_M)
-    Omg = Omega(J2, Rp, a, Ar=Ar)
-    Kap = Kappa(J2, Rp, a, Ar=Ar)
+    Omg = Omega(J2, Rp, a)
+    Kap = Kappa(J2, Rp, a)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
     vr = a*Kap*e_sin_M
     vt = a*Omg*(1.0 + e_cos_M)
@@ -135,24 +133,26 @@ def sort_particles(r, t, vr, vt):
         vt[streamline_idx] = vt[streamline_idx][longitude_idx]
     return r, t, vr, vt
 
-#append current a,e,wt,M to the end of lists az,ez etc
-def save_arrays(az, ez, wtz, Mz, timestep, timestepz, a, e, wt, M):
+#append current r,t,vr,vt,a,timestep to lists rz,tz etc
+def store_system(rz, tz, vrz, vtz, az, timestepz, r, t, vr, vt, a, timestep):
+    rz.append(r)
+    tz.append(t)
+    vrz.append(vr)
+    vtz.append(vt)
     az.append(a)
-    ez.append(e)
-    wtz.append(wt)
-    Mz.append(M)
     timestepz.append(timestep)
-    return az, ez, wtz, Mz
+    return rz, tz, vrz, vtz, az, timestepz
 
 #save orbit element arrays in files
-def save_output(a, e, wt, M, times, output_folder):
+def save_output(r, t, vr, vt, a, times, output_folder):
     import os
     cmd = 'mkdir -p ' + output_folder
-    r = os.system(cmd)
+    q = os.system(cmd)
+    np.save(output_folder + '/r.npy', r)
+    np.save(output_folder + '/t.npy', t)
+    np.save(output_folder + '/vr.npy', vr)
+    np.save(output_folder + '/vt.npy', vt)
     np.save(output_folder + '/a.npy', a)
-    np.save(output_folder + '/e.npy', e)
-    np.save(output_folder + '/wt.npy', wt)
-    np.save(output_folder + '/M.npy', M)
     np.save(output_folder + '/times.npy', times)
 
 #restore orbit elements from files
@@ -168,44 +168,56 @@ def restore_output(output_folder):
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
     initial_e, radial_width, total_ring_mass, J2, Rp):
     
-    #initialize particles in circular orbits assuming zero ring mass
-    a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
-    a_list = []
-    for a_s in a_streamlines:
-        a_list.append(np.zeros(particles_per_streamline) + a_s)
-    a0 = np.array(a_list)
-    e0 = np.zeros_like(a0)
-    M0 = np.zeros_like(a0)
-    wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-    if (particles_per_streamline > 1): 
-        wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
-    else:
-        wt_streamline = np.zeros(particles_per_streamline)
-    wt_list = []
-    for idx in range(number_of_streamlines):
-        wt_list.append(wt_streamline)
-    wt0 = np.array(wt_list)
+    #initialize particles in circular orbits
+    r_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
+    r_list = []
+    for rs in r_streamlines:
+        r_list.append(np.zeros(particles_per_streamline) + rs)
+    r = np.array(r_list)
+    vr = np.zeros_like(r)
+    a = np.array(r)
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
-    lambda0 = np.zeros_like(a0) + mass_per_streamline/(twopi*a0)
-    #if (total_ring_mass > 0):
-    #    print 'this lambda-check should equal one = ', \
-    #        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+    lambda0 = np.zeros_like(r) + mass_per_streamline/(twopi*r)
+    if (total_ring_mass > 0):
+        print 'this lambda-check should equal one = ', \
+            (lambda0[:,0]*twopi*r_streamlines).sum()/total_ring_mass
+    
+    #tangential velocity
+    Ar = ring_gravity(lambda0, r)
+    Omg = Omega(J2, Rp, r, Ar=Ar)
+    vt = r*Omg
+    
+    #longitude theta t
+    t = np.zeros_like(r)
+    t_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+    if (particles_per_streamline > 1): 
+        t_streamline += (t_streamline[1] - t_streamline[0])/2.0
+    else:
+        t_streamline = np.zeros(particles_per_streamline)
+    t_list = []
+    for idx in range(number_of_streamlines):
+        t_list.append(t_streamline)
+    t = np.array(t_list)
     
     #alter initial orbits as needed
+    if (initial_orbits == 'circular'):
+        pass
     if (initial_orbits == 'eccentric'):
         pass
     if (initial_orbits == 'breathing mode'):
-        e0[:] = initial_e
-        M0[:] = 0.0
+        #e0[:] = initial_e
+        #M0[:] = 0.0
+        pass
     if (initial_orbits == 'random'):
-        #initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
-        #while M0 and wt0 are randomized between -pi and pi
-        e0 = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=e0.shape)   )
-        M0 = np.random.uniform(low=-np.pi, high=np.pi, size=M0.shape)
-        wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
-        #wt0 = np.zeros_like(a0)
+        ##initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
+        ##while M0 and wt0 are randomized between -pi and pi
+        #e0 = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=e0.shape)   )
+        #M0 = np.random.uniform(low=-np.pi, high=np.pi, size=M0.shape)
+        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
+        ##wt0 = np.zeros_like(a0)
+        pass
     
-    return a0, e0, M0, wt0, lambda0
+    return r, t, vr, vt, a, lambda0
