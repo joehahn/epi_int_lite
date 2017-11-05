@@ -20,7 +20,8 @@ total_number_of_outputs = 320
 radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 4.0e-8
+total_ring_mass = 3.0e-8
+total_ring_mass = 0.0
 
 #ring kinematic shear viscosity
 shear_viscosity = 0.0

@@ -72,9 +72,11 @@ while (number_of_outputs < total_number_of_outputs):
     e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
     #evolve a
     a += orbit_averaged_da(At, a, J2, Rp, -dt/2.0)
+    #convert orbit elements to coordinates
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     #save output
     number_of_outputs += 1
-    az, ez, wtz, Mz, az, timestepz = store_system(rz, tz, vrz, vtz, az, timestepz, 
+    rz, tz, vrz, vtz, az, timestepz = store_system(rz, tz, vrz, vtz, az, timestepz, 
         r, t, vr, vt, a, timestep)
     if (20*number_of_outputs%total_number_of_outputs == 0):
         print 'time = ' + str(timestep*dt) + \

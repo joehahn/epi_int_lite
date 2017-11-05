@@ -9,7 +9,7 @@ def Omega(J2, Rp, a, Ar=0.0):
     GM = 1.0
     a2 = a*a
     Ra2 = (Rp*Rp)/a2
-    Omega2 = (GM/a2/a)*(1.0 + (1.5*J2)*Ra2 - Ar*a2/GM)
+    Omega2 = (GM/a2/a)*(   1.0 + (1.5*J2)*Ra2 - Ar*(a2/GM)   )
     return np.sqrt(Omega2)
 
 #epicyclic frequency
@@ -17,7 +17,7 @@ def Kappa(J2, Rp, a, Ar=0.0, kappa_squared=False):
     GM = 1.0
     a2 = a*a
     Ra2 = (Rp*Rp)/a2
-    Kappa2 = (GM/a2/a)*(1.0 - (1.5*J2)*Ra2 - 3.0*Ar*a2/GM)
+    Kappa2 = (GM/a2/a)*(   1.0 - (1.5*J2)*Ra2 - Ar*(a2*(3.0/GM))   )
     if (kappa_squared):
         return Kappa2
     else:
@@ -57,6 +57,7 @@ def ring_gravity(lambda0, r):
     for shft in range(1, Nr):
         dr = np.roll(r, -shft, axis=0) - r
         Ar += two_G_lambda/dr
+    Ar = 0.0*Ar - 5.0e-5
     return Ar
 
 #tangential acceleration due to ring viscosity
@@ -98,24 +99,24 @@ def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt):
     return vr, vt, At
 
 #convert orbit elements to coordinates
-def elem2coords(J2, Rp, a, e, wt, M, sort_particle_longitudes=True):
+def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
     r = a*(1.0 - e_cos_M)
-    Omg = Omega(J2, Rp, a)
-    Kap = Kappa(J2, Rp, a)
+    Omg = Omega(J2, Rp, a, Ar=Ar)
+    Kap = Kappa(J2, Rp, a, Ar=Ar)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
-    vr = a*Kap*e_sin_M
-    vt = a*Omg*(1.0 + e_cos_M)
+    vr = (a*Kap)*e_sin_M
+    vt = (a*Omg)*(1.0 + e_cos_M)
     #sort each streamline's particles by longitude as needed
     if (sort_particle_longitudes):
         r, t, vr, vt = sort_particles(r, t, vr, vt)
     return r, t, vr, vt
 
 #convert coordinates to orbit elements
-def coords2elem(J2, Rp, r, t, vr, vt, a):
-    Omg = Omega(J2, Rp, a)
-    Kap = Kappa(J2, Rp, a)
+def coords2elem(J2, Rp, r, t, vr, vt, a, Ar=0.0):
+    Omg = Omega(J2, Rp, a, Ar=Ar)
+    Kap = Kappa(J2, Rp, a, Ar=Ar)
     e_sin_M = vr/(a*Kap)
     e_cos_M = 1.0 - r/a
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
@@ -170,43 +171,33 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     initial_e, radial_width, total_ring_mass, J2, Rp):
     
     #initialize particles in circular orbits
-    r_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
-    r_list = []
-    for rs in r_streamlines:
-        r_list.append(np.zeros(particles_per_streamline) + rs)
-    r = np.array(r_list)
-    vr = np.zeros_like(r)
-    a = np.array(r)
+    a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
+    a_list = []
+    for sma in a_streamlines:
+        a_list.append(np.zeros(particles_per_streamline) + sma)
+    a = np.array(a_list)
+    e = np.zeros_like(a)
+    M = np.zeros_like(a)
+    
+    #longitude of periapse wt
+    wt = np.zeros_like(a)
+    wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+    if (particles_per_streamline > 1): 
+        wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+    else:
+        wt_streamline = np.zeros(particles_per_streamline)
+    wt_list = []
+    for idx in range(number_of_streamlines):
+        wt_list.append(wt_streamline)
+    wt = np.array(wt_list)
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
-    lambda0 = np.zeros_like(r) + mass_per_streamline/(twopi*r)
+    lambda0 = np.zeros_like(a) + mass_per_streamline/(twopi*a)
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
-            (lambda0[:,0]*twopi*r_streamlines).sum()/total_ring_mass
-    
-    #tangential velocity
-    Ar = ring_gravity(lambda0, r)
-    Omg_A = Omega(J2, Rp, r, Ar=Ar)
-    vt = r*Omg_A
-    Omg_0 = Omega(J2, Rp, r, Ar=0.0)
-    a = 0.5*r*(1.0 + Omg_A/Omg_0)
-    
-    #vt=r*Omg_0
-    #a=r
-    
-    #longitude theta t
-    t = np.zeros_like(r)
-    t_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-    if (particles_per_streamline > 1): 
-        t_streamline += (t_streamline[1] - t_streamline[0])/2.0
-    else:
-        t_streamline = np.zeros(particles_per_streamline)
-    t_list = []
-    for idx in range(number_of_streamlines):
-        t_list.append(t_streamline)
-    t = np.array(t_list)
+            (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
     
     #alter initial orbits as needed
     if (initial_orbits == 'circular'):
@@ -226,4 +217,7 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         ##wt0 = np.zeros_like(a0)
         pass
     
+    #convert elements to coordinates
+    Ar = ring_gravity(lambda0, a)
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar)
     return r, t, vr, vt, a, lambda0
