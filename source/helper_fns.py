@@ -57,7 +57,6 @@ def ring_gravity(lambda0, r):
     for shft in range(1, Nr):
         dr = np.roll(r, -shft, axis=0) - r
         Ar += two_G_lambda/dr
-    Ar = 0.0*Ar - 5.0e-5
     return Ar
 
 #tangential acceleration due to ring viscosity
@@ -96,7 +95,7 @@ def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt):
     #kick velocity
     vr += Ar*dt
     vt += At*dt
-    return vr, vt, At
+    return vr, vt
 
 #convert orbit elements to coordinates
 def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
@@ -114,7 +113,13 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     return r, t, vr, vt
 
 #convert coordinates to orbit elements
-def coords2elem(J2, Rp, r, t, vr, vt, a, Ar=0.0):
+def coords2elem(J2, Rp, r, t, vr, vt, Ar=0.0):
+    GM = 1.0
+    twoGM = 2.0*GM
+    h = r*vt
+    h2 = h*h
+    h4 = h2*h2
+    a = (h2/twoGM)*(   1.0 + np.sqrt(   1.0 - (6.0*J2*GM*GM*Rp*Rp)/h4   )   )
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
     e_sin_M = vr/(a*Kap)
@@ -122,7 +127,7 @@ def coords2elem(J2, Rp, r, t, vr, vt, a, Ar=0.0):
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )
-    return e, wt, M
+    return a, e, wt, M
 
 #order particles in each streamline by their longitudes
 def sort_particles(r, t, vr, vt):
@@ -135,17 +140,16 @@ def sort_particles(r, t, vr, vt):
     return r, t, vr, vt
 
 #append current r,t,vr,vt,a,timestep to lists rz,tz etc
-def store_system(rz, tz, vrz, vtz, az, timestepz, r, t, vr, vt, a, timestep):
+def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep):
     rz.append(r)
     tz.append(t)
     vrz.append(vr)
     vtz.append(vt)
-    az.append(a)
     timestepz.append(timestep)
-    return rz, tz, vrz, vtz, az, timestepz
+    return rz, tz, vrz, vtz, timestepz
 
 #save orbit element arrays in files
-def save_output(r, t, vr, vt, a, times, output_folder):
+def save_output(r, t, vr, vt, times, output_folder):
     import os
     cmd = 'mkdir -p ' + output_folder
     q = os.system(cmd)
@@ -153,7 +157,6 @@ def save_output(r, t, vr, vt, a, times, output_folder):
     np.save(output_folder + '/t.npy', t)
     np.save(output_folder + '/vr.npy', vr)
     np.save(output_folder + '/vt.npy', vt)
-    np.save(output_folder + '/a.npy', a)
     np.save(output_folder + '/times.npy', times)
 
 #restore orbit elements from files
@@ -162,9 +165,8 @@ def restore_output(output_folder):
     t = np.load(output_folder + '/t.npy')
     vr = np.load(output_folder + '/vr.npy')
     vt = np.load(output_folder + '/vt.npy')
-    a = np.load(output_folder + '/a.npy')
     times = np.load(output_folder + '/times.npy')
-    return r, t, vr, vt, a, times
+    return r, t, vr, vt, times
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
@@ -209,12 +211,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         #M0[:] = 0.0
         pass
     if (initial_orbits == 'random'):
-        ##initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
-        ##while M0 and wt0 are randomized between -pi and pi
-        #e0 = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=e0.shape)   )
-        #M0 = np.random.uniform(low=-np.pi, high=np.pi, size=M0.shape)
-        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=wt0.shape)
-        ##wt0 = np.zeros_like(a0)
+        #initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
+        #while M0 and wt0 are randomized between -pi and pi
+        e = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=a.shape)   )
+        M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
+        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
+        wt = np.zeros_like(a)
         pass
     
     #convert elements to coordinates

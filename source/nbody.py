@@ -35,49 +35,35 @@ r0, t0, vr0, vt0, a0, lambda0 = initialize_orbits(number_of_streamlines, particl
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
-(r, t, vr, vt, a) = (r0.copy(), t0.copy(), vr0.copy(), vt0.copy(), a0.copy())
-(rz, tz, vrz, vtz, az, timestepz) = ([r], [t], [vr], [vt], [a], [timestep])
+(r, t, vr, vt) = (r0.copy(), t0.copy(), vr0.copy(), vt0.copy())
+(rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
 
-#evolve system...this mostly follows Chamber's (1993) 2nd order drift-kick scheme but assumes
-#the central mass has no significant motion about system's center-of-mass ie the ring is nearly
+#evolve system...this largely follows Chamber's (1993) 2nd order drift-kick scheme but assumes
+#the central mass has negligable motion about system's center-of-mass ie the ring is nearly
 #circular and there are no point-mass satellites such that Chamber's exp(tau*C/2)=1
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    vr, vt, At = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt/2.0)
-    #convert coordinates to elements
-    e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
-    #evolve a
-    a += orbit_averaged_da(At, a, J2, Rp, dt/2.0)
+    vr, vt = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt/2.0)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
+        #convert coordinates to elements
+        a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
         #advance mean anomaly during drift step
         M = drift(a, M, J2, Rp, dt)
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick velocities
-        vr, vt, At = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt)
-        #convert coordinates to elements
-        e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
-        #evolve a
-        a += orbit_averaged_da(At, a, J2, Rp, dt)
+        vr, vt = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt)
         #updates
         timestep += 1
         timesteps_since_output += 1
-    #convert orbit elements to coordinates
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     #kick velocities backwards by timestep -dt/2
-    vr, vt, At = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, -dt/2.0)
-    #convert coordinates to elements
-    e, wt, M = coords2elem(J2, Rp, r, t, vr, vt, a)
-    #evolve a
-    a += orbit_averaged_da(At, a, J2, Rp, -dt/2.0)
-    #convert orbit elements to coordinates
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    vr, vt = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, -dt/2.0)
     #save output
     number_of_outputs += 1
-    rz, tz, vrz, vtz, az, timestepz = store_system(rz, tz, vrz, vtz, az, timestepz, 
-        r, t, vr, vt, a, timestep)
+    rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, 
+        r, t, vr, vt, timestep)
     if (20*number_of_outputs%total_number_of_outputs == 0):
         print 'time = ' + str(timestep*dt) + \
             '    number of outputs = ' + str(number_of_outputs) + \
@@ -85,6 +71,6 @@ while (number_of_outputs < total_number_of_outputs):
 
 #save results
 timez = np.array(timestepz)*dt
-save_output(rz, tz, vrz, vtz, az, timez, output_folder)
+save_output(rz, tz, vrz, vtz, timez, output_folder)
 time_stop = tm.time()
 print 'execution time (sec) = ', time_stop - time_start
