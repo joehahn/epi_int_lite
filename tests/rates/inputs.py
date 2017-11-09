@@ -17,7 +17,7 @@ timesteps_per_output = 1
 total_number_of_outputs = 3200
 
 #ring radial width assuming circular orbits
-radial_width = 0.5
+radial_width = 0.1
 
 #total ring mass
 total_ring_mass = 0.0
@@ -27,10 +27,10 @@ shear_viscosity = 0.0
 
 #oblateness parameters
 Rp = 1.0
-J2 = 0.02
+J2 = 0.005
 
 #choose initial orbits
-initial_orbits = 'random'
+initial_orbits = 'log-e'
 initial_e = (1.0e-6, 1.0e-2)
 
 #output folder

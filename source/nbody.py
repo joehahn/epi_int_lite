@@ -29,13 +29,12 @@ print 'output_folder =', output_folder
 #initialize orbits
 import numpy as np
 from helper_fns import *
-r0, t0, vr0, vt0, a0, lambda0 = initialize_orbits(number_of_streamlines, particles_per_streamline,
-    initial_orbits, initial_e, radial_width, total_ring_mass, J2, Rp)
+r, t, vr, vt, lambda0 = initialize_orbits(number_of_streamlines, particles_per_streamline,
+    initial_orbits, radial_width, total_ring_mass, J2, Rp, initial_e=initial_e)
 
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
-(r, t, vr, vt) = (r0.copy(), t0.copy(), vr0.copy(), vt0.copy())
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
 
 #evolve system...this largely follows Chamber's (1993) 2nd order drift-kick scheme but assumes

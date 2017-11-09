@@ -75,14 +75,14 @@ def ring_viscosity(shear_viscosity, r, vt):
     At = At_ext + At_int
     return At
 
-#compute semimajor drift due to orbit-averaged torque
-def orbit_averaged_da(At, a, J2, Rp, dt):
-    Omg = Omega(J2, Rp, a)
-    Kap2 = Kappa(J2, Rp, a, kappa_squared=True)
-    for At_streamline in At:
-        At_streamline[:] = At_streamline.mean()
-    da = (Omg/Kap2)*(2.0*dt)*At
-    return da
+##compute semimajor drift due to orbit-averaged torque
+#def orbit_averaged_da(At, a, J2, Rp, dt):
+#    Omg = Omega(J2, Rp, a)
+#    Kap2 = Kappa(J2, Rp, a, kappa_squared=True)
+#    for At_streamline in At:
+#        At_streamline[:] = At_streamline.mean()
+#    da = (Omg/Kap2)*(2.0*dt)*At
+#    return da
 
 #velocity kicks due to ring gravity and viscosity
 def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt): 
@@ -101,11 +101,15 @@ def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt):
 def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
+    factor = 1.0 + 2.0*e_cos_M
+    factor_1half = np.sqrt(factor)
+    factor_3half = factor*factor_1half
+    #r = a/factor_1half
     r = a*(1.0 - e_cos_M)
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
-    vr = (a*Kap)*e_sin_M
+    vr = (a*Kap)*e_sin_M#/factor_3half
     vt = (a*Omg)*(1.0 + e_cos_M)
     #sort each streamline's particles by longitude as needed
     if (sort_particle_longitudes):
@@ -115,15 +119,16 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
 #convert coordinates to orbit elements
 def coords2elem(J2, Rp, r, t, vr, vt, Ar=0.0):
     GM = 1.0
-    twoGM = 2.0*GM
     h = r*vt
-    h2 = h*h
-    h4 = h2*h2
-    a = (h2/twoGM)*(   1.0 + np.sqrt(   1.0 - (6.0*J2*GM*GM*Rp*Rp)/h4   )   )
+    c = (h*h)/(2.0*GM*Rp)
+    a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
+    #a_over_r = a/r
+    #e_sin_M = vr*(a_over_r*a_over_r/(r*Kap))
+    #e_cos_M = (vt/(r*Omg) - 1.0)/2.0
     e_sin_M = vr/(a*Kap)
-    e_cos_M = 1.0 - r/a
+    e_cos_M = 1.0 - r/a  
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )
@@ -170,7 +175,7 @@ def restore_output(output_folder):
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
-    initial_e, radial_width, total_ring_mass, J2, Rp):
+    radial_width, total_ring_mass, J2, Rp, initial_e=None):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -210,16 +215,14 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         #e0[:] = initial_e
         #M0[:] = 0.0
         pass
-    if (initial_orbits == 'random'):
-        #initial e is lograthmically distributed randomly between initial_e[0] < e0 < initial_e[1]
+    if (initial_orbits == 'log-e'):
+        #initial e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
         #while M0 and wt0 are randomized between -pi and pi
         e = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=a.shape)   )
         M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-        #wt0 = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-        wt = np.zeros_like(a)
-        pass
+        wt = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
     
     #convert elements to coordinates
     Ar = ring_gravity(lambda0, a)
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar)
-    return r, t, vr, vt, a, lambda0
+    return r, t, vr, vt, lambda0
