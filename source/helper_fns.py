@@ -101,16 +101,15 @@ def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt):
 def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     e_sin_M = e*np.sin(M)
     e_cos_M = e*np.cos(M)
-    factor = 1.0 + 2.0*e_cos_M
-    factor_1half = np.sqrt(factor)
-    factor_3half = factor*factor_1half
-    #r = a/factor_1half
-    r = a*(1.0 - e_cos_M)
+    r = a/np.sqrt(1.0 + 2.0*e_cos_M)
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
-    vr = (a*Kap)*e_sin_M#/factor_3half
-    vt = (a*Omg)*(1.0 + e_cos_M)
+    r_over_a = r/a
+    vr = ((a*Kap)*(r_over_a**3))*e_sin_M
+    GM = 1.0
+    h = np.sqrt(GM*a)
+    vt = h/r
     #sort each streamline's particles by longitude as needed
     if (sort_particle_longitudes):
         r, t, vr, vt = sort_particles(r, t, vr, vt)
@@ -120,15 +119,14 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
 def coords2elem(J2, Rp, r, t, vr, vt, Ar=0.0):
     GM = 1.0
     h = r*vt
-    c = (h*h)/(2.0*GM*Rp)
-    a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
+    #c = (h*h)/(2.0*GM*Rp)
+    #a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
+    a = (h*h)/GM
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
-    #a_over_r = a/r
-    #e_sin_M = vr*(a_over_r*a_over_r/(r*Kap))
-    #e_cos_M = (vt/(r*Omg) - 1.0)/2.0
-    e_sin_M = vr/(a*Kap)
-    e_cos_M = 1.0 - r/a  
+    r_over_a = r/a
+    e_cos_M = ((vt/(a*Omg))**2 - 1.0)/2.0
+    e_sin_M = vr/((a*Kap)*(r_over_a**3))
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )

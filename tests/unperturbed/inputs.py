@@ -7,7 +7,7 @@
 #define input input parameters
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 13
+number_of_streamlines = 15
 particles_per_streamline = 1
 number_of_particles = number_of_streamlines*particles_per_streamline
 
@@ -27,11 +27,11 @@ shear_viscosity = 0.0
 
 #oblateness parameters
 Rp = 1.0
-J2 = 0.005
+J2 = 0.0
 
 #choose initial orbits
 initial_orbits = 'log-e'
-initial_e = (1.0e-6, 1.0e-3)
+initial_e = (2.0e-7, 2.0e-2)
 
 #output folder
 output_folder = 'output'

@@ -26,8 +26,8 @@ total_ring_mass = 0.0
 shear_viscosity = 0.0
 
 #oblateness parameters
-Rp = 1.0
-J2 = 0.005
+Rp = 0.5
+J2 = 0.0
 
 #choose initial orbits
 initial_orbits = 'log-e'
