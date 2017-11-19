@@ -13,7 +13,7 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 500
+timesteps_per_output = 50#0
 total_number_of_outputs = 640
 
 #ring radial width assuming circular orbits
@@ -26,8 +26,8 @@ total_ring_mass = 0.0
 shear_viscosity = 0.0
 
 #oblateness parameters
-Rp = 1.0
-J2 = 0.0
+Rp = 0.5
+J2 = 0.02
 
 #choose initial orbits
 initial_orbits = 'log-e'

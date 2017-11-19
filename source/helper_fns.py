@@ -105,8 +105,9 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
     t = adjust_angle(   (Omg/Kap)*(M + 2.0*e_sin_M) + wt   )
-    r_over_a = r/a
-    vr = ((a*Kap)*(r_over_a**3))*e_sin_M
+    ra = r/a
+    ra3 = ra*ra*ra
+    vr = (a*Kap*ra3)*e_sin_M
     GM = 1.0
     h = np.sqrt(GM*a)
     vt = h/r
@@ -119,14 +120,14 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
 def coords2elem(J2, Rp, r, t, vr, vt, Ar=0.0):
     GM = 1.0
     h = r*vt
-    #c = (h*h)/(2.0*GM*Rp)
-    #a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
-    a = (h*h)/GM
+    c = (h*h)/(2.0*GM*Rp)
+    a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
-    r_over_a = r/a
+    ra = r/a
+    ra3 = ra*ra*ra
     e_cos_M = ((vt/(a*Omg))**2 - 1.0)/2.0
-    e_sin_M = vr/((a*Kap)*(r_over_a**3))
+    e_sin_M = vr/(a*Kap*ra3)
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )

@@ -57,6 +57,7 @@ while (number_of_outputs < total_number_of_outputs):
         #updates
         timestep += 1
         timesteps_since_output += 1
+        #print timestep
     #kick velocities backwards by timestep -dt/2
     vr, vt = kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, -dt/2.0)
     #save output
