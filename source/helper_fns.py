@@ -75,15 +75,6 @@ def ring_viscosity(shear_viscosity, r, vt):
     At = At_ext + At_int
     return At
 
-##compute semimajor drift due to orbit-averaged torque
-#def orbit_averaged_da(At, a, J2, Rp, dt):
-#    Omg = Omega(J2, Rp, a)
-#    Kap2 = Kappa(J2, Rp, a, kappa_squared=True)
-#    for At_streamline in At:
-#        At_streamline[:] = At_streamline.mean()
-#    da = (Omg/Kap2)*(2.0*dt)*At
-#    return da
-
 #velocity kicks due to ring gravity and viscosity
 def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt): 
     Ar = np.zeros_like(r)
@@ -108,9 +99,7 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     ra = r/a
     ra3 = ra*ra*ra
     vr = (a*Kap*ra3)*e_sin_M
-    GM = 1.0
-    h = np.sqrt(GM*a)
-    vt = h/r
+    vt = a*a*Omg/r
     #sort each streamline's particles by longitude as needed
     if (sort_particle_longitudes):
         r, t, vr, vt = sort_particles(r, t, vr, vt)
@@ -124,10 +113,12 @@ def coords2elem(J2, Rp, r, t, vr, vt, Ar=0.0):
     a = Rp*(   c + np.sqrt(c*c - 1.5*J2)   )
     Omg = Omega(J2, Rp, a, Ar=Ar)
     Kap = Kappa(J2, Rp, a, Ar=Ar)
-    ra = r/a
-    ra3 = ra*ra*ra
-    e_cos_M = ((vt/(a*Omg))**2 - 1.0)/2.0
-    e_sin_M = vr/(a*Kap*ra3)
+    ar = a/r
+    ar2 = ar*ar
+    ar3 = ar2*ar
+    e_cos_M = (ar2 - 1.0)/2.0
+    aK = a*Kap
+    e_sin_M = vr*(ar3/aK)
     e = np.sqrt(e_sin_M*e_sin_M + e_cos_M*e_cos_M)
     M = np.arctan2(e_sin_M, e_cos_M)
     wt = adjust_angle(   t - (Omg/Kap)*(M + 2.0*e_sin_M)   )
