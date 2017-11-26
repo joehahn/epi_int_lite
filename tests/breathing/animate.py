@@ -6,17 +6,18 @@
 #
 #this animates the output of nbody.py
 
-#restore saved data & compare
+#restore output
 from helper_fns import *
 execfile('inputs.py')
-ar, er, wtr, Mr, timesr = restore_output(output_folder)
-rz, tz, vrz, vtz = elem2coords(J2, Rp, ar, er, wtr, Mr, sort_particle_longitudes=False)
+r, t, vr, vt, times = restore_output(output_folder)
+a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #get plotting packages
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
+import numpy as np
 
 #pad array
 def pad_array(t, longitudes=False):
@@ -33,30 +34,27 @@ def pad_array(t, longitudes=False):
 
 #this function returns tuple of plot's xy=(x[i],y[i]) coordinates
 def xyt(i):
-    a = ar[i]
-    e = er[i]
-    wt = wtr[i]
-    M = Mr[i]
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    tp = pad_array(t, longitudes=True)
-    rp = pad_array(r, longitudes=False)
+    ri = r[i]
+    ti = t[i]
+    tp = pad_array(ti, longitudes=True)
+    rp = pad_array(ri, longitudes=False)
     x = tp/np.pi
     y = rp - 1.0
     y_mid = y[len(y)/2].copy()
     for ys in y:
         ys -= y_mid
-    tm = timesr[i]
+    tm = times[i]/(2.0*np.pi)
     return (x, y, tm)
 
 #this iterator provides the animation's xyt coordinates
 def update():
-    for idx in range(len(ar)):
+    for idx in range(len(times)):
         yield xyt(idx)
 
 #draw frame
 def draw(xyt):
     x, y, tm = xyt
-    ax.set_title('t = ' + str(tm))
+    ax.set_title('t = ' + str(tm)[0:4] + ' orbits')
     for idx in range(len(x)):
         line = lines[idx]
         line.set_data(x[idx], y[idx])

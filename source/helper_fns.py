@@ -49,9 +49,8 @@ def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
 #radial acceleration due to ring self-gravity
-def ring_gravity(lambda0, r):
-    G = 1.0
-    two_G_lambda = 2.0*G*lambda0
+def ring_gravity(lambda0, G_ring, r):
+    two_G_lambda = 2.0*G_ring*lambda0
     Ar = np.zeros_like(r)
     Nr, Nt = r.shape
     for shft in range(1, Nr):
@@ -59,30 +58,56 @@ def ring_gravity(lambda0, r):
         Ar += two_G_lambda/dr
     return Ar
 
+#surface density
+def surface_density(lambda0, r):
+    dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
+    dr[0] = r[1] - r[0]
+    dr[-1] = r[-1] - r[-2]
+    sd = lambda0/dr
+    return sd
+
+#differential pressure = pressure from interior streamline - pressure out of current ring
+def delta_P(P):
+    dP = np.roll(P, 1, axis=0) - P
+    dP[0] = -P[0]
+    dP[-1] = P[-2]
+    return dP
+
+#radial acceleration due to ring pressure
+def ring_pressure(c, lambda0, r):
+    sd = surface_density(lambda0, r)
+    P = (c*c)*sd
+    dP = delta_P(P)
+    Ar = dP/lambda0
+    return Ar
+
 #tangential acceleration due to ring viscosity
-def ring_viscosity(shear_viscosity, r, vt):
-    factor = 1.5*shear_viscosity*vt/r
-    #acceleration that each streamline exerts on exterior neighbor
-    dr = np.roll(r, -1, axis=0) - r
-    At_ext = factor/dr
-    At_ext[dr < 0.0] = 0.0
-    At_ext = np.roll(At_ext, 1, axis=0)
-    #acceleration that each streamline exerts on interior neighbor
-    dr = r - np.roll(r, 1, axis=0)
-    At_int = factor/dr
-    At_int[dr < 0.0] = 0.0
-    At_int = -np.roll(At_ext, -1, axis=0)
-    At = At_ext + At_int
+def ring_viscosity(shear_viscosity, lambda0, r, vt):
+    sd = surface_density(lambda0, r)
+    P = (1.5*shear_viscosity*sd)*(vt/r)  #viscous pseudo-pressure
+    dP = delta_P(P)
+    At = dP/lambda0
     return At
 
-#velocity kicks due to ring gravity and viscosity
-def kick(J2, Rp, lambda0, shear_viscosity, r, t, vr, vt, dt): 
+#calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
+def accelerations(lambda0, G_ring, shear_viscosity, c, r, vt):
     Ar = np.zeros_like(r)
     At = np.zeros_like(r)
-    #acceleration due to streamline gravity
-    Ar += ring_gravity(lambda0, r)
-    #acceleration due to streamline viscosity
-    At += ring_viscosity(shear_viscosity, r, vt)
+    #radial acceleration due to streamline gravity
+    if (G_ring > 0.0):
+        Ar += ring_gravity(lambda0, G_ring, r)
+    #radial acceleration due to streamline pressure
+    if (c > 0.0):
+        Ar += ring_pressure(c, lambda0, r)
+    #tangential acceleration due to viscosity
+    if (shear_viscosity > 0.0):
+        At += ring_viscosity(shear_viscosity, lambda0, r, vt)  
+    return Ar, At
+    
+#velocity kicks due to ring gravity and viscosity
+def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt):
+    #radial acceleration due to ring gravity and pressure
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -165,7 +190,7 @@ def restore_output(output_folder):
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
-    radial_width, total_ring_mass, J2, Rp, initial_e=None):
+    radial_width, total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp, initial_e=None):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -202,9 +227,8 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     if (initial_orbits == 'eccentric'):
         pass
     if (initial_orbits == 'breathing mode'):
-        #e0[:] = initial_e
-        #M0[:] = 0.0
-        pass
+        e[:] = initial_e
+        M[:] = 0.0
     if (initial_orbits == 'log-e'):
         #initial e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
         #while M0 and wt0 are randomized between -pi and pi
@@ -212,7 +236,15 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
         wt = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
     
+    #calculate ring sound speed c
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    sd = surface_density(lambda0, r)
+    Omg = Omega(J2, Rp, a)
+    G = 1.0
+    c = (Q_ring*np.pi*G*sd/Omg).mean()
+    
     #convert elements to coordinates
-    Ar = ring_gravity(lambda0, a)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar)
-    return r, t, vr, vt, lambda0
+
+    return r, t, vr, vt, lambda0, c
