@@ -58,7 +58,27 @@ def ring_gravity(lambda0, G_ring, r):
         Ar += two_G_lambda/dr
     return Ar
 
-#surface density
+##surface density...unstable
+#def surface_density(lambda0, r):
+#    lambda_eff = lambda0 + 0.5*(np.roll(lambda0, -1, axis=0) + np.roll(lambda0, 1, axis=0))
+#    lambda_eff[0] = lambda0[0]
+#    lambda_eff[-1] = lambda0[-1]
+#    dr = np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0)
+#    dr[0] = r[1] - r[0]
+#    dr[-1] = r[-1] - r[-2]
+#    sd = lambda_eff/dr
+#    return sd
+
+##surface density...unstable
+#def surface_density(lambda0, r):
+#    lambda_eff = 2.0*lambda0
+#    dr = np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0)
+#    dr[0] = r[1] - r[0]
+#    dr[-1] = r[-1] - r[-2]
+#    sd = lambda_eff/dr
+#    return sd
+
+#surface density...this simple calculation causes numeric instability in viscous rings
 def surface_density(lambda0, r):
     dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
     dr[0] = r[1] - r[0]
