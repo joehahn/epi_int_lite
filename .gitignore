@@ -2,3 +2,5 @@ private
 *.npy
 */*/*.pyc
 */*.ipynb*
+*/*/.ipynb_checkpoints
+*/*/.ipynb_checkpoints/*.*
