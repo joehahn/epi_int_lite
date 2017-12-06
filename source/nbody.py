@@ -74,6 +74,6 @@ while (number_of_outputs < total_number_of_outputs):
 
 #save results
 timez = np.array(timestepz)*dt
-save_output(rz, tz, vrz, vtz, timez, output_folder)
+save_output(rz, tz, vrz, vtz, timez, lambda0, output_folder)
 time_stop = tm.time()
 print 'execution time (sec) = ', time_stop - time_start

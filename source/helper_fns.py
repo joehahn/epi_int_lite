@@ -93,6 +93,12 @@ def delta_P(P):
     dP[-1] = P[-2]
     return dP
 
+#calculate radial derivative of function P(r)
+def dP_dr(P, r):
+    dP = np.roll(P, -1, axis=0) - np.roll(P, 1, axis=0)
+    dr = np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0)
+    return dP/dr
+
 #radial acceleration due to ring pressure
 def ring_pressure(c, lambda0, r):
     sd = surface_density(lambda0, r)
@@ -105,8 +111,10 @@ def ring_pressure(c, lambda0, r):
 def ring_viscosity(shear_viscosity, lambda0, r, vt):
     sd = surface_density(lambda0, r)
     P = (1.5*shear_viscosity*sd)*(vt/r)  #viscous pseudo-pressure
-    dP = delta_P(P)
-    At = dP/lambda0
+    dpdr = dP_dr(P, r)
+    At = -dpdr/sd
+    At[0] = -P[0]/lambda0[0]
+    At[-1] = P[-2]/lambda0[1]
     return At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
@@ -189,7 +197,7 @@ def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep):
     return rz, tz, vrz, vtz, timestepz
 
 #save orbit element arrays in files
-def save_output(r, t, vr, vt, times, output_folder):
+def save_output(r, t, vr, vt, times, lambda0, output_folder):
     import os
     cmd = 'mkdir -p ' + output_folder
     q = os.system(cmd)
@@ -198,6 +206,7 @@ def save_output(r, t, vr, vt, times, output_folder):
     np.save(output_folder + '/vr.npy', vr)
     np.save(output_folder + '/vt.npy', vt)
     np.save(output_folder + '/times.npy', times)
+    np.save(output_folder + '/lambda0.npy', lambda0)
 
 #restore orbit elements from files
 def restore_output(output_folder):
@@ -206,7 +215,8 @@ def restore_output(output_folder):
     vr = np.load(output_folder + '/vr.npy')
     vt = np.load(output_folder + '/vt.npy')
     times = np.load(output_folder + '/times.npy')
-    return r, t, vr, vt, times
+    lambda0 = np.load(output_folder + '/lambda0.npy')
+    return r, t, vr, vt, times, lambda0
 
 #initialize numpy arrays
 def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
