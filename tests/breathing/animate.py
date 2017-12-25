@@ -9,7 +9,7 @@
 #restore output
 from helper_fns import *
 execfile('inputs.py')
-r, t, vr, vt, times = restore_output(output_folder)
+r, t, vr, vt, times, lambda0 = restore_output(output_folder)
 a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #get plotting packages
