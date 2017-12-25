@@ -38,3 +38,23 @@ and then install these libraries:
     
 ### Intro:
 
+
+### GPU
+
+
+ami=Deep Learning AMI with Source Code (CUDA 8, Amazon Linux)
+region=Oregon
+instance type=m3.xl
+$0.27/hr
+ssh -i private/datasci.pem ec2-user@34.211.111.203
+cat /home/ec2-user/src/README.md
+install cudamat:
+    git clone https://github.com/cudamat/cudamat
+    sudo /home/ec2-user/src/anaconda2/bin/python2.7 setup.py install
+    PYTHONPATH=$PYTHONPATH:/home/ec2-user/cudamat
+    
+install gnumpy:
+    /home/ec2-user/src/anaconda2/bin/pip install -i https://pypi.anaconda.org/pypi/simple gnumpy
+ipython2
+
+

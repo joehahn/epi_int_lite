@@ -86,35 +86,39 @@ def surface_density(lambda0, r):
     sd = lambda0/dr
     return sd
 
-#differential pressure = pressure from interior streamline - pressure out of current ring
-def delta_P(P):
-    dP = np.roll(P, 1, axis=0) - P
-    dP[0] = -P[0]
-    dP[-1] = P[-2]
-    return dP
+##differential pressure = pressure from interior streamline - pressure out of current ring
+#def delta_P(P):
+#    dP = np.roll(P, 1, axis=0) - P
+#    dP[0] = -P[0]
+#    dP[-1] = P[-2]
+#    return dP
 
-#calculate radial derivative of function P(r)
-def dP_dr(P, r):
-    dP = np.roll(P, -1, axis=0) - np.roll(P, 1, axis=0)
+#calculate radial derivative of function f(r)
+def df_dr(f, r):
+    df = np.roll(f, -1, axis=0) - np.roll(f, 1, axis=0)
     dr = np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0)
-    return dP/dr
+    return df/dr
+
+#acceleration due to pressure P
+def A_P(lambda0, sd, P, r):
+    dPdr = df_dr(P, r)
+    A = -dPdr/sd
+    A[0] = -P[0]/lambda0[0]
+    A[-1] = P[-2]/lambda0[1]
+    return A
 
 #radial acceleration due to ring pressure
 def ring_pressure(c, lambda0, r):
     sd = surface_density(lambda0, r)
     P = (c*c)*sd
-    dP = delta_P(P)
-    Ar = dP/lambda0
+    Ar = A_P(lambda0, sd, P, r)
     return Ar
 
 #tangential acceleration due to ring viscosity
 def ring_viscosity(shear_viscosity, lambda0, r, vt):
     sd = surface_density(lambda0, r)
     P = (1.5*shear_viscosity*sd)*(vt/r)  #viscous pseudo-pressure
-    dpdr = dP_dr(P, r)
-    At = -dpdr/sd
-    At[0] = -P[0]/lambda0[0]
-    At[-1] = P[-2]/lambda0[1]
+    At = A_P(lambda0, sd, P, r)
     return At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
