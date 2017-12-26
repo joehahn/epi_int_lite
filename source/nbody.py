@@ -11,6 +11,7 @@ import time as tm
 time_start = tm.time()
 
 #read input parameters
+import numpy as np
 execfile('inputs.py')
 print 'number_of_streamlines =', number_of_streamlines
 print 'particles_per_streamline =', particles_per_streamline
@@ -26,14 +27,14 @@ print 'Rp =', Rp
 print 'J2 =', J2
 print 'initial_orbits =', initial_orbits
 print 'initial_e =', initial_e
+print 'initial_q =', initial_q
 print 'output_folder =', output_folder
 
 #initialize orbits
-import numpy as np
 from helper_fns import *
 r, t, vr, vt, lambda0, c = initialize_orbits(number_of_streamlines, particles_per_streamline,
     initial_orbits, radial_width, total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp, 
-    initial_e=initial_e)
+    initial_e=initial_e, initial_q=initial_q)
 
 #prep for main loop
 timestep = 0
