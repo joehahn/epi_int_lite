@@ -38,6 +38,7 @@ J2 = 0.02
 #choose initial orbits
 initial_orbits = 'circular'
 initial_e = 0.0
+initial_q = 0.0
 
 #output folder
 output_folder = 'output'
