@@ -1,17 +1,19 @@
-## spiral-waves
+## epi_int_lite
 
 by Joe Hahn,<br />
 jmh.datasciences@gmail.com,<br />
-3 August 2017<br />
+10 January 2018<br />
 git branch=master
 
 ###Intro:
 
-blah blah blah...
+This is epi_int_lite, which is the successor of the epi_int code that I had 
+developed to simulate the dynamical evolution of gravitating rings, with this version
+of epi_int using all open source libraries.
 
-### Technical Notes:
+### Installation:
 
-1 Install current conda v4.3.21:
+1 Install Anaconda python v4.3.21:
 
     wget https://repo.continuum.io/miniconda/Miniconda2-4.3.21-MacOSX-x86_64.sh
     chmod +x ./Miniconda2-4.3.21-MacOSX-x86_64.sh
@@ -19,7 +21,7 @@ blah blah blah...
     ./Miniconda2-4.3.21-MacOSX-x86_64.sh -b -p /Users/joe/miniconda2
     rm Miniconda2-4.3.21-MacOSX-x86_64.sh
 
-add this to ~/.bash_profile
+2 On my Mac laptop I edit ~/.bash_profile to let my PATH know where A
 
     export PATH="/Users/joe/miniconda2/bin:$PATH"
     echo $(conda --version)
@@ -34,27 +36,10 @@ and then install these libraries:
     conda install -y jupyter
     conda install -y jupyter_dashboards -c conda-forge
 
+3 Clone this repo:
 
+    git clone https://github.com/joehahn/epi_int_lite.git
     
 ### Intro:
-
-
-### GPU
-
-
-ami=Deep Learning AMI with Source Code (CUDA 8, Amazon Linux)
-region=Oregon
-instance type=m3.xl
-$0.27/hr
-ssh -i private/datasci.pem ec2-user@34.211.111.203
-cat /home/ec2-user/src/README.md
-install cudamat:
-    git clone https://github.com/cudamat/cudamat
-    sudo /home/ec2-user/src/anaconda2/bin/python2.7 setup.py install
-    PYTHONPATH=$PYTHONPATH:/home/ec2-user/cudamat
-    
-install gnumpy:
-    /home/ec2-user/src/anaconda2/bin/pip install -i https://pypi.anaconda.org/pypi/simple gnumpy
-ipython2
 
 
