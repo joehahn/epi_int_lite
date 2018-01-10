@@ -38,6 +38,7 @@ J2 = 0.02
 #choose initial orbits
 initial_orbits = 'log-e'
 initial_e = (2.0e-8, 2.0e-2)
+initial_q = 0.0
 
 #output folder
 output_folder = 'output'

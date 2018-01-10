@@ -8,9 +8,8 @@ git branch=master
 
 ### Intro:
 
-This is epi_int_lite, which is the successor of the epi_int code that I had 
-developed to simulate the dynamical evolution of gravitating rings, with this version
-of epi_int now using all open source libraries.
+This is the epi_int_lite N-body integrator (which is the successor to the epi_int N-body code)
+that is used simulate the dynamical evolution of gravitating rings.
 
 
 ### Installation:
