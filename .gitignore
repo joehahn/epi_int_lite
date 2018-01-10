@@ -4,3 +4,4 @@ private
 */*.ipynb*
 */*/.ipynb_checkpoints
 */*/.ipynb_checkpoints/*.*
+source/helper_fns.pyc
