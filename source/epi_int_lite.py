@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-#nbody.py
+#epi_int_lite.py
 #
 #by Joe Hahn, jmh.datasciences@gmail.com, 27 August 2017.
 #
-#this...
+#this simulates the dynamical evolution of self-gravitating planetary rings.
 
 #start time
 import time as tm

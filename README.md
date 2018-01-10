@@ -5,11 +5,13 @@ jmh.datasciences@gmail.com,<br />
 10 January 2018<br />
 git branch=master
 
+
 ### Intro:
 
 This is epi_int_lite, which is the successor of the epi_int code that I had 
 developed to simulate the dynamical evolution of gravitating rings, with this version
-of epi_int using all open source libraries.
+of epi_int now using all open source libraries.
+
 
 ### Installation:
 
@@ -21,7 +23,7 @@ of epi_int using all open source libraries.
     ./Miniconda2-4.3.21-MacOSX-x86_64.sh -b -p /Users/joe/miniconda2
     rm Miniconda2-4.3.21-MacOSX-x86_64.sh
 
-2 On my Mac laptop I edit ~/.bash_profile to let my PATH know where A
+2 On my Mac laptop I edit ~/.bash_profile to let my PATH know where Anacoda python is
 
     export PATH="/Users/joe/miniconda2/bin:$PATH"
     echo $(conda --version)
@@ -29,17 +31,32 @@ of epi_int using all open source libraries.
 and then install these libraries:
 
     conda install -y ipython
-    conda install -y scipy
+    #conda install -y scipy
     conda install -y pandas
     conda install -y matplotlib
     conda install -y seaborn
     conda install -y jupyter
-    conda install -y jupyter_dashboards -c conda-forge
+    #conda install -y jupyter_dashboards -c conda-forge
 
 3 Clone this repo:
 
     git clone https://github.com/joehahn/epi_int_lite.git
+
+
+### Run test simulations:
+
+1 the tests folder contains additional folders, each of which test some aspect of epi_int_lite,
+and the following tests the ring particles unperturbed motion by confirming that particle orbits
+precess at the expected rate when orbiting an oblate planet. To run that test simulation:
+
+    cd tests/rates
+    ./epi_int_lite.py
+
+then start jupyter notebook:
+
+    jupyter notebook
     
-### Intro:
+and navigate to check_rates.ipynb and click Kernel > Run All to refresh the output. Consult
+notebook comments for further details.
 
 

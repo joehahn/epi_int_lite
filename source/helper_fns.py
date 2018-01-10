@@ -2,7 +2,7 @@
 #
 #by Joe Hahn, jmh.datasciences@gmail.com, 28 September 2017.
 #
-#helper functions used by nbody.py
+#helper functions used by epi_int_lite.py
 
 #angular frequency
 def Omega(J2, Rp, a, Ar=0.0):
