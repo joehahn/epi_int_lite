@@ -28,7 +28,7 @@ of epi_int now using all open source libraries.
     export PATH="/Users/joe/miniconda2/bin:$PATH"
     echo $(conda --version)
 
-and then install these libraries:
+3 Install these libraries:
 
     conda install -y ipython
     #conda install -y scipy
@@ -38,7 +38,7 @@ and then install these libraries:
     conda install -y jupyter
     #conda install -y jupyter_dashboards -c conda-forge
 
-3 Clone this repo:
+4 Clone this repo:
 
     git clone https://github.com/joehahn/epi_int_lite.git
 
