@@ -225,7 +225,8 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     wt = np.zeros_like(a)
     wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
     if (particles_per_streamline > 1): 
-        wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+        #wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
+        pass
     else:
         wt_streamline = np.zeros(particles_per_streamline)
     wt_list = []
