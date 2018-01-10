@@ -5,7 +5,7 @@ jmh.datasciences@gmail.com,<br />
 10 January 2018<br />
 git branch=master
 
-###Intro:
+### Intro:
 
 This is epi_int_lite, which is the successor of the epi_int code that I had 
 developed to simulate the dynamical evolution of gravitating rings, with this version
