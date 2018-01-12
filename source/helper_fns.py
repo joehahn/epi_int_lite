@@ -219,17 +219,20 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         a_list.append(np.zeros(particles_per_streamline) + sma)
     a = np.array(a_list)
     e = np.zeros_like(a)
-    M = np.zeros_like(a)
-    #longitude of peri
-    wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-    if (particles_per_streamline > 1): 
-        pass
-    else:
-        wt_streamline = np.zeros(1)
-    wt_list = []
+    wt = np.zeros_like(a)
+    #mean anomaly
+    M_list = []
     for idx in range(number_of_streamlines):
-        wt_list.append(wt_streamline)
-    wt = np.array(wt_list)
+        a_streamline = a[idx].mean()
+        Omg = Omega(J2, Rp, a_streamline)
+        Kap = Kappa(J2, Rp, a_streamline)
+        M_max = (Kap/Omg)*np.pi
+        if (particles_per_streamline > 1): 
+            M_streamline = np.linspace(-M_max, M_max, num=particles_per_streamline, endpoint=False)
+        else:
+            M_streamline = np.zeros(1)
+        M_list.append(M_streamline)
+    M = np.array(M_list)
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
@@ -244,11 +247,6 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         pass
     if (initial_orbits == 'eccentric'):
         e[:] = initial_e + initial_q*(a - a[0])
-        wt[:] = 0.0
-        t = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-        Omg = Omega(J2, Rp, a)
-        Kap = Kappa(J2, Rp, a)
-        M = (Kap/Omg)*t            #assuming 2esin(M) is negligable...
     if (initial_orbits == 'breathing mode'):
         e[:] = initial_e
         M[:] = 0.0
