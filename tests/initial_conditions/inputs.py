@@ -23,8 +23,14 @@ radial_width = 1.0e-3
 total_ring_mass = 3.0e-8
 total_ring_mass = 0.0
 
+#ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity
+G_ring = -1.0
+
 #ring kinematic shear viscosity
 shear_viscosity = 0.0
+
+#ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
+Q_ring = -1.0
 
 #oblateness parameters
 Rp = 1.0
@@ -33,6 +39,7 @@ J2 = 0.02
 #choose initial orbits
 initial_orbits = 'circular'
 initial_e = 0.0
+initial_q = 0.0
 
 #output folder
 output_folder = 'output'

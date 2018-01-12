@@ -220,15 +220,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     a = np.array(a_list)
     e = np.zeros_like(a)
     M = np.zeros_like(a)
-    
-    #longitude of periapse wt
-    wt = np.zeros_like(a)
+    #longitude of peri
     wt_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
     if (particles_per_streamline > 1): 
-        #wt_streamline += (wt_streamline[1] - wt_streamline[0])/2.0
         pass
     else:
-        wt_streamline = np.zeros(particles_per_streamline)
+        wt_streamline = np.zeros(1)
     wt_list = []
     for idx in range(number_of_streamlines):
         wt_list.append(wt_streamline)
@@ -246,9 +243,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     if (initial_orbits == 'circular'):
         pass
     if (initial_orbits == 'eccentric'):
-        M = wt.copy()
         e[:] = initial_e + initial_q*(a - a[0])
         wt[:] = 0.0
+        t = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+        Omg = Omega(J2, Rp, a)
+        Kap = Kappa(J2, Rp, a)
+        M = (Kap/Omg)*t            #assuming 2esin(M) is negligable...
     if (initial_orbits == 'breathing mode'):
         e[:] = initial_e
         M[:] = 0.0
