@@ -221,12 +221,12 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
     e = np.zeros_like(a)
     wt = np.zeros_like(a)
     #mean anomaly
+    Omg = Omega(J2, Rp, a)
+    Kap = Kappa(J2, Rp, a)
     M_list = []
     for idx in range(number_of_streamlines):
-        a_streamline = a[idx].mean()
-        Omg = Omega(J2, Rp, a_streamline)
-        Kap = Kappa(J2, Rp, a_streamline)
-        M_max = (Kap/Omg)*np.pi
+        KO = Kap[idx].mean()/Omg[idx].mean()
+        M_max = KO*np.pi
         if (particles_per_streamline > 1): 
             M_streamline = np.linspace(-M_max, M_max, num=particles_per_streamline, endpoint=False)
         else:
