@@ -29,7 +29,7 @@ G_ring = 1.0
 shear_viscosity = -1.0
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
-Q_ring = 1.5
+Q_ring = -1.5
 
 #oblateness parameters, set J2=0 to turn off
 Rp = 0.5
@@ -38,6 +38,7 @@ J2 = 0.02
 #choose initial orbits
 initial_orbits = 'breathing mode'
 initial_e = 1.5e-3
+initial_q = 0.0
 
 #output folder
 output_folder = 'output'

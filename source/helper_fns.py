@@ -249,6 +249,7 @@ def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_o
         e[:] = initial_e + initial_q*(a - a[0])
     if (initial_orbits == 'breathing mode'):
         e[:] = initial_e
+        wt = M.copy()
         M[:] = 0.0
     if (initial_orbits == 'log-e'):
         #initial e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
