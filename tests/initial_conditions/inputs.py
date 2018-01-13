@@ -7,7 +7,7 @@
 #define input input parameters
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 11
+number_of_streamlines = 9
 particles_per_streamline = 21
 number_of_particles = number_of_streamlines*particles_per_streamline
 
@@ -37,7 +37,7 @@ Rp = 1.0
 J2 = 0.02
 
 #choose initial orbits
-initial_orbits = 'circular'
+initial_orbits = 'breathing'
 initial_e = 0.0
 initial_q = 0.0
 

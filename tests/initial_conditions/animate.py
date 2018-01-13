@@ -6,18 +6,18 @@
 #
 #this animates the output of nbody.py
 
-#restore output
-from helper_fns import *
-execfile('inputs.py')
-r, t, vr, vt, times, lambda0 = restore_output(output_folder)
-a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
-
 #get plotting packages
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
 import numpy as np
+
+#restore output
+from helper_fns import *
+execfile('inputs.py')
+r, t, vr, vt, times, lambda0 = restore_output(output_folder)
+a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #pad array
 def pad_array(t, longitudes=False):
@@ -39,7 +39,7 @@ def xyt(i):
     tp = pad_array(ti, longitudes=True)
     rp = pad_array(ri, longitudes=False)
     x = tp/np.pi
-    y = rp - 1.0
+    y = rp - 1
     y_mid = y[len(y)/2].copy()
     for ys in y:
         ys -= y_mid
@@ -61,8 +61,10 @@ def draw(xyt):
     return lines
 
 #show animation
+rm1 = r - 1.0
+y_rng = (-6.5e-4, 6.5e-4)
 fig = plt.figure()
-ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=(-0.002, 0.003), 
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=y_rng, 
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
 x, y, tm = xyt(0)
 ax.set_title('t = ' + str(tm))
