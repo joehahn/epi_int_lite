@@ -8,13 +8,13 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
-particles_per_streamline = 71
+particles_per_streamline = 31
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
 timesteps_per_output = 1#2000
-total_number_of_outputs = 5
+total_number_of_outputs = 6
 
 #ring radial width assuming circular orbits
 radial_width = 1.0e-3
@@ -33,7 +33,7 @@ Q_ring = -1.0
 
 #oblateness parameters
 Rp = 0.5
-J2 = 0.02
+J2 = 0.1#0.02
 
 #choose ringlet's initial orbits
 initial_orbits = {

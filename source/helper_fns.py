@@ -207,72 +207,8 @@ def restore_output(output_folder):
     lambda0 = np.load(output_folder + '/lambda0.npy')
     return r, t, vr, vt, times, lambda0
 
-#initialize numpy arrays
-def initialize_orbits(number_of_streamlines, particles_per_streamline, initial_orbits,
-    radial_width, total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp,
-    initial_e=None, initial_q=None):
-    
-    #initialize particles in circular orbits
-    a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
-    a_list = []
-    for sma in a_streamlines:
-        a_list.append(np.zeros(particles_per_streamline) + sma)
-    a = np.array(a_list)
-    e = np.zeros_like(a)
-    wt = np.zeros_like(a) + np.pi/4.0
-    #mean anomaly
-    Omg = Omega(J2, Rp, a)
-    Kap = Kappa(J2, Rp, a)
-    M_list = []
-    for idx in range(number_of_streamlines):
-        KO = Kap[idx].mean()/Omg[idx].mean()
-        M_max = KO*np.pi
-        if (particles_per_streamline > 1): 
-            M_streamline = np.linspace(-M_max, M_max, num=particles_per_streamline, endpoint=False)
-        else:
-            M_streamline = np.zeros(1)
-        M_list.append(M_streamline)
-    M = np.array(M_list)
-    
-    #lambda0=streamline mass-per-lenth
-    mass_per_streamline = total_ring_mass/number_of_streamlines
-    twopi = 2.0*np.pi
-    lambda0 = np.zeros_like(a) + mass_per_streamline/(twopi*a)
-    if (total_ring_mass > 0):
-        print 'this lambda-check should equal one = ', \
-            (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
-    
-    #alter initial orbits as needed
-    if (initial_orbits == 'circular'):
-        pass
-    if (initial_orbits == 'eccentric'):
-        e[:] = initial_e + initial_q*(a - a[0])
-    if (initial_orbits == 'breathing mode'):
-        e[:] = initial_e
-        M[:] = 0.0
-    if (initial_orbits == 'log-e'):
-        #initial e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
-        #while M0 and wt0 are randomized between -pi and pi
-        e = np.exp(   np.random.uniform(low=np.log(initial_e[0]), high=np.log(initial_e[1]), size=a.shape)   )
-        M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-        wt = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-    
-    #calculate ring sound speed c
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    sd = surface_density(lambda0, r)
-    Omg = Omega(J2, Rp, a)
-    G = 1.0
-    c = (Q_ring*np.pi*G*sd/Omg).mean()
-    
-    #convert elements to coordinates
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar)
-
-    return r, t, vr, vt, lambda0, c
-
-
-#initialize numpy arrays
-def initialize_2orbits(number_of_streamlines, particles_per_streamline, radial_width,
+#initialize streamlines
+def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
     total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp, initial_orbits):
     
     #initialize particles in circular orbits
@@ -291,6 +227,29 @@ def initialize_2orbits(number_of_streamlines, particles_per_streamline, radial_w
     Omg = Omega(J2, Rp, a)
     Kap = Kappa(J2, Rp, a)
     M = (Kap/Omg)*t
+        
+    #modify initial orbits as needed
+    if (initial_orbits['shape'] == 'circular'):
+        pass
+    if (initial_orbits['shape'] == 'eccentric'):
+        e_init = initial_orbits['e']
+        q_init = initial_orbits['q']
+        e = e_init + q_init*(a - a[0])/a[0]
+        #approximate M
+        M = (Kap/Omg)*t - 2*e*np.sin(M)
+        #error in M
+        M_err = t - (Omg/Kap)*(M + 2*e*np.sin(M))
+    if (initial_orbits['shape'] == 'breathing mode'):
+        e_init = initial_orbits['e']
+        e[:] = e_init
+        M[:] = 0.0
+    if (initial_orbits['shape'] == 'log-e'):
+        #e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
+        #while M and wt are randomized
+        e_init = initial_orbits['e']
+        e = np.exp(   np.random.uniform(low=np.log(e_init[0]), high=np.log(e_init[1]), size=a.shape)   )
+        M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
+        wt = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
@@ -299,28 +258,7 @@ def initialize_2orbits(number_of_streamlines, particles_per_streamline, radial_w
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
             (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
-    
-    #modify initial orbits as needed
-    shape = initial_orbits['shape']
-    if (shape == 'circular'):
-        pass
-    if (shape == 'eccentric'):
-        e_init = initial_orbits['e']
-        q_init = initial_orbits['q']
-        e = e_init + q_init*(a - a[0])/a[0]
-        M = (Kap/Omg)*t - 2*e*np.sin(M)
-    if (shape == 'breathing mode'):
-        e_init = initial_orbits['e']
-        e[:] = e_init
-        M[:] = 0.0
-    if (shape == 'log-e'):
-        #initial e is lograthmically distributed between initial_e[0] < e0 < initial_e[1]
-        #while M0 and wt0 are randomized between -pi and pi
-        e_init = initial_orbits['e']
-        e = np.exp(   np.random.uniform(low=np.log(e_init[0]), high=np.log(e_init[1]), size=a.shape)   )
-        M = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-        wt = np.random.uniform(low=-np.pi, high=np.pi, size=a.shape)
-    
+
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     sd = surface_density(lambda0, r)
