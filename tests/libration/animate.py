@@ -76,10 +76,10 @@ def draw(xyt):
 
 #show animation
 rm1 = r - 1.0
-y_rng = (1.1*rm1.min(), 1.1*rm1.max())
+y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
 #y_rng = (-1.0e-4, 1.1e-3)
 fig = plt.figure()
-ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=y_rng, 
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
 x, y, tm = xyt(0)
 ax.set_title('t = ' + str(tm))

@@ -8,13 +8,13 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
-particles_per_streamline = 101
+particles_per_streamline = 71
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
 timesteps_per_output = 1#2000
-total_number_of_outputs = 11
+total_number_of_outputs = 5
 
 #ring radial width assuming circular orbits
 radial_width = 1.0e-3
@@ -35,10 +35,12 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.02
 
-#choose initial orbits
-initial_orbits = 'eccentric'
-initial_e = 1.0e-3
-initial_q = 0.7
+#choose ringlet's initial orbits
+initial_orbits = {
+    'shape':'eccentric',
+    'e':1.0e-3,
+    'q':0.7
+}
 
 #output folder
 output_folder = 'output'
