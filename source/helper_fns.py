@@ -218,27 +218,22 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         a_list.append(np.zeros(particles_per_streamline) + sma)
     a = np.array(a_list)
     e = np.zeros_like(a)
-    wt = np.zeros_like(a)
-    #particles are uniformly spaced in longitude
-    t_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
-    t_list = [t_streamline]*number_of_streamlines
-    t = np.array(t_list)
-    #mean anomaly
+    #particles anomalies are uniformly spaced
+    M_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
+    M_list = [M_streamline]*number_of_streamlines
+    M = np.array(M_list)
+    #tweak longitude of periapse away from zero so that any eccentric streamlines are closed loops
     Omg = Omega(J2, Rp, a)
     Kap = Kappa(J2, Rp, a)
-    M = (Kap/Omg)*t
+    wt = -(Omg/Kap - 1)*M
         
     #modify initial orbits as needed
     if (initial_orbits['shape'] == 'circular'):
         pass
     if (initial_orbits['shape'] == 'eccentric'):
         e_init = initial_orbits['e']
-        q_init = initial_orbits['q']
-        e = e_init + q_init*(a - a[0])/a[0]
-        #approximate M
-        M = (Kap/Omg)*t - 2*e*np.sin(M)
-        #error in M
-        M_err = t - (Omg/Kap)*(M + 2*e*np.sin(M))
+        adeda = initial_orbits['adeda']
+        e = e_init + adeda*(a - a[0])/a[0]
     if (initial_orbits['shape'] == 'breathing mode'):
         e_init = initial_orbits['e']
         e[:] = e_init
@@ -254,7 +249,8 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
-    lambda0 = np.zeros_like(a) + mass_per_streamline/(twopi*a)
+    #lambda0 = np.zeros_like(a) + mass_per_streamline/(twopi*a)
+    lambda0 = mass_per_streamline/(twopi*a)
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
             (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
@@ -262,7 +258,6 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     sd = surface_density(lambda0, r)
-    Omg = Omega(J2, Rp, a)
     G = 1.0
     c = (Q_ring*np.pi*G*sd/Omg).mean()
     

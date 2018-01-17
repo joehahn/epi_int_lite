@@ -19,19 +19,16 @@ execfile('inputs.py')
 r, t, vr, vt, times, lambda0 = restore_output(output_folder)
 a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
-#recompute r,t in coordinate system that co-rotates with inner streamline's wt
+#recompute r,t in coordinate system that co-rotates with inner streamline's peri
 for time_idx in range(len(times)):
     r_middle_streamline = r[time_idx, number_of_streamlines/2]
     theta_idx = np.argmin(r_middle_streamline)
     wt_middle_streamline = wt[time_idx, number_of_streamlines/2]
     wt_min = wt_middle_streamline[theta_idx]
-    #wt_min = wt_middle_streamline.mean()
-    wt[time_idx] = adjust_angle(wt[time_idx] - wt_min)
-    rr, tr, vrr, vtr = elem2coords(J2, Rp, a[time_idx], e[time_idx], wt[time_idx], M[time_idx])
-    r[time_idx] = rr
-    t[time_idx] = tr
-    vr[time_idx] = vrr
-    vt[time_idx] = vtr
+    t[time_idx] = adjust_angle(t[time_idx] - wt_min)
+    rs, ts, vrs, vts = sort_particles(r[time_idx], t[time_idx], vr[time_idx], vt[time_idx])
+    r[time_idx] = rs
+    t[time_idx] = ts
 
 #pad array
 def pad_array(t, longitudes=False):
@@ -68,7 +65,7 @@ def update():
 #draw frame
 def draw(xyt):
     x, y, tm = xyt
-    ax.set_title('t = ' + str(tm)[0:4] + ' orbits')
+    ax.set_title('t = ' + str(tm)[0:5] + ' orbits')
     for idx in range(len(x)):
         line = lines[idx]
         line.set_data(x[idx], y[idx])
@@ -84,7 +81,7 @@ ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
 x, y, tm = xyt(0)
 ax.set_title('t = ' + str(tm))
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-lines = [ax.plot([],[], 'o-', markersize=3, color=colors[idx], linewidth=1)[0]
+lines = [ax.plot([],[], 'o-', markersize=1, color=colors[idx], linewidth=1)[0]
     for idx in range(number_of_streamlines)]
 for line in lines:
     line.set_data([],[])
