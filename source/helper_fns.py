@@ -263,7 +263,8 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     #convert elements to coordinates
     Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar)
+    #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar) #causes jitter in librating ringlets
+    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
 
     return r, t, vr, vt, lambda0, c
 

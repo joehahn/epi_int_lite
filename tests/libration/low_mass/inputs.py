@@ -8,19 +8,19 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 3
-particles_per_streamline = 50
+particles_per_streamline = 51
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 3200
+timesteps_per_output = 3300
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
 radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 1.0e-10
+total_ring_mass = 5.0e-11
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity
 G_ring = 1.0
@@ -38,7 +38,7 @@ J2 = 0.02
 #choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
 initial_orbits = {
     'shape':'eccentric',
-    'e':1.0e-3,
+    'e':0.000707106,
     'adeda':0.8
 }
 
