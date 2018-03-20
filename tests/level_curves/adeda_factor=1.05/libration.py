@@ -2,7 +2,7 @@
 #
 #by Joe Hahn, jmh.datasciences@gmail.com, 18 March 2018.
 #
-#these helper functions are used to draw level curves for a librating ringlet
+#these helper functions are used to analyze a librating ringlet
 
 #imports
 import numpy as np
@@ -58,3 +58,13 @@ def H_q2(a_avg, e_avg, da, de, dwt):
     H = (1 - q_factor)/q2/q_factor
     return H, q2
 
+#unroll angle
+def unroll_angle(angle):
+    unrolled_angle = angle.copy()
+    for idx in range(1, len(unrolled_angle)):
+        delta = unrolled_angle[idx] - unrolled_angle[idx - 1]
+        if (delta > np.pi):
+            unrolled_angle[idx:] -= 2*np.pi
+        if (delta < -np.pi):
+            unrolled_angle[idx:] += 2*np.pi
+    return unrolled_angle
