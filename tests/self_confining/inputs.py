@@ -8,12 +8,12 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
-particles_per_streamline = 101
+particles_per_streamline = 1001
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 3000
+timesteps_per_output = 1500
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -26,7 +26,8 @@ total_ring_mass = 1.5e-9
 G_ring = 1.0
 
 #ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
-shear_viscosity = 3.0e-13
+#shear_viscosity = 3.0e-13#...da=0.0018 and hair=-0.06 rad at t=10x10^4 orbits
+shear_viscosity = 6.0e-13
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
