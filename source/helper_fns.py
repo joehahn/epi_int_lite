@@ -86,8 +86,11 @@ def df_dr(f, r):
 
 #acceleration due to pressure P
 def A_P(lambda0, sd, P, r):
-    dPdr = df_dr(P, r)
-    A = -dPdr/sd
+    if (r.shape[0] > 2):
+        dPdr = df_dr(P, r)
+        A = -dPdr/sd
+    else:
+        A = np.zeros_like(r)
     A[0] = -P[0]/lambda0[0]
     A[-1] = P[-2]/lambda0[1]
     return A
