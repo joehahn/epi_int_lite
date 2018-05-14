@@ -13,23 +13,23 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 250
-total_number_of_outputs = 100
+timesteps_per_output = 3000
+total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
 radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 5.0e-9
+total_ring_mass = 1.5e-9
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity
 G_ring = 1.0
 
 #ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
-shear_viscosity = 5.0e-16#5.0e-15
+shear_viscosity = 3.0e-13
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
-Q_ring = -2.0
+Q_ring = -1.0
 
 #oblateness parameters
 Rp = 0.5
@@ -39,7 +39,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,
-    'adeda':0.1
+    'adeda':0.2263
 }
 
 #output folder
