@@ -49,7 +49,7 @@ def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
 #radial acceleration due to ring self-gravity
-def ring_gravity(lambda0, G_ring, r):
+def ring_gravity(lambda0, G_ring, r, t):
     two_G_lambda = 2.0*G_ring*lambda0
     Ar = np.zeros_like(r)
     Nr, Nt = r.shape
@@ -109,25 +109,45 @@ def ring_viscosity(shear_viscosity, lambda0, r, vt):
     At = A_P(lambda0, sd, P, r)
     return At
 
+#wrap the ring's coordinate array about in longitude
+def wrap_ring(c, longitude=False):
+    cc = c.copy()
+    Nr, Nt = cc.shape
+    left = cc[:, -1].reshape(Nr, 1)
+    right = cc[:, 0].reshape(Nr, 1)
+    if (longitude):
+        twopi = 2*np.pi
+        left -= twopi
+        right += twopi
+    cw = np.concatenate((left, cc, right), axis=1)
+    return cw
+
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, c, r, vt):
-    Ar = np.zeros_like(r)
-    At = np.zeros_like(r)
+def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
+    rw = wrap_ring(r, longitude=False)
+    tw = wrap_ring(t, longitude=True)
+    Ar = np.zeros_like(rw)
+    At = np.zeros_like(rw)
     #radial acceleration due to streamline gravity
     if (G_ring > 0.0):
-        Ar += ring_gravity(lambda0, G_ring, r)
+        lw = wrap_ring(lambda0, longitude=False)
+        Ar += ring_gravity(lw, G_ring, rw, tw)
     #radial acceleration due to streamline pressure
     if (c > 0.0):
-        Ar += ring_pressure(c, lambda0, r)
+        Ar += ring_pressure(c, lw, rw)
     #tangential acceleration due to viscosity
     if (shear_viscosity > 0.0):
-        At += ring_viscosity(shear_viscosity, lambda0, r, vt)  
+        vtw = wrap_ring(vt, longitude=False)
+        At += ring_viscosity(shear_viscosity, lw, rw, vtw)
+    #drop left and right edges from Ar,At
+    Ar = Ar[:, 1:-1]
+    At = At[:, 1:-1]
     return Ar, At
-    
+
 #velocity kicks due to ring gravity and viscosity
 def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt):
     #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -265,7 +285,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     c = (Q_ring*np.pi*G*sd/Omg).mean()
     
     #convert elements to coordinates
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, vt)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
     #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar) #causes jitter in librating ringlets
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
 
