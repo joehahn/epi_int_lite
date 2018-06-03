@@ -51,8 +51,24 @@ def drift(a, M, J2, Rp, dt):
 #interpolate f(t)...
 def interpolate_fn(t, f, n):
     #no interpolation....
-    f_n = np.roll(f, n, axis=0)
+    f_n = np.roll(f, -n, axis=0)
+    #use lagrange polynomial to interpolate
+    #t0 = np.roll(t, (1, -n))
+    #t0 = shift(tw,  1, -n)
+    #t1 = shift(tw,  0, -n)
+    #t2 = shift(tw, -1, -n)
+    #f0 = shift(fw,  1, -n)
+    #f1 = shift(fw,  0, -n)
+    #f2 = shift(fw, -1, -n)
     return f_n
+
+#fit 2nd order lagrange polynomial to data (x0,y0), (x1,y1), (x2,y2) and interpolate y(x)
+def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
+    l0 = ((x - x1)/(x0 - x1))*((x - x2)/(x0 - x2))
+    l1 = ((x - x0)/(x1 - x0))*((x - x2)/(x1 - x2))
+    l2 = ((x - x0)/(x2 - x0))*((x - x1)/(x2 - x1))
+    y = y0*l0 + y1*l1 + y2*l2
+    return y
 
 #radial acceleration due to ring self-gravity
 def ring_gravity(lambda0, G_ring, r, t):
@@ -256,7 +272,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     Omg = Omega(J2, Rp, a)
     Kap = Kappa(J2, Rp, a)
     wt = -(Omg/Kap - 1)*M
-        
+    
     #modify initial orbits as needed
     if (initial_orbits['shape'] == 'circular'):
         pass
@@ -284,7 +300,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
             (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
-
+    
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     sd = surface_density(lambda0, r)
@@ -295,6 +311,6 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
     #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar) #causes jitter in librating ringlets
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-
+    
     return r, t, vr, vt, lambda0, c
 
