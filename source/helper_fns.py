@@ -48,13 +48,20 @@ def unwrap_angle(angle):
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
+#interpolate f(t)...
+def interpolate_fn(t, f, n):
+    #no interpolation....
+    f_n = np.roll(f, n, axis=0)
+    return f_n
+
 #radial acceleration due to ring self-gravity
 def ring_gravity(lambda0, G_ring, r, t):
     two_G_lambda = 2.0*G_ring*lambda0
     Ar = np.zeros_like(r)
     Nr, Nt = r.shape
     for shft in range(1, Nr):
-        dr = np.roll(r, -shft, axis=0) - r
+        #dr = np.roll(r, -shft, axis=0) - r
+        dr = interpolate_fn(t, r, -shft) - r
         Ar += two_G_lambda/dr
     return Ar
 
