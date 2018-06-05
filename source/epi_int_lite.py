@@ -5,6 +5,8 @@
 #by Joe Hahn, jmh.datasciences@gmail.com, 27 August 2017.
 #
 #this simulates the dynamical evolution of self-gravitating planetary rings.
+#The majority of this code was written while drinking and singing at
+#the Water Tank karaoke bar in northwest Austin TX, so buyer beware.
 
 #start time
 import time as tm

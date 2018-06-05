@@ -48,21 +48,24 @@ def unwrap_angle(angle):
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
-#interpolate f(t)...
+#use lagrange polynomial to interpolate f(t)...
 def interpolate_fn(t, f, n):
-    #no interpolation....
-    f_n = np.roll(f, -n, axis=0)
-    #use lagrange polynomial to interpolate
-    #t0 = np.roll(t, (1, -n))
-    #t0 = shift(tw,  1, -n)
-    #t1 = shift(tw,  0, -n)
-    #t2 = shift(tw, -1, -n)
-    #f0 = shift(fw,  1, -n)
-    #f1 = shift(fw,  0, -n)
-    #f2 = shift(fw, -1, -n)
+    do_interpoloate = True
+    if (do_interpoloate):
+        #use lagrange interpolation
+        t0 = np.roll(t, (-n,  1), axis=(0,1))
+        t1 = np.roll(t, (-n,  0), axis=(0,1))
+        t2 = np.roll(t, (-n, -1), axis=(0,1))
+        f0 = np.roll(f, (-n,  1), axis=(0,1))
+        f1 = np.roll(f, (-n,  0), axis=(0,1))
+        f2 = np.roll(f, (-n, -1), axis=(0,1))
+        f_n = lagrange_poly_fit(t0, t1, t2, f0, f1, f2, t)
+    else:
+        #skip lagrange interpolation
+        f_n = np.roll(f, (-n, 0), axis=(0,1))
     return f_n
 
-#fit 2nd order lagrange polynomial to data (x0,y0), (x1,y1), (x2,y2) and interpolate y(x)
+#fit 2nd order lagrange polynomial to data (x0,y0),(x1,y1),(x2,y2) & interpolate y(x)
 def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
     l0 = ((x - x1)/(x0 - x1))*((x - x2)/(x0 - x2))
     l1 = ((x - x0)/(x1 - x0))*((x - x2)/(x1 - x2))
@@ -76,16 +79,27 @@ def ring_gravity(lambda0, G_ring, r, t):
     Ar = np.zeros_like(r)
     Nr, Nt = r.shape
     for shft in range(1, Nr):
-        #dr = np.roll(r, -shft, axis=0) - r
         dr = interpolate_fn(t, r, -shft) - r
         Ar += two_G_lambda/dr
     return Ar
 
 #surface density
-def surface_density(lambda0, r):
-    dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
-    dr[0] = r[1] - r[0]
-    dr[-1] = r[-1] - r[-2]
+def surface_density(lambda0, r, t):
+    do_interpoloate = False
+    if (do_interpoloate):
+        #use lagrange interpolation
+        dr = (interpolate_fn(t, r, 1) - interpolate_fn(t, r, -1))/2.0
+        #this is damn inefficient
+        dr[0] = (interpolate_fn(t, r, 1) - r)[0]
+        dr[-1] = (r - interpolate_fn(t, r, -1))[-1]
+        ##choosing speed over accuracy
+        #dr[0] = r[1] - r[0]
+        #dr[-1] = r[-1] - r[-2]
+    else:
+        #skip lagrange interpolation
+        dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
+        dr[0] = r[1] - r[0]
+        dr[-1] = r[-1] - r[-2]
     sd = lambda0/dr
     return sd
 
@@ -120,33 +134,33 @@ def A_P(lambda0, sd, P, r):
 
 #radial acceleration due to ring pressure
 def ring_pressure(c, lambda0, r):
-    sd = surface_density(lambda0, r)
+    sd = surface_density(lambda0, r, t)
     P = (c*c)*sd
     Ar = A_P(lambda0, sd, P, r)
     return Ar
 
 #tangential acceleration due to ring viscosity
-def ring_viscosity(shear_viscosity, lambda0, r, vt):
-    sd = surface_density(lambda0, r)
+def ring_viscosity(shear_viscosity, lambda0, r, t, vt):
+    sd = surface_density(lambda0, r, t)
     P = (1.5*shear_viscosity*sd)*(vt/r)  #viscous pseudo-pressure
     At = A_P(lambda0, sd, P, r)
     return At
 
 #wrap the ring's coordinate array about in longitude
 def wrap_ring(c, longitude=False):
-    cc = c.copy()
-    Nr, Nt = cc.shape
-    left = cc[:, -1].reshape(Nr, 1)
-    right = cc[:, 0].reshape(Nr, 1)
+    Nr, Nt = c.shape
+    left = c[:, -1].copy().reshape(Nr, 1)
+    right = c[:, 0].copy().reshape(Nr, 1)
     if (longitude):
         twopi = 2*np.pi
         left -= twopi
         right += twopi
-    cw = np.concatenate((left, cc, right), axis=1)
+    cw = np.concatenate((left, c, right), axis=1)
     return cw
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
 def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
+    #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
     Ar = np.zeros_like(rw)
@@ -161,7 +175,7 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
     #tangential acceleration due to viscosity
     if (shear_viscosity > 0.0):
         vtw = wrap_ring(vt, longitude=False)
-        At += ring_viscosity(shear_viscosity, lw, rw, vtw)
+        At += ring_viscosity(shear_viscosity, lw, rw, tw, vtw)
     #drop left and right edges from Ar,At
     Ar = Ar[:, 1:-1]
     At = At[:, 1:-1]
@@ -295,7 +309,6 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
-    #lambda0 = np.zeros_like(a) + mass_per_streamline/(twopi*a)
     lambda0 = mass_per_streamline/(twopi*a)
     if (total_ring_mass > 0):
         print 'this lambda-check should equal one = ', \
@@ -303,7 +316,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    sd = surface_density(lambda0, r)
+    sd = surface_density(lambda0, r, t)
     G = 1.0
     c = (Q_ring*np.pi*G*sd/Omg).mean()
     
