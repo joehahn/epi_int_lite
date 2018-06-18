@@ -327,3 +327,15 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     return r, t, vr, vt, lambda0, c
 
+#recompute coordinates in coordinate system that co-rotates with ringlet's middle streamline's peri
+def peri_corotate(r, t, vr, vt, wt):
+    number_of_streamlines = r.shape[0]
+    s_idx = (number_of_streamlines - 1)/2
+    r_middle_streamline = r[s_idx]
+    t_idx = np.argmin(r_middle_streamline)
+    wt_middle_streamline = wt[s_idx]
+    wt_min = wt_middle_streamline[t_idx]
+    tw = adjust_angle(t - wt_min)
+    wts = adjust_angle(wt - wt_min)
+    rs, ts, vrs, vts = sort_particles(r, tw, vr, vt)
+    return rs, ts, vrs, vts, wts

@@ -9,7 +9,7 @@
 #get plotting packages
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from matplotlib import rcParams
+from matplotlib impo2rt rcParams
 rcParams.update({'figure.autolayout': True})
 import numpy as np
 
@@ -20,15 +20,24 @@ r, t, vr, vt, times, lambda0 = restore_output(output_folder)
 a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #recompute r,t in coordinate system that co-rotates with inner streamline's peri
-for time_idx in range(len(times)):
-    r_middle_streamline = r[time_idx, number_of_streamlines/2]
-    theta_idx = np.argmin(r_middle_streamline)
-    wt_middle_streamline = wt[time_idx, number_of_streamlines/2]
-    wt_min = wt_middle_streamline[theta_idx]
-    t[time_idx] = adjust_angle(t[time_idx] - wt_min)
-    rs, ts, vrs, vts = sort_particles(r[time_idx], t[time_idx], vr[time_idx], vt[time_idx])
-    r[time_idx] = rs
-    t[time_idx] = ts
+for t_idx in range(len(times)):
+    rs, ts, vrs, vts, wts = peri_corotate(r[t_idx], t[t_idx], vr[t_idx], vt[t_idx], wt[t_idx])
+    r[t_idx] = rs
+    t[t_idx] = ts
+    vr[t_idx] = vrs
+    vt[t_idx] = vts
+    wt[t_idx] = wts
+
+##recompute r,t in coordinate system that co-rotates with inner streamline's peri
+#for time_idx in range(len(times)):
+#    r_middle_streamline = r[time_idx, number_of_streamlines/2]
+#    theta_idx = np.argmin(r_middle_streamline)
+#    wt_middle_streamline = wt[time_idx, number_of_streamlines/2]
+#    wt_min = wt_middle_streamline[theta_idx]
+#    t[time_idx] = adjust_angle(t[time_idx] - wt_min)
+#    rs, ts, vrs, vts = sort_particles(r[time_idx], t[time_idx], vr[time_idx], vt[time_idx])
+#    r[time_idx] = rs
+#    t[time_idx] = ts
 
 #pad array
 def pad_array(t, longitudes=False):
