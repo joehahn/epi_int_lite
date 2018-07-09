@@ -9,7 +9,7 @@
 #get plotting packages
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from matplotlib impo2rt rcParams
+from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
 import numpy as np
 
