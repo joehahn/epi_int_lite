@@ -141,8 +141,10 @@ def ring_pressure(c, lambda0, r):
 
 #tangential acceleration due to ring viscosity
 def ring_viscosity(shear_viscosity, lambda0, r, t, vt):
+    w = vt/r
+    dw_dr = df_dr(w, r)
     sd = surface_density(lambda0, r, t)
-    P = (1.5*shear_viscosity*sd)*(vt/r)  #viscous pseudo-pressure
+    P = (-shear_viscosity*sd)*r*dw_dr    #viscous pseudo-pressure
     At = A_P(lambda0, sd, P, r)
     return At
 
@@ -163,11 +165,11 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
+    lw = wrap_ring(lambda0, longitude=False)
     Ar = np.zeros_like(rw)
     At = np.zeros_like(rw)
     #radial acceleration due to streamline gravity
     if (G_ring > 0.0):
-        lw = wrap_ring(lambda0, longitude=False)
         Ar += ring_gravity(lw, G_ring, rw, tw)
     #radial acceleration due to streamline pressure
     if (c > 0.0):

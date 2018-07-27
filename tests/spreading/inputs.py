@@ -35,10 +35,12 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.02
 
-#choose initial orbits
-initial_orbits = 'circular'
-initial_e = 0.0
-initial_q = 0.0
+#choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
+initial_orbits = {
+    'shape':'circular',
+    'e':0.0,
+    'adeda':0.0
+}
 
 #output folder
 output_folder = 'output'
