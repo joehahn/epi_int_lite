@@ -103,22 +103,29 @@ def surface_density(lambda0, r, t):
     sd = lambda0/dr
     return sd
 
-#calculate radial derivative of function f(r) using richardson extrapolation
-def df_dr(f, r):
-    n = 1
-    delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
-    delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
-    D1 = delta_f/delta_r
-    n = 2
-    delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
-    delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
-    D2 = delta_f/delta_r
-    dfdr = (4.0*D1 - D2)/3.0
-    #correction for streamlines just inside of edges
-    dfdr[1] = D1[1]
-    dfdr[-2] = D1[2]
-    dfdr = D1
-    #dont bother correcting outer edges
+#calculate radial derivative of function f(r) (NOT using richardson extrapolation)
+#...this is kinda slopppy
+def df_dr(f, r, richardson=False):
+    if (r.shape[0] > 2):
+        n = 1
+        delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
+        delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
+        dfdr = delta_f/delta_r
+    else:
+        dfdr = np.zeros_like(r)
+    #if (richardson):
+    #    D1 = delta_f/delta_r
+    #    n = 2
+    #    delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
+    #    delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
+    #    D2 = delta_f/delta_r
+    #    dfdr = (4.0*D1 - D2)/3.0
+    #    #correction for streamlines just inside of edges
+    #    dfdr[1] = D1[1]
+    #    dfdr[-2] = D1[2]
+    #correct edges
+    dfdr[0] = (f[1] - f[0])/(r[1] - r[0])
+    dfdr[-1] = (f[-1] - f[-2])/(r[-1] - r[-2])
     return dfdr
 
 #acceleration due to pressure P
@@ -129,7 +136,7 @@ def A_P(lambda0, sd, P, r):
     else:
         A = np.zeros_like(r)
     A[0] = -P[0]/lambda0[0]
-    A[-1] = P[-2]/lambda0[1]
+    A[-1] = P[-2]/lambda0[-1]
     return A
 
 #radial acceleration due to ring pressure
