@@ -48,11 +48,10 @@ def unwrap_angle(angle):
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
-#use lagrange polynomial to interpolate f(t)...
-def interpolate_fn(t, f, n):
-    do_interpoloate = True
-    if (do_interpoloate):
-        #use lagrange interpolation
+#use lagrange polynomial to evaluate function f that is evaluated n adjacent
+#streamlines away and sampled at longitude t
+def interpolate_fn(t, f, n, interpolate=True):
+    if (interpolate):
         t0 = np.roll(t, (-n,  1), axis=(0,1))
         t1 = np.roll(t, (-n,  0), axis=(0,1))
         t2 = np.roll(t, (-n, -1), axis=(0,1))
@@ -73,6 +72,41 @@ def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
     y = y0*l0 + y1*l1 + y2*l2
     return y
 
+#compute ring surface density
+def surface_density(lambda0, r, t, interpolate=True):
+    if (interpolate):
+        #use lagrange interpolation to compute particle distance from adjacent streamlines
+        dr = (interpolate_fn(t, r, 1) - interpolate_fn(t, r, -1))/2.0
+        dr[0] = (interpolate_fn(t[0:2], r[0:2], 1) - r[0:2])[0]
+        dr[-1] = (r[-2:] - interpolate_fn(t[-2:], r[-2:], -1))[-1]
+    else:
+        #skip lagrange interpolation
+        dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
+        dr[0] = r[1] - r[0]
+        dr[-1] = r[-1] - r[-2]
+    sd = lambda0/dr
+    return sd
+
+#calculate radial derivative of function f(r)
+def df_dr(f, r, t):
+    #in ring interior
+    f_plus  = interpolate_fn(t, f, -1)
+    f_minus = interpolate_fn(t, f,  1)
+    r_plus  = interpolate_fn(t, r, -1)
+    r_minus = interpolate_fn(t, r,  1)
+    dfdr = (f_plus - f_minus)/(r_plus - r_minus)
+    #along ring edges
+    dfdr[0] = (f_plus[0] - f[0])/(r_plus[0] - r[0])
+    dfdr[-1] = (f[-1] - f_minus[-1])/(r[-1] - r_minus[-1])
+    return dfdr
+
+#radial acceleration due to ring pressure
+def ring_pressure(c, lambda0, r):
+    sd = surface_density(lambda0, r, t)
+    P = (c*c)*sd
+    Ar = A_P(lambda0, sd, P, r)
+    return Ar
+
 #radial acceleration due to ring self-gravity
 def ring_gravity(lambda0, G_ring, r, t):
     two_G_lambda = 2.0*G_ring*lambda0
@@ -83,77 +117,27 @@ def ring_gravity(lambda0, G_ring, r, t):
         Ar += two_G_lambda/dr
     return Ar
 
-#surface density
-def surface_density(lambda0, r, t):
-    do_interpoloate = False
-    if (do_interpoloate):
-        #use lagrange interpolation
-        dr = (interpolate_fn(t, r, 1) - interpolate_fn(t, r, -1))/2.0
-        #this is damn inefficient
-        dr[0] = (interpolate_fn(t, r, 1) - r)[0]
-        dr[-1] = (r - interpolate_fn(t, r, -1))[-1]
-        ##choosing speed over accuracy
-        #dr[0] = r[1] - r[0]
-        #dr[-1] = r[-1] - r[-2]
-    else:
-        #skip lagrange interpolation
-        dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
-        dr[0] = r[1] - r[0]
-        dr[-1] = r[-1] - r[-2]
-    sd = lambda0/dr
-    return sd
-
-#calculate radial derivative of function f(r) (NOT using richardson extrapolation)
-#...this is kinda slopppy
-def df_dr(f, r, richardson=False):
-    if (r.shape[0] > 2):
-        n = 1
-        delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
-        delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
-        dfdr = delta_f/delta_r
-    else:
-        dfdr = np.zeros_like(r)
-    #if (richardson):
-    #    D1 = delta_f/delta_r
-    #    n = 2
-    #    delta_f = np.roll(f, -n, axis=0) - np.roll(f, n, axis=0)
-    #    delta_r = np.roll(r, -n, axis=0) - np.roll(r, n, axis=0)
-    #    D2 = delta_f/delta_r
-    #    dfdr = (4.0*D1 - D2)/3.0
-    #    #correction for streamlines just inside of edges
-    #    dfdr[1] = D1[1]
-    #    dfdr[-2] = D1[2]
-    #correct edges
-    dfdr[0] = (f[1] - f[0])/(r[1] - r[0])
-    dfdr[-1] = (f[-1] - f[-2])/(r[-1] - r[-2])
-    return dfdr
-
-#acceleration due to pressure P
-def A_P(lambda0, sd, P, r):
-    if (r.shape[0] > 2):
-        dPdr = df_dr(P, r)
-        A = -dPdr/sd
-    else:
-        A = np.zeros_like(r)
-    A[0] = -P[0]/lambda0[0]
-    A[-1] = P[-2]/lambda0[-1]
-    return A
-
-#radial acceleration due to ring pressure
-def ring_pressure(c, lambda0, r):
-    sd = surface_density(lambda0, r, t)
-    P = (c*c)*sd
-    Ar = A_P(lambda0, sd, P, r)
-    return Ar
-
 #tangential acceleration due to ring viscosity
 def ring_viscosity(shear_viscosity, lambda0, r, t, vt):
     w = vt/r
-    dw_dr = df_dr(w, r)
+    dw_dr = df_dr(w, r, t)
     sd = surface_density(lambda0, r, t)
-    P = (-shear_viscosity*sd)*r*dw_dr    #viscous pseudo-pressure
-    At = A_P(lambda0, sd, P, r)
+    #viscous pseudo-pressure
+    P = (-shear_viscosity*sd)*r*dw_dr
+    At = A_P(lambda0, sd, P, r, t)
     return At
+
+#acceleration due to pressure P
+def A_P(lambda0, sd, P, r, t):
+    dPdr = df_dr(P, r, t)
+    #acceleration in ring interior
+    A = -dPdr/sd
+    #at inner streamline
+    A[0] = -P[0]/lambda0[0]
+    #at outer streamline, interpolated from neighbor streamline
+    P_outer = interpolate_fn(t[-2:], P[-2:], 1)[-1]
+    A[-1] = P_outer/lambda0[-1]
+    return A
 
 #wrap the ring's coordinate array about in longitude
 def wrap_ring(c, longitude=False):

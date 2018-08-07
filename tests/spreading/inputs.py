@@ -8,7 +8,7 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 15
-particles_per_streamline = 1
+particles_per_streamline = 3
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
