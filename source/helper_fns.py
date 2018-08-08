@@ -94,7 +94,10 @@ def df_dr(f, r, t):
     f_minus = interpolate_fn(t, f,  1)
     r_plus  = interpolate_fn(t, r, -1)
     r_minus = interpolate_fn(t, r,  1)
-    dfdr = (f_plus - f_minus)/(r_plus - r_minus)
+    if (r.shape[0] > 2):
+        dfdr = (f_plus - f_minus)/(r_plus - r_minus)
+    else:
+        dfdr = np.zeros_like(r)
     #along ring edges
     dfdr[0] = (f_plus[0] - f[0])/(r_plus[0] - r[0])
     dfdr[-1] = (f[-1] - f_minus[-1])/(r[-1] - r_minus[-1])

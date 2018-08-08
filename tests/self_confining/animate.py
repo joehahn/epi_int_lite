@@ -28,17 +28,6 @@ for t_idx in range(len(times)):
     vt[t_idx] = vts
     wt[t_idx] = wts
 
-##recompute r,t in coordinate system that co-rotates with inner streamline's peri
-#for time_idx in range(len(times)):
-#    r_middle_streamline = r[time_idx, number_of_streamlines/2]
-#    theta_idx = np.argmin(r_middle_streamline)
-#    wt_middle_streamline = wt[time_idx, number_of_streamlines/2]
-#    wt_min = wt_middle_streamline[theta_idx]
-#    t[time_idx] = adjust_angle(t[time_idx] - wt_min)
-#    rs, ts, vrs, vts = sort_particles(r[time_idx], t[time_idx], vr[time_idx], vt[time_idx])
-#    r[time_idx] = rs
-#    t[time_idx] = ts
-
 #pad array
 def pad_array(t, longitudes=False):
     Nr, Nt = t.shape
@@ -83,7 +72,7 @@ def draw(xyt):
 #show animation
 rm1 = r - 1.0
 y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
-#y_rng = (-1.0e-4, 1.1e-3)
+y_rng = (-6.0e-3, 1.0e-2)
 fig = plt.figure()
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
