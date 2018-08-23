@@ -72,76 +72,6 @@ def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
     y = y0*l0 + y1*l1 + y2*l2
     return y
 
-#compute ring surface density
-def surface_density(lambda0, r, t, interpolate=True):
-    if (interpolate):
-        #use lagrange interpolation to compute particle distance from adjacent streamlines
-        dr = (interpolate_fn(t, r, 1) - interpolate_fn(t, r, -1))/2.0
-        dr[0] = (interpolate_fn(t[0:2], r[0:2], 1) - r[0:2])[0]
-        dr[-1] = (r[-2:] - interpolate_fn(t[-2:], r[-2:], -1))[-1]
-    else:
-        #skip lagrange interpolation
-        dr = (np.roll(r, -1, axis=0) - np.roll(r, 1, axis=0))/2.0
-        dr[0] = r[1] - r[0]
-        dr[-1] = r[-1] - r[-2]
-    sd = lambda0/dr
-    return sd
-
-#calculate radial derivative of function f(r)
-def df_dr(f, r, t):
-    #in ring interior
-    f_plus  = interpolate_fn(t, f, -1)
-    f_minus = interpolate_fn(t, f,  1)
-    r_plus  = interpolate_fn(t, r, -1)
-    r_minus = interpolate_fn(t, r,  1)
-    if (r.shape[0] > 2):
-        dfdr = (f_plus - f_minus)/(r_plus - r_minus)
-    else:
-        dfdr = np.zeros_like(r)
-    #along ring edges
-    dfdr[0] = (f_plus[0] - f[0])/(r_plus[0] - r[0])
-    dfdr[-1] = (f[-1] - f_minus[-1])/(r[-1] - r_minus[-1])
-    return dfdr
-
-#radial acceleration due to ring pressure
-def ring_pressure(c, lambda0, r):
-    sd = surface_density(lambda0, r, t)
-    P = (c*c)*sd
-    Ar = A_P(lambda0, sd, P, r)
-    return Ar
-
-#radial acceleration due to ring self-gravity
-def ring_gravity(lambda0, G_ring, r, t):
-    two_G_lambda = 2.0*G_ring*lambda0
-    Ar = np.zeros_like(r)
-    Nr, Nt = r.shape
-    for shft in range(1, Nr):
-        dr = interpolate_fn(t, r, -shft) - r
-        Ar += two_G_lambda/dr
-    return Ar
-
-#tangential acceleration due to ring viscosity
-def ring_viscosity(shear_viscosity, lambda0, r, t, vt):
-    w = vt/r
-    dw_dr = df_dr(w, r, t)
-    sd = surface_density(lambda0, r, t)
-    #viscous pseudo-pressure
-    P = (-shear_viscosity*sd)*r*dw_dr
-    At = A_P(lambda0, sd, P, r, t)
-    return At
-
-#acceleration due to pressure P
-def A_P(lambda0, sd, P, r, t):
-    dPdr = df_dr(P, r, t)
-    #acceleration in ring interior
-    A = -dPdr/sd
-    #at inner streamline
-    A[0] = -P[0]/lambda0[0]
-    #at outer streamline, interpolated from neighbor streamline
-    P_outer = interpolate_fn(t[-2:], P[-2:], 1)[-1]
-    A[-1] = P_outer/lambda0[-1]
-    return A
-
 #wrap the ring's coordinate array about in longitude
 def wrap_ring(c, longitude=False):
     Nr, Nt = c.shape
@@ -154,6 +84,69 @@ def wrap_ring(c, longitude=False):
     cw = np.concatenate((left, c, right), axis=1)
     return cw
 
+#compute ring surface density
+def surface_density(lambda0, dr):
+    sd = lambda0/dr
+    return sd
+
+#calculate radial distance between exterior streamline and interior streamline
+def delta_f(f, t):
+    #in ring interior
+    f_plus  = interpolate_fn(t, f, -1)
+    f_minus = interpolate_fn(t, f,  1)
+    if (f.shape[0] > 2):
+        df = f_plus - f_minus
+    else:
+        df = np.zeros_like(f)
+    #along ring edges
+    df[0] = f_plus[0] - f[0]
+    df[-1] = f[-1] - f_minus[-1]
+    return df
+
+#calculation derivative df/dr
+def df_dr(delta_f, delta_r):
+    return delta_f/delta_r
+
+#radial acceleration due to ring self-gravity
+def ring_gravity(lambda0, G_ring, r, t):
+    two_G_lambda = 2.0*G_ring*lambda0
+    Ar = np.zeros_like(r)
+    Nr, Nt = r.shape
+    for shft in range(1, Nr):
+        dr = interpolate_fn(t, r, -shft) - r
+        Ar += two_G_lambda/dr
+    return Ar
+
+#acceleration due to pressure P
+def A_P(lambda0, sd, P, t, delta_P, delta_r):
+    dPdr = df_dr(delta_P, delta_r)
+    #acceleration in ring interior
+    A = -dPdr/sd
+    #at inner streamline
+    A[0] = -P[0]/lambda0[0]
+    #at outer streamline, interpolated from neighbor streamline
+    P_outer = interpolate_fn(t[-2:], P[-2:], 1)[-1]
+    A[-1] = P_outer/lambda0[-1]
+    return A
+
+#radial acceleration due to ring pressure
+def ring_pressure(c, lambda0, sd, r, t, delta_r):
+    P = (c*c)*sd
+    delta_P = delta_f(P, t)
+    Ar = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    return Ar
+
+#tangential acceleration due to ring viscosity
+def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vt, delta_r):
+    w = vt/r
+    delta_w = delta_f(w, t)
+    dw_dr = df_dr(delta_w, delta_r)
+    #viscous pseudo-pressure
+    P = (-shear_viscosity*sd)*r*dw_dr
+    delta_P = delta_f(P, t)
+    At = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    return At
+
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
 def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
     #wrap ring around in longitude
@@ -165,13 +158,15 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
     #radial acceleration due to streamline gravity
     if (G_ring > 0.0):
         Ar += ring_gravity(lw, G_ring, rw, tw)
-    #radial acceleration due to streamline pressure
-    if (c > 0.0):
-        Ar += ring_pressure(c, lw, rw)
-    #tangential acceleration due to viscosity
-    if (shear_viscosity > 0.0):
-        vtw = wrap_ring(vt, longitude=False)
-        At += ring_viscosity(shear_viscosity, lw, rw, tw, vtw)
+    #radial acceleration due to streamline pressure and viscosity
+    if ((c > 0.0) or (shear_viscosity > 0.0)):
+        delta_rw = delta_f(rw, tw)
+        sdw = surface_density(lw, delta_rw)
+        if (c > 0.0):
+            Ar += ring_pressure(c, lw, sdw, rw, tw, delta_rw)
+        if (shear_viscosity > 0.0):
+            vtw = wrap_ring(vt, longitude=False)
+            At += ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vtw, delta_rw)
     #drop left and right edges from Ar,At
     Ar = Ar[:, 1:-1]
     At = At[:, 1:-1]
@@ -312,7 +307,8 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    sd = surface_density(lambda0, r, t)
+    delta_r = delta_f(r, t)
+    sd = surface_density(lambda0, delta_r)
     G = 1.0
     c = (Q_ring*np.pi*G*sd/Omg).mean()
     
