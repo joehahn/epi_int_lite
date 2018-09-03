@@ -36,12 +36,13 @@ Rp = 0.5
 J2 = 0.01
 
 #choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
+#    'adeda':0.2263         #I =  0.000747687442324 at fixed point
 #    'adeda':0.2263         #I =  0.000738030178988 at fixed point
-#    'adeda':0.250         #I =  0.0241684224942
+#    'adeda':0.250          #I =  0.0241684224942
 initial_orbits = {
     'shape':'eccentric',
-    'e':5.0e-3,
-    'adeda':0.2263
+    'e':0.005,
+    'adeda':0.226319645833
 }
 
 #output folder
