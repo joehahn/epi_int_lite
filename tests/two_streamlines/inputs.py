@@ -23,7 +23,7 @@ radial_width = 1.0e-3
 total_ring_mass = 5.0e-9
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity
-G_ring = 1.0
+G_ring = -1.0
 
 #ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
 #shear_viscosity = 3.0e-13#...da=0.0018 and hair=-0.06 rad at t=10x10^4 orbits
