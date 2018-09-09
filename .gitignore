@@ -10,3 +10,9 @@ tests/unperturbed/helper_fns.pyc
 tests/unperturbed/.ipynb_checkpoints/check_orbits-checkpoint.ipynb
 tests/unperturbed/helper_fns.pyc
 tests/equilibrium/ring_mass_1.5e-10/helper_fns.pyc
+tests/libration/ring_mass_1.5e-10/helper_fns.pyc
+tests/libration/ring_mass_1.5e-9/helper_fns.pyc
+tests/libration/ring_mass_1.5e-8/helper_fns.pyc
+tests/libration/ring_mass_5.0e-10/helper_fns.pyc
+tests/libration/ring_mass_5.0e-9/helper_fns.pyc
+tests/libration/ring_mass_5.0e-8/helper_fns.pyc
