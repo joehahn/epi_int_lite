@@ -75,7 +75,7 @@ Then navigate to another folder and simulate a somewhat higher-mass ringlet:
     ./epi_int_lite.py
 
 Then repeat the above for the remaining ring_mass_* folders, this generates all the output
-the is needed by a Jupyter notebook that will compare simulation output to theory. To see that
+the is needed by the Jupyter notebook that will compare simulation output to theory. To see that
 comparison, navigate to the tests/libration folder and start Jupyter:
 
     cd tests/libration
@@ -97,11 +97,11 @@ and execute the following to view those animations:
 
 Also check out the remaining tests, their notebooks, and their animations.
 
-Doo keep in mind that epi_int_lite is still under development
-and is evolving. So if any of my code tweaks alter epi_int_lite's input or output, then either
+When attempting to run those tests, keep in mind that epi_int_lite is still under development
+and is evolving. So if any of my code tweaks alter epi_int_lite's expected input or output, then either
 ./epi_int_lite.py will fail, or a notebook will fail to read its output. This just means that the
 particular test that you are looking at is out of sync with the source, and that that particular
-test's input.py or notebook needs additional debugging. If so, send me an email
+test's input.py or notebook needs to be tweaked. If so, send me an email
 and I'll eventually get that test debugged and this repo updated.
 
 
