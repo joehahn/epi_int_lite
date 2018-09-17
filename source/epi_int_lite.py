@@ -8,10 +8,6 @@
 #The majority of this code was written while drinking and singing at
 #the Water Tank karaoke bar in northwest Austin TX, so buyer beware.
 
-#start time
-import time as tm
-time_start = tm.time()
-
 #read input parameters
 import numpy as np
 execfile('inputs.py')
@@ -39,6 +35,8 @@ r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particle
 timestep = 0
 number_of_outputs = 0
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
+import time as tm
+clock_start = tm.time()
 
 #evolve system...this largely follows Chamber's (1993) 2nd order drift-kick scheme but assumes
 #the central mass has negligable motion about system's center-of-mass ie the ring is nearly
@@ -67,13 +65,15 @@ while (number_of_outputs < total_number_of_outputs):
     number_of_outputs += 1
     rz, tz, vrz, vtz, timestepz = \
         store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep)
+    run_time_min = (tm.time() - clock_start)/60.0
+    eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
     if (20*number_of_outputs%total_number_of_outputs == 0):
         print 'time = ' + str(timestep*dt) + \
             '    number of outputs = ' + str(number_of_outputs) + \
-            '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi))
+            '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi)) + \
+            '    eta (minutes) = ', eta_min
 
 #save results
 timez = np.array(timestepz)*dt
 save_output(rz, tz, vrz, vtz, timez, lambda0, output_folder)
-time_stop = tm.time()
-print 'execution time (minutes) = ', (time_stop - time_start)/60.0
+print 'execution time (minutes) = ', (tm.time() - clock_start)/60.0
