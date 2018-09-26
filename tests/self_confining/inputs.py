@@ -17,7 +17,7 @@ timesteps_per_output = 20000
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
-radial_width = 1.0e-3
+radial_width = 0.0005
 
 #total ring mass
 total_ring_mass = 1.5e-09
@@ -39,7 +39,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,
-    'adeda':0.2263
+    'adeda':0.056575
 }
 
 #output folder
