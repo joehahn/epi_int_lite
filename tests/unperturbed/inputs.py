@@ -6,15 +6,15 @@
 #
 #define input input parameters
 
-#set number of streamlins and particles per streamline
-number_of_streamlines = 15
-particles_per_streamline = 1
+#set number of streamlins and particles per streamline (minumum is 3)
+number_of_streamlines = 51
+particles_per_streamline = 3
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
-timesteps_per_output = 2500
-total_number_of_outputs = 640
+timesteps_per_output = 3150
+total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
 radial_width = 0.1
@@ -35,10 +35,11 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.02
 
-#choose initial orbits
-initial_orbits = 'log-e'
-initial_e = (2.0e-8, 2.0e-2)
-initial_q = 0.0
+#choose ringlet's initial orbits
+initial_orbits = {
+    'shape':'log-e',
+    'e':(1.0e-8, 1.0e-2),
+}
 
 #output folder
 output_folder = 'output'
