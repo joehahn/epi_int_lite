@@ -1,0 +1,12 @@
+compute-b28-23.deepthought2.umd.edu
+Wed Oct 24 10:14:16 EDT 2018
+/lustre/lyx12311/epi_int_lite/runs/eccentricity/0.002
+JOBID 12275218
+JOB_NAME submit.csh
+SUBMIT_DIR /lustre/lyx12311/epi_int_lite/runs/eccentricity/0.002
+JOB_NODELIST compute-b28-23
+SUBMIT_HOST login-1.deepthought2.umd.edu
+JOB_NUM_NODES 1
+CPUS_ON_NODE 1
+NTASKS 1
+outputFile: File exists.
