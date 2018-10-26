@@ -44,6 +44,7 @@ then open a new terminal and check your work:
 4 Now install additional python libraries...you might (or might not) want to bump up the version numbers
 that I used:
 
+    conda install -y cryptography==2.3.1
     conda install -y ipython==5.3.0
     conda install -y pandas==0.23.4
     conda install -y matplotlib==2.2.3
