@@ -1,0 +1,11 @@
+compute-b27-39.deepthought2.umd.edu
+Fri Nov  2 10:30:47 EDT 2018
+/lustre/lyx12311/epi_int_lite/runs/epwp/2_3
+JOBID 12311081
+JOB_NAME submit.csh
+SUBMIT_DIR /lustre/lyx12311/epi_int_lite/runs/epwp/2_3
+JOB_NODELIST compute-b27-39
+SUBMIT_HOST login-1.deepthought2.umd.edu
+JOB_NUM_NODES 1
+CPUS_ON_NODE 1
+NTASKS 1
