@@ -269,14 +269,11 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         a_list.append(np.zeros(particles_per_streamline) + sma)
     a = np.array(a_list)
     e = np.zeros_like(a)
+    wt = np.zeros_like(a)
     #particles anomalies are uniformly spaced
     M_streamline = np.linspace(-np.pi, np.pi, num=particles_per_streamline, endpoint=False)
     M_list = [M_streamline]*number_of_streamlines
     M = np.array(M_list)
-    #tweak longitude of periapse away from zero so that any eccentric streamlines are closed loops
-    Omg = Omega(J2, Rp, a)
-    Kap = Kappa(J2, Rp, a)
-    wt = -(Omg/Kap - 1)*M
     
     #modify initial orbits as needed
     if (initial_orbits['shape'] == 'circular'):
@@ -299,6 +296,11 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         e_init = initial_orbits['e']
         for idx in range(number_of_streamlines):
             e[idx] += np.exp( np.random.uniform(low=np.log(e_init[0]), high=np.log(e_init[1])) )
+    
+    #tweak longitude of periapse away from common value so that eccentric streamlines are closed loops
+    Omg = Omega(J2, Rp, a)
+    Kap = Kappa(J2, Rp, a)
+    wt = wt - (Omg/Kap - 1)*M
     
     #lambda0=streamline mass-per-lenth
     mass_per_streamline = total_ring_mass/number_of_streamlines
