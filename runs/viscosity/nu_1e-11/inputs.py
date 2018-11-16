@@ -40,7 +40,7 @@ initial_orbits = {
     'shape':'eccentric',
     'e':0.0045,
     'e_prime':0.05,
-    'w_prime':0.15,
+    'w_prime':0.12,
 }
 
 #output folder
