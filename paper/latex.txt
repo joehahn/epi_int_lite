@@ -1,0 +1,21 @@
+To install latex and compile paper:
+
+1 Download latex (the following is for mac laptop):
+
+    wget http://mirror.hmc.edu/ctan/systems/mac/mactex/mactex-20180417.pkg
+
+and click to install.
+
+2 download and install aastex:
+
+    wget https://2modf33kux3n19iucb17y5dj-wpengine.netdna-ssl.com/wp-content/uploads/2018/08/aastexv6.2.tar.gz
+    gunzip aastexv6.2.tar.gz
+    tar -xvf aastexv6.2.tar
+    cp V62/aastex62.cls .
+    rm aastexv6.2.tar
+    rm mactex-20180417.pkg
+    rm -rf V62
+
+3 compile paper
+
+    pdflatex self_confining_ringlets.tex

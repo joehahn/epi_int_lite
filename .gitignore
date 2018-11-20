@@ -4,6 +4,11 @@ private
 */*.ipynb*
 */*/.ipynb_checkpoints
 */*/.ipynb_checkpoints/*.*
+*.aux
+*.dvi
+*.log
+.DS_Store
+paper/.DS_Store
 source/helper_fns.pyc
 tests/unperturbed/.ipynb_checkpoints/check_orbits-checkpoint.ipynb
 tests/unperturbed/helper_fns.pyc
