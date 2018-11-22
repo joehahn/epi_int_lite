@@ -15,47 +15,29 @@ integrator) that is used simulate the dynamical evolution of gravitating rings.
 ### Installation:
 
 
-1 First install Miniconda aka cherry-picked install of Anaconda python. Browse this url and then
-find the Miniconda python installer that is appropriate to your OS:
+1 Install Anaconda python. Browse this url and find the Anaconda python installer that is appropriate to your OS:
 
-    https://repo.continuum.io/miniconda
+    https://repo.anaconda.com/archive
 
-I'm using a MacOSX laptop , and I prefer to code in python 2.7 (and NOT 3.X), with v4.3.21 being
+I'm using a MacOSX laptop , and I prefer to code in python 2.7 (and NOT 3.X), with v5.3.0 being
 the latest version when I first started developing epi_int_lite, and the following
-uses wget to download Miniconda2-4.3.21-MacOSX-x86_64.sh to my laptop:
+uses wget to download Anaconda2-5.3.0-MacOSX-x86_64.sh to my laptop:
 
-    wget https://repo.continuum.io/miniconda/Miniconda2-4.3.21-MacOSX-x86_64.sh
-    chmod +x ./Miniconda2-4.3.21-MacOSX-x86_64.sh
+    wget https://repo.anaconda.com/archive/Anaconda2-5.3.0-MacOSX-x86_64.sh
+    chmod +x ./Anaconda2-5.3.0-MacOSX-x86_64.sh
 
-3 install Anaconda python v4.3.21 into the miniconda2 folder in my top directory:
+2 the following installs v5.3.0 Anaconda python into the anaconda2 folder in my top directory:
 
-    #rm -rf ~/miniconda2
-    ./Miniconda2-4.3.21-MacOSX-x86_64.sh -b -p ~/miniconda2
+    #rm -rf ~/anaconda2
+    ./Anaconda2-5.3.0-MacOSX-x86_64.sh -p ~/anaconda2 -b
     rm Miniconda2-4.3.21-MacOSX-x86_64.sh
 
-3 On my Mac laptop I edit ~/.bash_profile to let my PATH know where Anacoda python is
+3 Set the PYTHON_PATH bash variable to point at python, and check your work:
 
-    export PATH="/Users/joe/miniconda2/bin:$PATH"
+    PYTHON_PATH=~/anaconda2/bin
+    $PYTHON_PATH/python --version
 
-then open a new terminal and check your work:
-
-    echo $(conda --version)
-
-4 Now install additional python libraries...you might (or might not) want to bump up the version numbers
-that I used:
-
-    conda install -y cryptography==2.3.1
-    conda install -y ipython==5.3.0
-    conda install -y pandas==0.23.4
-    conda install -y matplotlib==2.2.3
-    conda install -y seaborn==0.9.0
-    conda install -y jupyter==1.0.0
-
-6 get each of the above packages' version numbers:
-
-    pip freeze
-
-7 Clone this repo:
+4 Clone this repo:
 
     git clone https://github.com/joehahn/epi_int_lite.git
     cd epi_int_lite
@@ -68,7 +50,7 @@ The test detailed here uses epi_int_lite to monitor the libration of six self-gr
 that differ in total mass. To simulate one of those 6 ringlets:
 
     cd tests/libration/ring_mass_1.5e-10
-    ./epi_int_lite.py
+    $PYTHON_PATH/python ./epi_int_lite.py
 
 Then navigate to another folder and simulate a somewhat higher-mass ringlet:
 
