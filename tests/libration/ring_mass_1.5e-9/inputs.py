@@ -43,7 +43,8 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,
-    'adeda':0.280
+    'e_prime':0.280,
+    'w_prime':0.0
 }
 
 #output folder
