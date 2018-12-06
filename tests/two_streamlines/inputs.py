@@ -40,7 +40,8 @@ J2 = 0.01
 initial_orbits = {
     'shape':'circular',
     'e':0.0,
-    'adeda':0.0
+    'e_prime':0.0,
+    'w_prime':0.0
 }
 
 #output folder
