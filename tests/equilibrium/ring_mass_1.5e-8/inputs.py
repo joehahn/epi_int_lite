@@ -35,14 +35,7 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.01
 
-#choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
-#    'adeda':-0.001        #I = 0.0123027500752
-#    'adeda':-0.0078       #I = 0.0066991846477 fixed point
-#    'adeda':0.000         #I = 0.0132502276486
-#    'adeda':0.001         #I = 0.0142023205042
-#    'adeda':0.002         #I = 0.0150964922381
-#    'adeda':0.00345       #I = 0.0164689537311
-#    'adeda':0.050         #I = 0.0617254674082
+#choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,

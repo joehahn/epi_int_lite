@@ -35,7 +35,7 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.01
 
-#choose ringlet's initial orbits...e_prime = dimensionless eccentricity gradient = a*(de/da)
+#choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
     'e':0.005,
