@@ -14,6 +14,7 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.2
 timesteps_per_output = 17000
+timesteps_per_output = 100
 total_number_of_outputs = 200
 
 #ring radial width assuming circular orbits
@@ -35,12 +36,9 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.02
 
-#choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
+#choose ringlet's initial orbits
 initial_orbits = {
-    'shape':'circular',
-    'e':0.0,
-    'e_prime':0.0,
-    'w_prime':0.0
+    'shape':'circular'
 }
 
 #output folder
