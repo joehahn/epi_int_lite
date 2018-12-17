@@ -89,13 +89,13 @@ def surface_density(lambda0, dr):
     sd = lambda0/dr
     return sd
 
-#calculate radial distance between exterior streamline and interior streamline
+#calculate (radial distance between exterior streamline and interior streamline)/2
 def delta_f(f, t):
     #in ring interior
-    f_plus  = interpolate_fn(t, f, -1)
-    f_minus = interpolate_fn(t, f,  1)
+    f_plus  = interpolate_fn(t, f,  1)
+    f_minus = interpolate_fn(t, f, -1)
     if (f.shape[0] > 2):
-        df = f_plus - f_minus
+        df = (f_plus - f_minus)/2
     else:
         df = np.zeros_like(f)
     #along ring edges
@@ -306,9 +306,9 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
     lambda0 = mass_per_streamline/(twopi*a)
-    if (total_ring_mass > 0):
-        print 'this lambda-check should equal one = ', \
-            (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
+    #if (total_ring_mass > 0):
+    #    print 'this lambda-check should equal one = ', \
+    #        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
     
     #calculate ring sound speed c
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
