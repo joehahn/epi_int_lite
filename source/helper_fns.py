@@ -310,17 +310,21 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #    print 'this lambda-check should equal one = ', \
     #        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
     
-    #calculate ring sound speed c
+    #ring coordinates
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    delta_r = delta_f(r, t)
-    sd = surface_density(lambda0, delta_r)
-    G = 1.0
-    c = (Q_ring*np.pi*G*sd/Omg).mean()
     
-    #convert elements to coordinates
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
+    #ring sound speed c
+    c = 0.0
+    if (Q_ring > 0.0):
+        delta_r = delta_f(r, t)
+        sd = surface_density(lambda0, delta_r)
+        G = 1.0
+        c = (Q_ring*np.pi*G*sd/Omg).mean()
+    
+    ##convert elements to coordinates
+    #Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
     #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar) #causes jitter in librating ringlets
-    r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     
     return r, t, vr, vt, lambda0, c
 

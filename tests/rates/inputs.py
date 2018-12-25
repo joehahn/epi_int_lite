@@ -8,7 +8,7 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 11
-particles_per_streamline = 3
+particles_per_streamline = 1
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
@@ -42,7 +42,7 @@ J2 = 0.02
 
 #choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
 initial_orbits = {
-    'shape':'log-q',
+    'shape':'log-e',
     'e':(1.0e-6, 1.0e-2),
 }
 
