@@ -49,7 +49,7 @@
 
 \begin{document}
 
-\title{Self Confinement of Narrow Eccentric Ringlets}
+\title{Self--Confinement of Narrow Eccentric Ringlets}
 
 \correspondingauthor{Joseph M. Hahn}
 \email{jhahn@spacescience.org}
@@ -82,13 +82,35 @@ Abstractity abstract stract...
 
 \section{Introduction} \label{sec:intro}
 
-Explain why the narrowness of narrow eccentric ringlets is mysterious, as is the sharpness
-of their edges.
+Narrow eccentric ringlets have several properties that are both interesting and
+not well understood: they have very sharp edges,
+they have sizable eccentricity gradients, and the mechanism that
+prevents their radial spreading due to ring viscosity is still of debate.
+Prevailing ringlet confinement mechanisms include: and self-confinement (ref),
+unseen shepherd satellites (reference), periapse pinch (reference), and self gravity (Chiang).
+The following uses N-body simulations to investigate whether narrow
+eccentric ringlets might be self-confining.
 
+\section{Ringlet confinement mechanisms} \label{sec:confinement}
+
+This section explains the pros and cons of the various ringlet confinement mechanisms,
+and motives the possibility that ringlets are self confining. That possibility
+is then investigated via numerical simulations that use the epi\_int\_lite N-body integrator.
 
 \section{Epi\_int\_lite} \label{sec:epi_int_lite}
 
-Detail epi\_int\_lite
+epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
+simulate the outer edge of Saturn's B ring that shaped by an $m=2$ outer Lindblad resonance
+with satellite Mimas (ref). Although the epi\_int integrator was well-suited to evolve the
+B ring edge over the $10^4$ orbits needed to investigate the B ring-edge's orbital evolution,
+epi\_int could not reliably evolve the much slower radial spreading of an initially narrow
+ringlet. epi\_int is a drift-kick integrator, and such integrators alternate between
+advancing a particle along an unperturbed trajectory (which is the drift step) followed
+by a velocity kick that is due to perturbing forces. 
+
+To advance a particle along its unperturbed
+trajectory around an oblate planet, the orbit elements of Longaretti et al (19XX) was used,
+which was correct to order 
 
 \section{Floats} \label{sec:floats}
 
