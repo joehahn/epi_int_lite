@@ -86,158 +86,47 @@ Narrow eccentric ringlets have several properties that are both interesting and
 not well understood: they have very sharp edges,
 they have sizable eccentricity gradients, and the mechanism that
 prevents their radial spreading due to ring viscosity is still of debate.
-Prevailing ringlet confinement mechanisms include: and self-confinement (ref),
-unseen shepherd satellites (reference), periapse pinch (reference), and self gravity (Chiang).
+Prevailing ringlet confinement mechanisms include: self-confinement (ref),
+unseen shepherd satellites (reference), periapse pinch (ref), and self gravity (ref).
 The following uses N-body simulations to investigate whether narrow
 eccentric ringlets might be self-confining.
 
 \section{Ringlet confinement mechanisms} \label{sec:confinement}
 
-This section explains the pros and cons of the various ringlet confinement mechanisms,
-and motives the possibility that ringlets are self confining. That possibility
+This section will explain the pros and cons of the various ringlet confinement mechanisms,
+and then motive the possibility that ringlets are self confining. That possibility
 is then investigated via numerical simulations that use the epi\_int\_lite N-body integrator.
 
 \section{Epi\_int\_lite} \label{sec:epi_int_lite}
 
-epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
-simulate the outer edge of Saturn's B ring that shaped by an $m=2$ outer Lindblad resonance
+Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
+simulate the outer edge of Saturn's B ring that is sculpted by a Lindblad resonance
 with satellite Mimas (ref). Although the epi\_int integrator was well-suited to evolve the
-B ring edge over the $10^4$ orbits needed to investigate the B ring-edge's orbital evolution,
-epi\_int could not reliably evolve the much slower radial spreading of an initially narrow
-ringlet. epi\_int is a drift-kick integrator, and such integrators alternate between
-advancing a particle along an unperturbed trajectory (which is the drift step) followed
-by a velocity kick that is due to perturbing forces. 
+B ring edge over the $10^4$ orbits that were needed to study the B ring-edge's orbital evolution,
+that code was unable evolve with sufficient accuracy the much slower viscous
+radial spreading experienced by an initially narrow ringlet, and that inability
+was traced to epi\_int's drift step. 
 
-To advance a particle along its unperturbed
-trajectory around an oblate planet, the orbit elements of Longaretti et al (19XX) was used,
-which was correct to order 
+Epi\_int is a drift-kick integrator, and such integrators alternate between drifting
+(ie advancing) a particle along its unperturbed trajectory, with each drift step followed
+by a velocity kick that accounts for all other perturbing forces such as ring self gravity
+and ring viscosity. Drifting a particle efficiently along its unperturbed trajectory around
+an oblate planet requires an analytic
+expression for that trajectory, and epi\_int utilized the Longaretti et al (19XX) solution
+that requires, at every timestep, the conversion of the particle's spatial coordinates
+and velocities into geometric orbit elements, with the drifted particle's
+orbit elements then converted back to spatial coordinates every timestep. That conversion is accurate
+to order ${\cal O}(e^2)$ where $e$ is the particle's geometric eccentricity, and the
+conversion from spatial coordinates to orbit elements and back is not reversible, which
+means that the drifted particle's trajectory acquires an ${\cal O}(e^3)$ error
+every timestep. Although the accumulation of this error was to slow to significantly impact
+epi\_int's B ring simulations spanninh $10^4$ orbit periods, this error does preclude 
+using that code to simulate the much slower viscous evolution of ringlets over $10^6$ orbit periods.
 
-\section{Floats} \label{sec:floats}
-
-Floats are non-text items that generally can not be split over a page.
-They also have captions and can be numbered for reference.  Primarily these
-are figures and tables but authors can define their own. \latex\ tries to
-place a float where indicated in the manuscript but will move it later if
-there is not enough room at that location, hence the term ``float''.
-
-Authors are encouraged to embed their tables and figures within the text as
-they are mentioned.  Please do not place the figures and text at the end of
-the article as was the old practice.  Editors and the vast majority of
-referees find it much easier to read a manuscript with embedded figures and
-tables.
-
-Depending on the number of floats and the particular amount of text and
-equations present in a manuscript the ultimate location of any specific
-float can be hard to predict prior to compilation. It is recommended that
-authors textbf{not} spend significant time trying to get float placement
-perfect for peer review.  The AAS Journal's publisher has sophisticated
-typesetting software that will produce the optimal layout during
-production.
-
-Note that authors of Research Notes are only allowed one float, either one
-table or one figure.
-
-\startlongtable
-\begin{deluxetable}{c|cc}
-\tablecaption{ApJ costs from 1991 to 2013\tablenotemark{a} \label{tab:table}}
-\tablehead{
-\colhead{Year} & \colhead{Subscription} & \colhead{Publication} \\
-\colhead{} & \colhead{cost} & \colhead{charges\tablenotemark{b}}\\
-\colhead{} & \colhead{(\$)} & \colhead{(\$/page)}
-}
-\colnumbers
-\startdata
-1991 & 600 & 100 \\
-1992 & 650 & 105 \\
-1993 & 550 & 103 \\
-1994 & 450 & 110 \\
-1995 & 410 & 112 \\
-1996 & 400 & 114 \\
-1997 & 525 & 115 \\
-1998 & 590 & 116 \\
-1999 & 575 & 115 \\
-2000 & 450 & 103 \\
-2001 & 490 &  90 \\
-2002 & 500 &  88 \\
-2003 & 450 &  90 \\
-2004 & 460 &  88 \\
-2005 & 440 &  79 \\
-2006 & 350 &  77 \\
-2007 & 325 &  70 \\
-2008 & 320 &  65 \\
-2009 & 190 &  68 \\
-2010 & 280 &  70 \\
-2011 & 275 &  68 \\
-2012 & 150 &  56 \\
-2013 & 140 &  55 \\
-\enddata
-\tablenotetext{a}{Adjusted for inflation}
-\tablenotetext{b}{Accounts for the change from page charges to digital quanta in April, 2011}
-\tablecomments{Note that {\tt \string \colnumbers} does not work with the 
-vertical line alignment token. If you want vertical lines in the headers you
-can not use this command at this time.}
-\end{deluxetable}
-
-For authors that do want to take the time to optimize the locations of
-their floats there are some techniques that can be used.  The simplest
-solution is to placing a float earlier in the text to get the position
-right but this option will break down if the manuscript is altered, see
-Table \ref{tab:table}.  A better method is to force \latex\ to place a
-float in a general area with the use of the optional {\tt\string [placement
-specifier]} parameter for figures and tables. This parameter goes after
-{\tt\string \begin\{figure\}}, {\tt\string \begin\{table\}}, and
-{\tt\string \begin\{deluxetable\}}.  The main arguments the specifier takes
-are ``h'', ``t'', ``b'', and ``!''.  These tell \latex\ to place the float
-\underline{h}ere (or as close as possible to this location as possible), at
-the \underline{t}op of the page, and at the \underline{b}ottom of the page.
-The last argument, ``!'', tells \latex\ to override its internal method of
-calculating the float position.  A sequence of rules can be created by
-using multiple arguments.  For example, {\tt\string \begin\{figure\}[htb!]}
-tells \latex\ to try the current location first, then the top of the page
-and finally the bottom of the page without regard to what it thinks the
-proper position should be.  Many of the tables and figures in this article
-use a placement specifier to set their positions.
-
-Note that the \latex\ {\tt\string tabular} environment is not a float.  Only
-when a {\tt\string tabular} is surrounded by {\tt\string\begin\{table\}} ...
-{\tt\string\end\{table\}} is it a true float and the rules and suggestions
-above apply.
-
-In AASTeX v6.2 all deluxetables are float tables and thus if they are
-longer than a page will spill off the bottom. Long deluxetables should
-begin with the {\tt\string\startlongtable} command. This initiates a
-longtable environment.  Authors might have to use {\tt\string\clearpage} to
-isolate a long table or optimally place it within the surrounding text.
-
-\begin{deluxetable*}{ccCrlc}[b!]
-\tablecaption{Column math mode in an observation log \label{tab:mathmode}}
-\tablecolumns{6}
-\tablenum{2}
-\tablewidth{0pt}
-\tablehead{
-\colhead{UT start time\tablenotemark{a}} &
-\colhead{MJD start time\tablenotemark{a}} &
-\colhead{Seeing} & \colhead{Filter} & \colhead{Inst.} \\
-\colhead{(YYYY-mm-dd)} & \colhead{(d)} &
-\colhead{(arcsec)} & \colhead{} & \colhead{}
-}
-\startdata
-2012-03-26 & 56012.997 & \sim 0.\arcsec5 & H$\alpha$ & NOT \\
-2012-03-27 & 56013.944 & 1.\arcsec5 & grism & SMARTS \\
-2012-03-28 & 56014.984 & \nodata & F814M & HST \\
-2012-03-30 & 56016.978 & 1.\arcsec5\pm0.25 & B\&C & Bok \\
-\enddata
-\tablenotetext{a}{At exposure start.}
-\tablecomments{The ``C'' command column identifier in the 3 column turns on
-math mode for that specific column. One could do the same for the next
-column so that dollar signs would not be needed for H$\alpha$
-but then all the other text would also be in math mode and thus typeset
-in Latin Modern math and you will need to put it back to Roman by hand.
-Note that if you do change this column to math mode the dollar signs already
-present will not cause a problem. Table \ref{tab:mathmode} is published 
-in its entirety in the machine readable format.  A portion is
-shown here for guidance regarding its form and content.}
-\end{deluxetable*}
+To avoid this accumulation of drift errors, Section X.Y derives an alternate set of geometric
+orbit elements that describe the particle's unperturbed motion around an oblate planet. However
+the conversion of spatial coordinates to the new geometric orbit elements is exact
+and reversible, and so epi\_int\_lite's drift step is not a significant source of error.
 
 \subsection{Tables} \label{subsec:tables}
 
