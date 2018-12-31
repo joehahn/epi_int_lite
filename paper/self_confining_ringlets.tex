@@ -85,30 +85,30 @@ Abstractity abstract stract...
 Narrow eccentric ringlets have several properties that are both interesting and
 not well understood: they have very sharp edges,
 they have sizable eccentricity gradients, and the mechanism that
-prevents their radial spreading due to ring viscosity is still of debate.
-Prevailing ringlet confinement mechanisms include: self-confinement (ref),
-unseen shepherd satellites (reference), periapse pinch (ref), and self gravity (ref).
-The following uses N-body simulations to investigate whether narrow
+prevents their radial spreading due to ring viscosity is of debate.
+Prevailing ringlet confinement mechanisms include: 
+unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
+self-confinement (ref). The following uses N-body simulations to investigate whether narrow
 eccentric ringlets might be self-confining.
 
 \section{Ringlet confinement mechanisms} \label{sec:confinement}
 
 This section will explain the pros and cons of the various ringlet confinement mechanisms,
-and then motive the possibility that ringlets are self confining. That possibility
+and then motivate the possibility that ringlets are self confining. That possibility
 is then investigated via numerical simulations that use the epi\_int\_lite N-body integrator.
 
 \section{Epi\_int\_lite} \label{sec:epi_int_lite}
 
 Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
-simulate the outer edge of Saturn's B ring that is sculpted by a Lindblad resonance
-with satellite Mimas (ref). Although the epi\_int integrator was well-suited to evolve the
-B ring edge over the $10^4$ orbits that were needed to study the B ring-edge's orbital evolution,
-that code was unable evolve with sufficient accuracy the much slower viscous
-radial spreading experienced by an initially narrow ringlet, and that inability
-was traced to epi\_int's drift step. 
+simulate the outer edge of Saturn's B ring that is sculpted by resonant perturbations
+from satellite Mimas (ref). Although the epi\_int integrator is well-suited to evolve the
+B ring edge over the $10^4$ orbits needed to monitor the B ring's response to Mimas,
+that code was unable evolve with sufficient accuracy over the $10^6$ orbits needed
+to investigate a viscous ringlet's slow radial spreading, with that inability
+traced to epi\_int's drift step. 
 
 Epi\_int is a drift-kick integrator, and such integrators alternate between drifting
-(ie advancing) a particle along its unperturbed trajectory, with each drift step followed
+(ie advancing) a particle along its unperturbed trajectory, with each drift followed
 by a velocity kick that accounts for all other perturbing forces such as ring self gravity
 and ring viscosity. Drifting a particle efficiently along its unperturbed trajectory around
 an oblate planet requires an analytic
@@ -116,15 +116,15 @@ expression for that trajectory, and epi\_int utilized the Longaretti et al (19XX
 that requires, at every timestep, the conversion of the particle's spatial coordinates
 and velocities into geometric orbit elements, with the drifted particle's
 orbit elements then converted back to spatial coordinates every timestep. That conversion is accurate
-to order ${\cal O}(e^2)$ where $e$ is the particle's geometric eccentricity, and the
+to order ${\cal O}(e^2)$ where $e$ is the particle's geometric eccentricity, but the
 conversion from spatial coordinates to orbit elements and back is not reversible, which
 means that the drifted particle's trajectory acquires an ${\cal O}(e^3)$ error
-every timestep. Although the accumulation of this error was to slow to significantly impact
-epi\_int's B ring simulations spanninh $10^4$ orbit periods, this error does preclude 
+every timestep. Although the accumulation of this error was too slow to significantly impact
+epi\_int's B ring simulations spanning $10^4$ orbit periods, this error does preclude 
 using that code to simulate the much slower viscous evolution of ringlets over $10^6$ orbit periods.
 
 To avoid this accumulation of drift errors, Section X.Y derives an alternate set of geometric
-orbit elements that describe the particle's unperturbed motion around an oblate planet. However
+orbit elements that describe the particle's unperturbed motion around an oblate planet. Note though
 the conversion of spatial coordinates to the new geometric orbit elements is exact
 and reversible, and so epi\_int\_lite's drift step is not a significant source of error. 
 
