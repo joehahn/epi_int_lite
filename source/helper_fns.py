@@ -287,6 +287,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     if (initial_orbits['shape'] == 'breathing mode'):
         e_init = initial_orbits['e']
         e[:] = e_init
+        wt = M.copy()
         M[:] = 0.0
     if (initial_orbits['shape'] == 'log-e'):
         #streamlines' e is lograthmically distributed between initial_e[0] & initial_e[1] with random M,wt

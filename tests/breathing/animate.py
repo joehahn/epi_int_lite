@@ -41,8 +41,8 @@ def xyt(i):
     x = tp/np.pi
     y = rp - 1
     y_mid = y[len(y)/2].copy()
-    for ys in y:
-        ys -= y_mid
+    #for ys in y:
+    #    ys -= y_mid
     tm = times[i]/(2.0*np.pi)
     return (x, y, tm)
 
@@ -62,8 +62,8 @@ def draw(xyt):
 
 #show animation
 rm1 = r - 1.0
-y_rng = (1.1*rm1.min(), 1.1*rm1.max())
-#y_rng = (-1.0e-4, 1.1e-3)
+#y_rng = (1.1*rm1.min(), 1.1*rm1.max())
+y_rng = (-2.0e-3, 3.0e-3)
 fig = plt.figure()
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1, 1), ylim=y_rng, 
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
@@ -74,5 +74,5 @@ lines = [ax.plot([],[], 'o-', markersize=3, color=colors[idx], linewidth=1)[0]
     for idx in range(number_of_streamlines)]
 for line in lines:
     line.set_data([],[])
-ani = animation.FuncAnimation(fig, draw, update, interval=1, blit=False, repeat=False)
+ani = animation.FuncAnimation(fig, draw, update, interval=50, blit=False, repeat=False)
 plt.show()
