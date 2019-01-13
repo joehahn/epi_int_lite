@@ -1,0 +1,48 @@
+to profile epi_int_lite:
+
+    python -m cProfile -s tottime epi_int_lite.py > prof.txt
+
+which yields:
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 12240204  172.580    0.000  260.602    0.000 numeric.py:1318(roll)
+  2040034   72.759    0.000   72.759    0.000 helper_fns.py:68(lagrange_poly_fit)
+ 12240204   33.490    0.000   51.714    0.000 numeric.py:1468(normalize_axis_tuple)
+  2040034   17.721    0.000  351.082    0.000 helper_fns.py:53(interpolate_fn)
+ 40800681   12.261    0.000   12.261    0.000 {zip}
+   120002   10.656    0.000  219.587    0.002 helper_fns.py:111(ring_gravity)
+ 36720612    8.924    0.000   13.269    0.000 numeric.py:1515(<genexpr>)
+   120000    7.748    0.000   14.887    0.000 helper_fns.py:202(coords2elem)
+   360002    7.580    0.000    7.580    0.000 helper_fns.py:16(Kappa)
+ 12240214    6.197    0.000    8.030    0.000 numeric.py:504(asanyarray)
+   120001    5.824    0.000   18.625    0.000 helper_fns.py:185(elem2coords)
+   240002    5.490    0.000    5.490    0.000 helper_fns.py:8(Omega)
+ 12600212    5.314    0.000    5.314    0.000 {numpy.core.multiarray.empty_like}
+ 12240206    4.955    0.000    4.955    0.000 {operator.index}
+ 12240204    4.933    0.000    4.933    0.000 numeric.py:1387(<dictcomp>)
+   360006    4.685    0.000  128.608    0.000 helper_fns.py:93(delta_f)
+   120001    4.525    0.000    6.378    0.000 helper_fns.py:221(sort_particles)
+ 24480408    4.345    0.000    4.345    0.000 {numpy.core.multiarray.normalize_axis_index}
+ 12480369    4.230    0.000    4.230    0.000 {range}
+   240001    3.079    0.000    3.079    0.000 helper_fns.py:28(adjust_angle)
+   120002    2.091    0.000  380.249    0.003 helper_fns.py:176(kick)
+ 12240263    2.071    0.000    2.071    0.000 {method 'items' of 'dict' objects}
+   480008    2.040    0.000    4.254    0.000 helper_fns.py:76(wrap_ring)
+   120002    1.918    0.000  378.158    0.003 helper_fns.py:151(accelerations)
+ 12240293    1.833    0.000    1.833    0.000 {numpy.core.multiarray.array}
+  1320011    1.728    0.000    1.728    0.000 {method 'argsort' of 'numpy.ndarray' objects}
+   120002    1.473    0.000   20.565    0.000 helper_fns.py:121(A_P)
+   480008    1.425    0.000    1.425    0.000 {numpy.core.multiarray.concatenate}
+   120002    1.325    0.000  108.119    0.001 helper_fns.py:140(ring_viscosity)
+        1    1.246    1.246  418.144  418.144 epi_int_lite.py:12(<module>)
+   240004    0.682    0.000    0.682    0.000 helper_fns.py:107(df_dr)
+   360008    0.501    0.000    1.642    0.000 numeric.py:94(zeros_like)
+   360019    0.445    0.000    0.445    0.000 {numpy.core.multiarray.zeros}
+   960046    0.404    0.000    0.404    0.000 {method 'copy' of 'numpy.ndarray' objects}
+   120000    0.403    0.000    2.991    0.000 helper_fns.py:48(drift)
+   960016    0.386    0.000    0.386    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+   360009    0.354    0.000    0.354    0.000 {numpy.core.multiarray.copyto}
+   120002    0.350    0.000    0.350    0.000 helper_fns.py:88(surface_density)
+
+which tells us that that the numpy.roll() method that is called by lagrange_poly_fit(),
+is consuming a huge chunk of cpu time...

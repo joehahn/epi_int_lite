@@ -7,7 +7,7 @@
 #define input input parameters
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 2
+number_of_streamlines = 11
 particles_per_streamline = 61
 number_of_particles = number_of_streamlines*particles_per_streamline
 
