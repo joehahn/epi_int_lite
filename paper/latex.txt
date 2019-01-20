@@ -12,10 +12,13 @@ and click to install.
     gunzip aastexv6.2.tar.gz
     tar -xvf aastexv6.2.tar
     cp V62/aastex62.cls .
+
+
+3 cleanup
+
     rm aastexv6.2.tar
     rm mactex-20180417.pkg
-    rm -rf V62
 
 3 compile paper
 
-    pdflatex self_confining_ringlets.tex
+    pdflatex self_confining_ringlets
