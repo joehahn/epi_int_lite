@@ -48,23 +48,40 @@ def unwrap_angle(angle):
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
+#shift 2D array 1 element to right when n=1 and left when -1, is significantly faster than .roll()
+def sidestep(x, n):
+    Ny, Nx = x.shape
+    if (n > 0):
+        left = x[:,-1].reshape(Ny, 1)
+        right = x[:,0:-1]
+    else:
+        left = x[:, 1:]
+        right = x[:, 0].reshape(Ny, 1)
+    return np.concatenate((left, right), axis=1)
+
+#shift 2D array vertically n rows, is significantly faster than .roll()
+def advance(x, n):
+    lower = x[-n:]
+    upper = x[:-n]
+    return np.concatenate((lower, upper), axis=0)
+
 #use lagrange polynomial to evaluate function f that is evaluated n adjacent
 #streamlines away and sampled at longitude t
 def interpolate_fn(t, f, n, interpolate=True):
     if (interpolate):
-        #t0 = np.roll(t, (-n,  1), axis=(0,1))
-        #t1 = np.roll(t, (-n,  0), axis=(0,1))
-        #t2 = np.roll(t, (-n, -1), axis=(0,1))
-        ax = (0, 1)
-        t1 = np.roll(t,  (-n,  0), axis=ax)
-        t0 = np.roll(t1, ( 0,  1), axis=ax)
-        t2 = np.roll(t1, ( 0, -1), axis=ax)
-        #f0 = np.roll(f, (-n,  1), axis=(0,1))
-        #f1 = np.roll(f, (-n,  0), axis=(0,1))
-        #f2 = np.roll(f, (-n, -1), axis=(0,1))
-        f1 = np.roll(f,  (-n,  0), axis=ax)
-        f0 = np.roll(f1, ( 0,  1), axis=ax)
-        f2 = np.roll(f1, ( 0, -1), axis=ax)
+        #ax = (0, 1)
+        #t1 = np.roll(t,  (-n,  0), axis=ax)
+        #t0 = np.roll(t1, ( 0,  1), axis=ax)
+        #t2 = np.roll(t1, ( 0, -1), axis=ax)
+        #f1 = np.roll(f,  (-n,  0), axis=ax)
+        #f0 = np.roll(f1, ( 0,  1), axis=ax)
+        #f2 = np.roll(f1, ( 0, -1), axis=ax)
+        t1 = advance(t, -n)
+        t0 = sidestep(t1,  1)
+        t2 = sidestep(t1, -1)
+        f1 = advance(f, -n)
+        f0 = sidestep(f1,  1)
+        f2 = sidestep(f1, -1)
         f_n = lagrange_poly_fit(t0, t1, t2, f0, f1, f2, t)
     else:
         #skip lagrange interpolation
