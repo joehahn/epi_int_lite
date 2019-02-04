@@ -90,9 +90,18 @@ def interpolate_fn(t, f, n, interpolate=True):
 
 #fit 2nd order lagrange polynomial to data (x0,y0),(x1,y1),(x2,y2) & interpolate y(x)
 def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
-    l0 = ((x - x1)/(x0 - x1))*((x - x2)/(x0 - x2))
-    l1 = ((x - x0)/(x1 - x0))*((x - x2)/(x1 - x2))
-    l2 = ((x - x0)/(x2 - x0))*((x - x1)/(x2 - x1))
+    #l0 = ((x - x1)/(x0 - x1))*((x - x2)/(x0 - x2))
+    #l1 = ((x - x0)/(x1 - x0))*((x - x2)/(x1 - x2))
+    #l2 = ((x - x0)/(x2 - x0))*((x - x1)/(x2 - x1))
+    dx0 = x - x0
+    dx1 = x - x1
+    dx2 = x - x2
+    dx10 = x1 - x0
+    dx20 = x2 - x0
+    dx21 = x2 - x1
+    l0 =  (dx1*dx2)/(dx10*dx20)
+    l1 = -(dx0*dx2)/(dx10*dx21)
+    l2 =  (dx0*dx1)/(dx20*dx21)
     y = y0*l0 + y1*l1 + y2*l2
     return y
 

@@ -4,32 +4,36 @@ to profile epi_int_lite:
 
 which yields:
 
+execution time (minutes) =  2.90991985003
+         45398450 function calls (45397299 primitive calls) in 174.736 seconds
+
+   Ordered by: internal time
+
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-  2040034   73.430    0.000   73.430    0.000 helper_fns.py:92(lagrange_poly_fit)
- 12720212   25.270    0.000   25.270    0.000 {numpy.core.multiarray.concatenate}
-  8160136   11.590    0.000   29.669    0.000 helper_fns.py:52(sidestep)
-   120002   10.375    0.000   83.632    0.001 helper_fns.py:135(ring_gravity)
-   120000    7.935    0.000   15.239    0.000 helper_fns.py:226(coords2elem)
-   360002    7.808    0.000    7.808    0.000 helper_fns.py:16(Kappa)
-   120001    6.105    0.000   19.502    0.000 helper_fns.py:209(elem2coords)
-   240002    5.604    0.000    5.604    0.000 helper_fns.py:8(Omega)
-  2040034    5.476    0.000  121.132    0.000 helper_fns.py:70(interpolate_fn)
-   120001    4.762    0.000    6.709    0.000 helper_fns.py:245(sort_particles)
-   360006    4.573    0.000   47.791    0.000 helper_fns.py:117(delta_f)
-  4080068    4.301    0.000   12.557    0.000 helper_fns.py:63(advance)
-   240001    3.262    0.000    3.262    0.000 helper_fns.py:28(adjust_angle)
-  9120152    2.778    0.000    2.778    0.000 {method 'reshape' of 'numpy.ndarray' objects}
-   120002    2.134    0.000  150.048    0.001 helper_fns.py:200(kick)
-   480008    1.992    0.000    4.113    0.000 helper_fns.py:100(wrap_ring)
-   120002    1.955    0.000  147.915    0.001 helper_fns.py:175(accelerations)
-  1320011    1.774    0.000    1.774    0.000 {method 'argsort' of 'numpy.ndarray' objects}
-   120002    1.477    0.000    7.037    0.000 helper_fns.py:145(A_P)
-        1    1.378    1.378  189.482  189.482 epi_int_lite.py:12(<module>)
-   120002    1.343    0.000   40.409    0.000 helper_fns.py:164(ring_viscosity)
-   240004    0.703    0.000    0.703    0.000 helper_fns.py:131(df_dr)
-   360008    0.554    0.000    1.780    0.000 numeric.py:94(zeros_like)
-   360019    0.477    0.000    0.477    0.000 {numpy.core.multiarray.zeros}
-   120000    0.420    0.000    3.101    0.000 helper_fns.py:48(drift)
-   960046    0.409    0.000    0.409    0.000 {method 'copy' of 'numpy.ndarray' objects}
-   360009    0.382    0.000    0.382    0.000 {numpy.core.multiarray.copyto}
-   120002    0.370    0.000    0.370    0.000 helper_fns.py:112(surface_density)
+  2040034   68.704    0.000   68.704    0.000 helper_fns.py:92(lagrange_poly_fit)
+ 12720212   23.461    0.000   23.461    0.000 {numpy.core.multiarray.concatenate}
+  8160136   10.828    0.000   27.632    0.000 helper_fns.py:52(sidestep)
+   120002    9.337    0.000   77.408    0.001 helper_fns.py:135(ring_gravity)
+   120000    7.333    0.000   14.008    0.000 helper_fns.py:226(coords2elem)
+   360002    7.275    0.000    7.275    0.000 helper_fns.py:16(Kappa)
+   120001    5.722    0.000   18.093    0.000 helper_fns.py:209(elem2coords)
+   240002    5.214    0.000    5.214    0.000 helper_fns.py:8(Omega)
+  2040034    4.913    0.000  112.776    0.000 helper_fns.py:70(interpolate_fn)
+   120001    4.370    0.000    6.124    0.000 helper_fns.py:245(sort_particles)
+   360006    4.157    0.000   44.511    0.000 helper_fns.py:117(delta_f)
+  4080068    3.909    0.000   11.527    0.000 helper_fns.py:63(advance)
+   240001    2.908    0.000    2.908    0.000 helper_fns.py:28(adjust_angle)
+  9120152    2.457    0.000    2.457    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+   120002    1.775    0.000  138.477    0.001 helper_fns.py:200(kick)
+   480008    1.762    0.000    3.620    0.000 helper_fns.py:100(wrap_ring)
+   120002    1.649    0.000  136.702    0.001 helper_fns.py:175(accelerations)
+  1320011    1.634    0.000    1.634    0.000 {method 'argsort' of 'numpy.ndarray' objects}
+   120002    1.326    0.000    6.524    0.000 helper_fns.py:145(A_P)
+   120002    1.198    0.000   37.602    0.000 helper_fns.py:164(ring_viscosity)
+        1    1.152    1.152  174.736  174.736 epi_int_lite.py:12(<module>)
+   240004    0.653    0.000    0.653    0.000 helper_fns.py:131(df_dr)
+   360008    0.477    0.000    1.565    0.000 numeric.py:94(zeros_like)
+   360019    0.422    0.000    0.422    0.000 {numpy.core.multiarray.zeros}
+   120000    0.388    0.000    2.864    0.000 helper_fns.py:48(drift)
+   960046    0.362    0.000    0.362    0.000 {method 'copy' of 'numpy.ndarray' objects}
+   120002    0.336    0.000    0.336    0.000 helper_fns.py:112(surface_density)
