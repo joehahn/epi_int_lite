@@ -181,34 +181,41 @@ def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vt, delta_r):
     return At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt):
+def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
     lw = wrap_ring(lambda0, longitude=False)
-    Ar = np.zeros_like(rw)
-    At = np.zeros_like(rw)
-    #radial acceleration due to streamline gravity
+    A_normal = 0
+    A_parallel = 0
+    #acceleration due to streamline gravity
     if (G_ring > 0.0):
-        Ar += ring_gravity(lw, G_ring, rw, tw)
-    #radial acceleration due to streamline pressure and viscosity
+        A_normal += ring_gravity(lw, G_ring, rw, tw)
+    #acceleration due to streamline pressure and viscosity
     if ((c > 0.0) or (shear_viscosity > 0.0)):
         delta_rw = delta_f(rw, tw)
         sdw = surface_density(lw, delta_rw)
         if (c > 0.0):
-            Ar += ring_pressure(c, lw, sdw, rw, tw, delta_rw)
+            A_normal += ring_pressure(c, lw, sdw, rw, tw, delta_rw)
         if (shear_viscosity > 0.0):
             vtw = wrap_ring(vt, longitude=False)
-            At += ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vtw, delta_rw)
-    #drop left and right edges from Ar,At
-    Ar = Ar[:, 1:-1]
-    At = At[:, 1:-1]
+            A_parallel += ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vtw, delta_rw)
+    #drop left and right edges from A_normal,A_parallel
+    if (type(A_normal) != int):
+        A_normal = A_normal[:, 1:-1]
+        A_parallel = A_parallel[:, 1:-1]
+    #radial and tangential accelerations
+    v = np.sqrt(vr*vr + vt*vt)
+    vr_over_v = vr/v
+    vt_over_v = vt/v
+    Ar = A_parallel*vr_over_v + A_normal*vt_over_v
+    At = A_parallel*vt_over_v - A_normal*vr_over_v
     return Ar, At
 
 #velocity kicks due to ring gravity and viscosity
 def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt):
     #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
