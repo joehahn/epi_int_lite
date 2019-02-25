@@ -141,14 +141,20 @@ def df_dr(delta_f, delta_r):
     return delta_f/delta_r
 
 #radial acceleration due to ring self-gravity
-def ring_gravity(lambda0, G_ring, r, t):
+def ring_gravity(lambda0, G_ring, r, t, vr, vt):
     two_G_lambda = 2.0*G_ring*lambda0
-    Ar = np.zeros_like(r)
+    Ar = 0
+    At = 0
     Nr, Nt = r.shape
     for shft in range(1, Nr):
         dr = interpolate_fn(t, r, -shft) - r
-        Ar += two_G_lambda/dr
-    return Ar
+        Ag = two_G_lambda/dr
+        vri = interpolate_fn(t, vr, -shft)
+        vti = interpolate_fn(t, vt, -shft)
+        vi = np.sqrt(vri*vri + vti*vti)
+        Ar += Ag*(vti/vi)
+        At -= Ag*(vri/vi)
+    return Ar, At
 
 #acceleration due to pressure P
 def A_P(lambda0, sd, P, t, delta_P, delta_r):
@@ -186,30 +192,33 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt):
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
     lw = wrap_ring(lambda0, longitude=False)
-    A_normal = 0
-    A_parallel = 0
+    Ar = 0
+    At = 0
     #acceleration due to streamline gravity
     if (G_ring > 0.0):
-        A_normal += ring_gravity(lw, G_ring, rw, tw)
+        vrw = wrap_ring(vr, longitude=False)
+        vtw = wrap_ring(vt, longitude=False)
+        A_grav = ring_gravity(lw, G_ring, rw, tw, vrw, vtw)
+        Ar += A_grav[0]
+        At += A_grav[1]
     #acceleration due to streamline pressure and viscosity
     if ((c > 0.0) or (shear_viscosity > 0.0)):
         delta_rw = delta_f(rw, tw)
         sdw = surface_density(lw, delta_rw)
         if (c > 0.0):
-            A_normal += ring_pressure(c, lw, sdw, rw, tw, delta_rw)
+            A_pres = ring_pressure(c, lw, sdw, rw, tw, delta_rw)
+            Ar += A_pres[0]
+            At += A_pres[1]
         if (shear_viscosity > 0.0):
             vtw = wrap_ring(vt, longitude=False)
-            A_parallel += ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vtw, delta_rw)
-    #drop left and right edges from A_normal,A_parallel
-    if (type(A_normal) != int):
-        A_normal = A_normal[:, 1:-1]
-        A_parallel = A_parallel[:, 1:-1]
-    #radial and tangential accelerations
-    v = np.sqrt(vr*vr + vt*vt)
-    vr_over_v = vr/v
-    vt_over_v = vt/v
-    Ar = A_parallel*vr_over_v + A_normal*vt_over_v
-    At = A_parallel*vt_over_v - A_normal*vr_over_v
+            A_visc = ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vtw, delta_rw)
+            Ar += A_visc[0]
+            At += A_visc[1]
+    #drop left and right edges from Ar,At
+    if (type(Ar) != int):
+        Ar = Ar[:, 1:-1]
+    if (type(At) != int):
+        At = At[:, 1:-1]
     return Ar, At
 
 #velocity kicks due to ring gravity and viscosity
