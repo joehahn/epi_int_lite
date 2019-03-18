@@ -22,8 +22,10 @@ radial_width = 1.0e-3
 #total ring mass
 total_ring_mass = 1.5e-9
 
-#ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity
+#ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
+#Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
 G_ring = 1.0
+fast_gravity = False
 
 #ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
 shear_viscosity = -1.0e-11
