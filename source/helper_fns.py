@@ -141,19 +141,26 @@ def df_dr(delta_f, delta_r):
     return delta_f/delta_r
 
 #acceleration due to ring self-gravity
-def ring_gravity(lambda0, G_ring, r, t, vr, vt):
-    two_G_lambda = 2.0*G_ring*lambda0
+def ring_gravity(lambda0, G_ring, r, t, vr, vt, fast_gravity):
+    if  (fast_gravity == True):
+        v = np.sqrt(vr*vr + vt*vt)
+        cos_phi = vt/v
+        sin_phi = vr/v 
     Ar = 0
     At = 0
+    two_G_lambda = 2.0*G_ring*lambda0
     Nr, Nt = r.shape
     for shft in range(1, Nr):
         dr = interpolate_fn(t, r, -shft) - r
         Ag = two_G_lambda/dr
-        vri = interpolate_fn(t, vr, -shft)
-        vti = interpolate_fn(t, vt, -shft)
-        vi = np.sqrt(vri*vri + vti*vti)
-        Ar += Ag*(vti/vi)
-        At -= Ag*(vri/vi)
+        if (fast_gravity == False):
+            vri = interpolate_fn(t, vr, -shft)
+            vti = interpolate_fn(t, vt, -shft)
+            vi = np.sqrt(vri*vri + vti*vti)
+            cos_phi = vti/vi
+            sin_phi = vri/vi
+        Ar += Ag*cos_phi
+        At -= Ag*sin_phi
     return Ar, At
 
 #acceleration due to pressure P
@@ -193,7 +200,7 @@ def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, delta_r):
     return Ar, At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt):
+def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravity):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
@@ -204,7 +211,7 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt):
     At = 0
     #acceleration due to streamline gravity
     if (G_ring > 0.0):
-        A_grav = ring_gravity(lw, G_ring, rw, tw, vrw, vtw)
+        A_grav = ring_gravity(lw, G_ring, rw, tw, vrw, vtw, fast_gravity)
         Ar += A_grav[0]
         At += A_grav[1]
     #acceleration due to streamline pressure and viscosity
@@ -227,9 +234,9 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt):
     return Ar, At
 
 #velocity kicks due to ring gravity and viscosity
-def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt):
+def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt, fast_gravity):
     #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravity)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -361,9 +368,6 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
     lambda0 = mass_per_streamline/(twopi*a)
-    #if (total_ring_mass > 0):
-    #    print 'this lambda-check should equal one = ', \
-    #        (lambda0[:,0]*twopi*a_streamlines).sum()/total_ring_mass
     
     #ring coordinates
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
