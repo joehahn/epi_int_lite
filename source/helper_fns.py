@@ -175,16 +175,20 @@ def A_P(lambda0, sd, P, t, delta_P, delta_r):
     A[-1] = P_outer/lambda0[-1]
     return A
 
-#acceleration due to ring pressure...need to compute Ar,At more precisely...still todo...
-def ring_pressure(c, lambda0, sd, r, t, delta_r):
+#acceleration due to ring pressure
+def ring_pressure(c, lambda0, sd, r, t, vr, vt, v, delta_r):
+    #pressure
     P = (c*c)*sd
     delta_P = delta_f(P, t)
-    Ar = A_P(lambda0, sd, P, t, delta_P, delta_r)
-    At = np.zeros_like(Ar)
+    #acceleration
+    Ap = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    #radial and tangential components
+    Ar =  Ap*(vt/v)
+    At = -Ap*(vr/v)
     return Ar, At
 
 #acceleration due to ring viscosity
-def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, delta_r):
+def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
     w = vt/r
     delta_w = delta_f(w, t)
     dw_dr = df_dr(delta_w, delta_r)
@@ -194,7 +198,6 @@ def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, delta_r):
     #viscous acceleration
     Av = A_P(lambda0, sd, P, t, delta_P, delta_r)
     #radial and tangential components
-    v = np.sqrt(vr*vr + vt*vt)
     Ar = Av*(vr/v)
     At = Av*(vt/v)
     return Ar, At
@@ -206,6 +209,7 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravit
     tw = wrap_ring(t, longitude=True)
     vrw = wrap_ring(vr, longitude=False)
     vtw = wrap_ring(vt, longitude=False)
+    vw = np.sqrt(vrw*vrw + vtw*vtw)
     lw = wrap_ring(lambda0, longitude=False)
     Ar = 0
     At = 0
@@ -219,11 +223,11 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravit
         delta_rw = delta_f(rw, tw)
         sdw = surface_density(lw, delta_rw)
         if (c > 0.0):
-            A_pres = ring_pressure(c, lw, sdw, rw, tw, delta_rw)
+            A_pres = ring_pressure(c, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
             Ar += A_pres[0]
             At += A_pres[1]
         if (shear_viscosity > 0.0):
-            A_visc = ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, delta_rw)
+            A_visc = ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
             Ar += A_visc[0]
             At += A_visc[1]
     #drop left and right edges from Ar,At
