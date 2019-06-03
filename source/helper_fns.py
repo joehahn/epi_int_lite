@@ -152,15 +152,15 @@ def ring_gravity(lambda0, G_ring, r, t, vr, vt, fast_gravity):
     Nr, Nt = r.shape
     for shft in range(1, Nr):
         dr = interpolate_fn(t, r, -shft) - r
-        Ag = two_G_lambda/dr
+        A = two_G_lambda/dr
         if (fast_gravity == False):
             vri = interpolate_fn(t, vr, -shft)
             vti = interpolate_fn(t, vt, -shft)
             vi = np.sqrt(vri*vri + vti*vti)
             cos_phi = vti/vi
             sin_phi = vri/vi
-        Ar += Ag*cos_phi
-        At -= Ag*sin_phi
+        Ar += A*cos_phi
+        At -= A*sin_phi
     return Ar, At
 
 #acceleration due to pressure P
@@ -181,14 +181,14 @@ def ring_pressure(c, lambda0, sd, r, t, vr, vt, v, delta_r):
     P = (c*c)*sd
     delta_P = delta_f(P, t)
     #acceleration
-    Ap = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    A = A_P(lambda0, sd, P, t, delta_P, delta_r)
     #radial and tangential components
-    Ar =  Ap*(vt/v)
-    At = -Ap*(vr/v)
+    Ar =  A*(vt/v)
+    At = -A*(vr/v)
     return Ar, At
 
-#acceleration due to ring viscosity
-def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
+#acceleration due to ring shear viscosity
+def ring_shear_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
     w = vt/r
     delta_w = delta_f(w, t)
     dw_dr = df_dr(delta_w, delta_r)
@@ -196,14 +196,33 @@ def ring_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
     P = (-shear_viscosity*sd)*r*dw_dr
     delta_P = delta_f(P, t)
     #viscous acceleration
-    Av = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    A = A_P(lambda0, sd, P, t, delta_P, delta_r)
     #radial and tangential components
-    Ar = Av*(vr/v)
-    At = Av*(vt/v)
+    Ar = A*(vr/v)
+    At = A*(vt/v)
+    return Ar, At
+
+#acceleration due to ring bulk viscosity
+def ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
+    delta_vr = delta_f(vr, t)
+    dvr_dr = df_dr(delta_vr, delta_r)
+    #viscous pseudo-pressure
+    c0 = bulk_viscosity
+    c1 = bulk_viscosity
+    if (shear_viscosity > 0):
+        c0 += 4.0*shear_viscosity/3.0
+        c1 -= 2.0*shear_viscosity/3.0
+    P = -(c0*sd)*dvr_dr - (c1*sd)*(vr/r)
+    delta_P = delta_f(P, t)
+    #viscous acceleration
+    A = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    #radial and tangential components
+    Ar =  A*(vt/v)
+    At = -A*(vr/v)
     return Ar, At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravity):
+def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
@@ -215,21 +234,25 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravit
     At = 0
     #acceleration due to streamline gravity
     if (G_ring > 0.0):
-        A_grav = ring_gravity(lw, G_ring, rw, tw, vrw, vtw, fast_gravity)
-        Ar += A_grav[0]
-        At += A_grav[1]
+        A = ring_gravity(lw, G_ring, rw, tw, vrw, vtw, fast_gravity)
+        Ar += A[0]
+        At += A[1]
     #acceleration due to streamline pressure and viscosity
     if ((c > 0.0) or (shear_viscosity > 0.0)):
         delta_rw = delta_f(rw, tw)
         sdw = surface_density(lw, delta_rw)
         if (c > 0.0):
-            A_pres = ring_pressure(c, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
-            Ar += A_pres[0]
-            At += A_pres[1]
+            A = ring_pressure(c, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
+            Ar += A[0]
+            At += A[1]
         if (shear_viscosity > 0.0):
-            A_visc = ring_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
-            Ar += A_visc[0]
-            At += A_visc[1]
+            A = ring_shear_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
+            Ar += A[0]
+            At += A[1]
+        if (bulk_viscosity > 0.0):
+            A = ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
+            Ar += A[0]
+            At += A[1]
     #drop left and right edges from Ar,At
     if (type(Ar) != int):
         Ar = Ar[:, 1:-1]
@@ -238,9 +261,9 @@ def accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravit
     return Ar, At
 
 #velocity kicks due to ring gravity and viscosity
-def kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt, fast_gravity):
+def kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity):
     #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, fast_gravity)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -325,7 +348,7 @@ def restore_output(output_folder):
 
 #initialize streamlines
 def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
-    total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp, initial_orbits):
+    total_ring_mass, Q_ring, J2, Rp, initial_orbits):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -383,12 +406,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         sd = surface_density(lambda0, delta_r)
         G = 1.0
         c = (Q_ring*np.pi*G*sd/Omg).mean()
-    
-    ##convert elements to coordinates
-    #Ar, At = accelerations(lambda0, G_ring, shear_viscosity, c, r, t, vt)
-    #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M, Ar=Ar) #causes jitter in librating ringlets
-    #r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
-    
+
     return r, t, vr, vt, lambda0, c
 
 #recompute coordinates in coordinate system that co-rotates with ringlet's middle streamline's peri

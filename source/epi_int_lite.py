@@ -21,6 +21,7 @@ print 'total_ring_mass =', total_ring_mass
 print 'ring gravitation constant =', G_ring
 print 'fast_gravity =', fast_gravity
 print 'shear_viscosity =', shear_viscosity
+print 'bulk_viscosity =', bulk_viscosity
 print "Toomre's Q_ring =", Q_ring
 print 'Rp =', Rp
 print 'J2 =', J2
@@ -30,7 +31,7 @@ print 'output_folder =', output_folder
 #initialize orbits
 from helper_fns import *
 r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particles_per_streamline,
-    radial_width, total_ring_mass, G_ring, Q_ring, shear_viscosity, J2, Rp, initial_orbits)
+    radial_width, total_ring_mass, Q_ring, J2, Rp, initial_orbits)
 
 #prep for main loop
 timestep = 0
@@ -45,7 +46,7 @@ clock_start = tm.time()
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity)
+    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #convert coordinates to elements
@@ -55,17 +56,16 @@ while (number_of_outputs < total_number_of_outputs):
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick velocities
-        vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, dt, fast_gravity)
+        vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity)
         #updates
         timestep += 1
         timesteps_since_output += 1
         #print timestep
     #kick velocities backwards by timestep -dt/2
-    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)
+    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)
     #save output
     number_of_outputs += 1
-    rz, tz, vrz, vtz, timestepz = \
-        store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep)
+    rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep)
     run_time_min = (tm.time() - clock_start)/60.0
     eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
     if (20*number_of_outputs%total_number_of_outputs == 0):
