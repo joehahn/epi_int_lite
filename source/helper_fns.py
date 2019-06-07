@@ -69,13 +69,6 @@ def advance(x, n):
 #streamlines away and sampled at longitude t
 def interpolate_fn(t, f, n, interpolate=True):
     if (interpolate):
-        #ax = (0, 1)
-        #t1 = np.roll(t,  (-n,  0), axis=ax)
-        #t0 = np.roll(t1, ( 0,  1), axis=ax)
-        #t2 = np.roll(t1, ( 0, -1), axis=ax)
-        #f1 = np.roll(f,  (-n,  0), axis=ax)
-        #f0 = np.roll(f1, ( 0,  1), axis=ax)
-        #f2 = np.roll(f1, ( 0, -1), axis=ax)
         t1 = advance(t, -n)
         t0 = sidestep(t1,  1)
         t2 = sidestep(t1, -1)
