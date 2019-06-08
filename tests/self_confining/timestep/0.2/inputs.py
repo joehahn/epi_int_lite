@@ -25,10 +25,13 @@ total_ring_mass = 1.5e-09
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
 G_ring = 1.0
-fast_gravity = False
+fast_gravity = True
 
 #ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
 shear_viscosity = 3.0e-13
+
+#ring kinematic bulk viscosity, set bulk_viscosity < 0 to turn off
+bulk_viscosity = shear_viscosity
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
