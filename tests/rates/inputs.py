@@ -27,22 +27,18 @@ total_ring_mass = 0.0
 G_ring = 1.0
 fast_gravity = False
 
-#ring kinematic shear viscosity, set shear_viscosity < 0 to turn off
+#ring kinematic shear and bulk viscosity, set < 0 to turn off
 shear_viscosity = -1.0
+bulk_viscosity = shear_viscosity
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
 
 #oblateness parameters, set J2=0 to turn off
 Rp = 0.5
-J2 = 0.02
+J2 = 0.01
 
-##choose initial orbits
-#initial_orbits = 'log-e'
-#initial_e = (1.0e-6, 1.0e-2)
-#initial_q = 0.0
-
-#choose ringlet's initial orbits..adeda = eccentricity gradient = a*(de/da)
+#choose ringlet's initial orbits
 initial_orbits = {
     'shape':'log-e',
     'e':(1.0e-6, 1.0e-2),
