@@ -1,4 +1,0 @@
-FILES: {inputs.py}                   # Files to Adjust
-XXXX: {0.05657,0.056575,0.05658}  # Replace XXXX1 w/ these
-YYYY: {-0.005,0.0,0.005}
-
