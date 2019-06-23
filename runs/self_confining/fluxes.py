@@ -23,14 +23,20 @@ def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_visco
     angular_momentum_flux_list = []
     angular_momentum_luminosity_list = []
     for t_idx in range(total_number_of_outputs):
-        Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, rc[t_idx], tc[t_idx], 
-           vrc[t_idx], vtc[t_idx], fast_gravity)
-        angular_momentum_flux = lambdac*rc[t_idx]*At
-        torque_per_particle = angular_momentum_flux*rc[t_idx]/twopi
-        torque_per_particle = torque_per_particle[-1]
+        #compute one-sided acceleration=acceleration of middle streamline due to interior neighbor
+        r_now = rc[t_idx]
+        t_now = tc[t_idx]
+        vr_now = vrc[t_idx]
+        vt_now = vtc[t_idx]
+        Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, r_now, t_now, 
+           vr_now, vt_now, fast_gravity)
+        angular_momentum_flux = lambdac*r_now*At
         angular_momentum_flux = angular_momentum_flux[-1]
         angular_momentum_flux_list += [angular_momentum_flux]
-        angular_momentum_luminosity_list += [torque_per_particle.sum()]
+        #compute one-sided torque
+        delta_ell = twopi*r_now[-1].mean()/particles_per_streamline
+        torque = angular_momentum_flux.sum()*delta_ell
+        angular_momentum_luminosity_list += [torque]
     #convert lists to arrays
     angular_momentum_flux = np.array(angular_momentum_flux_list)
     angular_momentum_luminosity = np.array(angular_momentum_luminosity_list)
@@ -39,7 +45,6 @@ def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_visco
     tc = tc[:, -1, :]
     wtc = wtc[:, -1, :]
     return angular_momentum_flux, angular_momentum_luminosity, rc, tc, wtc
-
 
 #compute energy momentum flux and luminosity
 def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, fast_gravity):
@@ -52,7 +57,7 @@ def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r
     vtc = vt[:, middle_index-1:middle_index+1,:]
     wtc = wt[:, middle_index-1:middle_index+1,:]
     lambdac = lambda0[middle_index-1:middle_index+1,:]
-    #compute angular momentum flux and luminosity
+    #compute energy flux and luminosity
     twopi = 2*np.pi
     energy_flux_list = []
     energy_luminosity_list = []
@@ -61,14 +66,15 @@ def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r
         t_now = tc[t_idx]
         vr_now = vrc[t_idx]
         vt_now = vtc[t_idx]
-        Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, r_now, t_now, vr_now, vt_now, fast_gravity)
+        Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, r_now, t_now, 
+            vr_now, vt_now, fast_gravity)
         energy_flux = lambdac*(Ar*vr_now + At*vt_now)
-        energy_luminosity = energy_flux*twopi*r_now/particles_per_streamline
-        energy_luminosity = energy_luminosity[1]
-        energy_luminosity = energy_luminosity.sum()
         energy_flux = energy_flux[-1]
         energy_flux_list += [energy_flux]
-        energy_luminosity_list += [energy_luminosity]
+        #compute one-sided work
+        delta_ell = twopi*r_now[-1].mean()/particles_per_streamline
+        work = energy_flux.sum()*delta_ell
+        energy_luminosity_list += [work]
     #convert lists to arrays
     energy_flux = np.array(energy_flux_list)
     energy_luminosity = np.array(energy_luminosity_list)
