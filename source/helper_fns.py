@@ -180,39 +180,34 @@ def ring_pressure(c, lambda0, sd, r, t, vr, vt, v, delta_r):
     At = -A*(vr/v)
     return Ar, At
 
-#acceleration due to ring shear viscosity
+#angular acceleration due to ring viscosity
 def ring_shear_viscosity(shear_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
     w = vt/r
     delta_w = delta_f(w, t)
     dw_dr = df_dr(delta_w, delta_r)
     #viscous pseudo-pressure
-    P = (-shear_viscosity*sd)*r*dw_dr
+    P = -(shear_viscosity*sd)*r*dw_dr
     delta_P = delta_f(P, t)
-    #viscous acceleration
-    A = A_P(lambda0, sd, P, t, delta_P, delta_r)
-    #radial and tangential components
-    Ar = A*(vr/v)
-    At = A*(vt/v)
-    return Ar, At
+    #tangential viscous acceleration
+    At = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    return At
 
-#acceleration due to ring bulk viscosity
+#radial acceleration due to ring viscosity
 def ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lambda0, sd, r, t, vr, vt, v, delta_r):
     delta_vr = delta_f(vr, t)
     dvr_dr = df_dr(delta_vr, delta_r)
-    #viscous pseudo-pressure
-    c0 = bulk_viscosity
-    c1 = bulk_viscosity
+    #viscosity coefficients
+    nu_1 = bulk_viscosity
+    nu_2 = bulk_viscosity
     if (shear_viscosity > 0):
-        c0 += 4.0*shear_viscosity/3.0
-        c1 -= 2.0*shear_viscosity/3.0
-    P = -(c0*sd)*dvr_dr - (c1*sd)*(vr/r)
+        nu_1 += 4.0*shear_viscosity/3.0
+        nu_2 -= 2.0*shear_viscosity/3.0
+    #viscous pseudo-pressure
+    P = -(nu_1*sd)*dvr_dr - (nu_2*sd)*(vr/r)
     delta_P = delta_f(P, t)
-    #viscous acceleration
-    A = A_P(lambda0, sd, P, t, delta_P, delta_r)
-    #radial and tangential components
-    Ar =  A*(vt/v)
-    At = -A*(vr/v)
-    return Ar, At
+    #radial viscous acceleration
+    Ar = A_P(lambda0, sd, P, t, delta_P, delta_r)
+    return Ar
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
 def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity):
@@ -239,13 +234,9 @@ def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
             Ar += A[0]
             At += A[1]
         if (shear_viscosity > 0.0):
-            A = ring_shear_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
-            Ar += A[0]
-            At += A[1]
+            At += ring_shear_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
         if (bulk_viscosity > 0.0):
-            A = ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
-            Ar += A[0]
-            At += A[1]
+            Ar += ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
     #drop left and right edges from Ar,At
     if (type(Ar) != int):
         Ar = Ar[:, 1:-1]
