@@ -20,12 +20,12 @@ total_number_of_outputs = 1000
 radial_width = 0.0005
 
 #total ring mass
-total_ring_mass = (1.5e-09)/1.3
+total_ring_mass = (1.5e-09)/1.3/1.2
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
 G_ring = 1.0
-fast_gravity = False
+fast_gravity = True
 
 #ring kinematic shear and bulk viscosity, set < 0 to turn off
 shear_viscosity = 3.0e-13
@@ -41,7 +41,7 @@ J2 = 0.01
 #choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
-    'e':(5.0e-3)*1.3,
+    'e':(5.0e-3)*1.3*1.2,
     'e_prime':0.0,
     'w_prime':0.0
 }
