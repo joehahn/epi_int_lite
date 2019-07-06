@@ -72,13 +72,15 @@ def draw(xyt):
 #show animation
 rm1 = r - 1.0
 y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
-y_rng = (-0.023, 0.028)
+y_rng = (-0.023, 0.03)
 fig = plt.figure()
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
 x, y, tm = xyt(0)
 ax.set_title('t = ' + str(tm))
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+while(len(colors) < number_of_streamlines):
+    colors += colors
 lines = [ax.plot([],[], 'o-', color=colors[idx], linewidth=1.5, markersize=0)[0]
     for idx in range(number_of_streamlines)]
 for line in lines:
