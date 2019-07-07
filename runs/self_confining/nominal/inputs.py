@@ -41,7 +41,7 @@ J2 = 0.01
 #choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
-    'e':0.023,
+    'e':0.03,
     'e_prime':0.0,
     'w_prime':0.0
 }
