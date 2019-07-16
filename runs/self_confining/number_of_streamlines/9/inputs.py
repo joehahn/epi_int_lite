@@ -29,7 +29,7 @@ fast_gravity = True
 
 #ring kinematic shear and bulk viscosity, set < 0 to turn off
 shear_viscosity = 1.0e-12
-bulk_viscosity = 9.0*shear_viscosity
+bulk_viscosity = 5.0*shear_viscosity
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
