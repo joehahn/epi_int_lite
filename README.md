@@ -37,7 +37,12 @@ uses wget to download Anaconda2-5.3.0-MacOSX-x86_64.sh to my laptop:
     PYTHON_PATH=~/anaconda2/bin
     $PYTHON_PATH/python --version
 
-4 Clone this repo:
+4 enable jupyter_dashboards:
+
+    $PYTHON_PATH/conda install -c conda-forge -y jupyter_dashboards
+    $PYTHON_PATH/jupyter nbextension enable jupyter_dashboards --py --sys-prefix
+    
+5 Clone this repo:
 
     git clone https://github.com/joehahn/epi_int_lite.git
     cd epi_int_lite
@@ -98,7 +103,3 @@ and I'll eventually get that test debugged and this repo updated.
 
 4 write frickn paper
 
-5 enable jupyter_dashboards? maybe:
-
-    conda install -c conda-forge -y jupyter_dashboards==0.7.0
-    jupyter nbextension enable jupyter_dashboards --py --sys-prefix
