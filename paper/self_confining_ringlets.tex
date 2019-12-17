@@ -32,7 +32,8 @@
 
 
 %title page
-\title{Self--Confinement of Narrow Eccentric Ringlets}
+\title{N-body simulations of the Self--Confinement of 
+Viscous Self--Gravitating Narrow Eccentric Planetary Ringlets}
 
 \correspondingauthor{Joseph M. Hahn}
 \email{jhahn@spacescience.org}
@@ -53,7 +54,8 @@
 %abstract
 \begin{abstract}
 
-Abstractity abstract stract...
+The following shows how narrow eccentric planetary ringlets can evolve into a 
+self--confining state.
 
 \end{abstract}
 
@@ -65,32 +67,111 @@ Abstractity abstract stract...
 \section{Introduction}
 \label{sec:intro}
 
-Narrow eccentric ringlets have properties that are both interesting and
-not well understood: they have very sharp edges,
-they have sizable eccentricity gradients, and the mechanism that
-prevents their radial spreading due to ring viscosity is of debate.
+Narrow eccentric planetary ringlets have properties both interesting and
+not well understood: sharp edges,
+sizable eccentricity gradients, and a confinement mechanism that
+inhibits radial spreading due to ring viscosity.
 Prevailing ringlet confinement mechanisms include: 
 unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
-self-confinement (ref). The following uses N-body simulations to investigate whether narrow
-eccentric ringlets might be self-confining.
+self-confinement (ref). This study uses N-body simulations to show how narow
+self--gravitating ringlets can evolve into a self-confining state.
 
 \section{Ringlet confinement mechanisms}
 \label{sec:confinement}
 
-This section will explain the pros and cons of the various ringlet confinement mechanisms,
-and then motivate the possibility that ringlets are self confining. That possibility
-is then investigated via numerical simulations that use the epi\_int\_lite N-body integrator.
+This section explains the pros and cons of the various ringlet confinement mechanisms,
+and then motivates the possibility that ringlets are self confining. That possibility
+is explored further via numerical simulations using the epi\_int\_lite N-body integrator.
 
 \section{epi\_int\_lite}
 \label{sec:epi_int_lite}
 
-epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
-simulate the outer edge of Saturn's B ring as it is sculpted by perturbations
-from satellite Mimas \cite{HS13}. Although the epi\_int integrator is well-suited to evolve the
-B ring edge over the $10^4$ orbits needed to monitor the B ring's response to Mimas
-perturbations, that code was unable evolve with sufficient accuracy over the $10^6$ orbits needed
-to investigate a viscous ringlet's slow radial spreading, and that inability was
-traced to epi\_int's drift step. 
+Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
+simulate the outer edge of Saturn's B ring that is sculpted by satellite perturbations
+\citep{HS13}. The new code is very similar to its parent but differs in three significant ways:
+({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution,
+({\it ii}.) epi\_int\_lite uses a more accurate drift step for 
+unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}),
+and ({\it iii}.) epi\_int\_lite uses the $C=1$ approximation that is justified below 
+(Appendix \ref{sec:Appendix B}).
+
+Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
+to that used by the parent code; see \cite{HS13} for additional details. The epi\_int\_lite 
+source code is available at https://github.com/joehahn/epi\_int\_lite, and the
+code's numerical quality is assessed in Appendix \ref{sec:Appendix C}
+where the output of several numerical experiments are compared against theoretical predictions.
+
+Calculations performed by epi\_int\_lite use natural units with gravitation constant $G=1$, 
+central primary mass $M=1$, and the ringlet's inner edge has initial radius
+$r_0=1$, and so the ringlet masses $m_r$ and radii $r$ quoted below are in units of $M$ and $r_0$.
+Converting code output from natural units to physical units requires choosing	
+physical values for $M$ and $r_0$ and multiplying accordingly, and when this text does so
+it assumes the primary's mass is Saturn's,  $M=5.68\times10^{29}$ gm, and a typical
+ring radius of $r_0=1.0\times10^{10}$ cm.
+
+
+\section{N-body simulations of viscous gravitating ringlets}
+\label{sec:nbody}
+
+This Section describes a suite of N-body simulations of narrow viscous gravitating planetary
+ringlets, to highlight the range of initial ringlet conditions the do evolve into
+a self-confining state, and those that do not.
+
+\subsection{nominal model}
+\label{subsec:nominal}
+
+This nominal model evolves into the self-confining state...
+
+\acknowledgments
+
+acknowledgments...
+
+\appendix
+
+\section{Appendix A}
+\label{sec:Appendix A}
+
+Derive the more accurate drift step used by epi\_int\_lite...
+
+\section{Appendix B}
+\label{sec:Appendix B}
+
+Detail the $C=1$ approximation used by epi\_int\_lite, and show that the errors
+associated with this approximation are negligable...
+
+\section{Appendix C}
+\label{sec:Appendix C}
+
+Compare epi\_int\_lite to theoretical predictions
+
+\subsection{radial spreading of viscous viscous}
+\label{subsec:spreading}
+
+Show that ringlet viscosity causes circular non-gravitating ringlet to
+spread at the expected rate...
+
+%bibliography
+%\bibliographystyle{apj}
+\bibliography{jmh_bibliography}
+\end{document}
+
+
+\end{document}
+
+
+
+
+\section{Trash}
+
+
+\subsection{improved drift step around oblate planet}
+\label{subsec:drift}
+
+
+\subsection{kick}
+\label{subsec:kick}
+
+
 
 Epi\_int is a drift-kick integrator, and such integrators alternate between drifting
 (ie advancing) a particle along its unperturbed trajectory, with each drift followed
@@ -113,9 +194,6 @@ orbit elements that describe the particle's unperturbed motion around an oblate 
 the conversion of spatial coordinates to the new geometric orbit elements is exact
 and reversible, and so epi\_int\_lite's drift step is not a significant source of error. 
 
-\subsection{code design philosophy}
-\label{sec:philosophy}
-
 The chief principal guiding the developement of epi\_int\_lite is that the code be
 accurate to solve the problem at hand while also being as simple
 as possible so that the code can be developed, tested, and executed as swiftly as possble.
@@ -125,31 +203,12 @@ shorten run times significantly. Section \ref{sec:testing} then assesses the imp
 of those approximations, and shows that they are truly negligable and do not affect outcomes
 or conclusions.
 
-\subsection{drift-kick}
-\label{sec:drift-kick}
 
 
-\subsection{approximations}
-\label{subsec:approximations}
 
-\section{testing the approximations}
-\label{sec:testing}
-
-\acknowledgments
-
-acknowledgments...
-
-\appendix
-
-\section{Appendix}
-
-appendix...
-
-
-%bibliography
-%\bibliographystyle{apj}
-\bibliography{jmh_bibliography}
-\end{document}
-
-
-\end{document}
+Although the epi\_int integrator was well-suited for evolving the
+B ring edge over the $\sim3\times10^4$ orbits needed to monitor the B ring's response to Mimas
+perturbations, that code lacked sufficient numerical accuracy to evolve a ringlet
+during the $\sim3\times10^6$? orbits needed to track its slow radial spreading due to ringlet viscosity.
+That inability was traced to epi\_int's drift step, and Section ? describes
+how that is mitigated in the new code.
