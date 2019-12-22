@@ -54,7 +54,8 @@ Viscous Self--Gravitating Narrow Eccentric Planetary Ringlets}
 %abstract
 \begin{abstract}
 
-The following shows how narrow eccentric planetary ringlets can evolve into a 
+The following uses a suite of N-body simulations
+to illustrate how narrow eccentric planetary ringlets can evolve into a 
 self--confining state.
 
 \end{abstract}
@@ -106,13 +107,28 @@ central primary mass $M=1$, and the ringlet's inner edge has initial radius
 $r_0=1$, and so the ringlet masses $m_r$ and radii $r$ quoted below are in units of $M$ and $r_0$.
 Converting code output from natural units to physical units requires choosing	
 physical values for $M$ and $r_0$ and multiplying accordingly, and when this text does so
-it assumes the primary's mass is Saturn's,  $M=5.68\times10^{29}$ gm, and a typical
-ring radius of $r_0=1.0\times10^{10}$ cm.
+it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
+ring radius $r_0=1.0\times10^{10}$ cm.
 
-Describe streamlines and forces are computed from such. Many of the runs described below
+Initially all particles are assigned to various streamlines across the simulated ringlet. A streamline
+is a closed eccentric path around the primary, and the $N_p$ particles in a given
+streamline are initially assigned a common semimajor axis $a$ and eccentricity $e$, 
+with uniform spacing in longitude. Most of the simulations described below
 employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
-theoretical treatments that also treated the planetary ringlet as two gravitating rings
-(e.g. BGTXX).
+theoretical treatments that also treat the ringlet as two gravitating rings
+(e.g. BGTXX). But the following also performs a few higher-resolution simulations
+using $N_s=11$ streamlines, to demonstrate that the $N_s=2$ treatment appears perfectly
+adequate and reproduces all the relevant dynamics. All simulations use $N_p=241$ particles 
+per streamline, and the total number of particles is $N_sN_p$.
+Note that the assignment of particles to a given streamline is merely
+for labeling purposes, as particles are still free to wander in response
+to the ring’s internal forces, namely, gravity and ring viscosity. But as \cite{HS13} as well
+as this work shows, the simulated ring stays coherent and highly organized throughout the 
+simulation such that particles on the same streamline do not pass each other longitudinally,
+nor do they cross adjacent streamlines. Because the simulated ringlet stays highly organized,
+there is no radial or transverse mixing of the ring particles, and simulated particles preserve
+their streamline membership over time.
+
 
 \section{N-body simulations of viscous gravitating ringlets}
 \label{sec:nbody}
@@ -135,31 +151,40 @@ $m_r=2\times10^{-9}$, its shear viscosity is $\nu_s=1\times10^{-12}$, and its
 bulk viscosity is $\nu_b=1.5\nu_s$. The ringet's initial radial width is
 $\Delta a = 5\times10^{-4}$, its initial eccentricity is $e=0.03$, and its
 eccentricity gradient is initially zero. A convenient measure of time is the ringlet's
-viscous radial spreading timescale, $\tau_\nu=\Delta a^2/12\nu_s$, which is the time
-for viscosity to double the radial width of an initially narrow circular ringlet
+viscous radial spreading timescale,
+\begin{equation}
+    \tau_\nu=\frac{\Delta a^2}{12\nu_s}, 
+\end{equation}
+which is the time for viscosity to double the radial width of an initially narrow circular ringlet
 (Pringle 1981?). This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
-so $\tau_\nu/2\pi=3.3\times10^3$ orbit periods. If this ringlet were orbiting Saturn
+or $\tau_\nu/2\pi=3.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
 would be $m_r=1.1\times10^{21}$ gm which is equivalent to a $R=64$ km iceball assuming
 a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
 $\Delta a = 5\times10^{-4}r_0=50$ km. This ringlet's
-orbit period would be $T_{orb}=2\pi/\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
+orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
 the ringlet's viscous timescale is $\tau_\nu=3.4$ years 
-and implies a ring viscosity $\nu_s=\Delta a^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
-when evaluated in physical units. This ringlet's initial surface density would be
-$\sigma=m_r/2\pi r_0\Delta a=3500$ gm/cm$^2$, but that shrinks by a factor of 3 as the 
-ringlet's radial width grows (due to viscous spreading) until it settles into
-the self confining state, see Fig.\ \ref{fig:da_nominal}. So our so-called nominal
+which indicates that $\nu_s=\Delta a^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
+is the ring viscosity when evaluated in physical units. 
+This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a=3500$ gm/cm$^2$, but
+Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
+ringlet's sememajor axis width $\Delta a$ grows (due to viscous spreading) until it settles into
+the anticipated self-confining state at time $t\sim20\tau_\nu$.
+So this so-called nominal
 model is probably overdense and overly viscous compared to known planetary rings,
-but the suite of simulation described in Sections XX show how this outcome scale when
-other initial masses and viscosities are considered.
+but the suite of simulation described in Sections XX show how various outcomes scale when
+other initial masses orbits and viscosities are considered.
 
 \begin{figure}
 \plotone{figs/a_nominal.pdf}
-\caption{Semimajor axis evolution of the nominal ringlet model having mass
-$m_r=2\times10^{-9}$, shear viscosity $\nu_s=1\times10^{-12}$,
-initial width $\Delta a = 5\times10^{-4}$ and initial eccentricity $e=0.03$.
-Blue and green curves show the outer and inner streamline's semimajor axis
+\caption{Evolution of the nominal ringlet's semimajor axes $a$ versus time $t$, with time measured
+in units of the ringlet's viscous time $\tau_\nu$. This ringlet is composed of $N_s=2$ streamlines,
+and the outer (blue) and inner (green) streamlines' semimajor axes are plotted relative
+to their mean $a_{\text{mean}}$. 
+The simulated ringlet has total mass $m_r=2\times10^{-9}$, shear viscosity $\nu_s=1\times10^{-12}$,
+and initial width $\Delta a = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$),
+and initial eccentricity $e=0.03$. See Section \ref{subsec:nominal} to convert
+these $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 relative to their mean $a$.
 \label{fig:a_nominal}}
 \end{figure}
@@ -168,8 +193,29 @@ relative to their mean $a$.
 \plotone{figs/da_nominal.pdf}
 \caption{
 \label{fig:da_nominal}
-The nominal ringlet's radial width over time in units of its initial radial width $\Delta a_0$.}
+The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\text{inner}}$ over time, 
+in units of its initial radial width $\Delta a_0$.}
 \end{figure}
+
+Figure \ref{fig:e_nominal} show that that the outer streamline's eccentricity grows at the
+expense of the innter streamline's, and this is a consequence the self-gravitating ringlet's
+secular perturbations of itself.  Figure \ref{fig:de_nominal} shows that...
+
+\begin{figure}
+\plotone{figs/e_nominal.pdf}
+\caption{
+\label{fig:e_nominal}
+The nominal ringlet's eccentricity evolution.}
+\end{figure}
+
+\begin{figure}
+\plotone{figs/e_nominal.pdf}
+\caption{
+\label{fig:e_nominal}
+The nominal ringlet's eccentricity evolution.}
+\end{figure}
+
+
 \acknowledgments
 
 acknowledgments...
