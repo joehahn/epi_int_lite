@@ -74,7 +74,7 @@ sizable eccentricity gradients, and a confinement mechanism that
 inhibits radial spreading due to ring viscosity.
 Prevailing ringlet confinement mechanisms include: 
 unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
-self-confinement (ref). This study uses N-body simulations to show how narow
+self-confinement (ref). This study uses N-body simulations to show how narrow
 self--gravitating ringlets can evolve into a self-confining state.
 
 \section{Ringlet confinement mechanisms}
@@ -149,24 +149,24 @@ ringlet is evolved for $6.7\times10^5$ orbits, which requires 40 minutes executi
 on a 5 year old laptop. The ringlet's mass is
 $m_r=2\times10^{-9}$, its shear viscosity is $\nu_s=1\times10^{-12}$, and its
 bulk viscosity is $\nu_b=1.5\nu_s$. The ringet's initial radial width is
-$\Delta a = 5\times10^{-4}$, its initial eccentricity is $e=0.03$, and its
+$\Delta a_0 = 5\times10^{-4}$, its initial eccentricity is $e=0.03$, and its
 eccentricity gradient is initially zero. A convenient measure of time is the ringlet's
 viscous radial spreading timescale,
 \begin{equation}
-    \tau_\nu=\frac{\Delta a^2}{12\nu_s}, 
+    \tau_\nu=\frac{\Delta a_0^2}{12\nu_s}, 
 \end{equation}
 which is the time for viscosity to double the radial width of an initially narrow circular ringlet
 (Pringle 1981?). This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
 or $\tau_\nu/2\pi=3.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
-would be $m_r=1.1\times10^{21}$ gm which is equivalent to a $R=64$ km iceball assuming
+would be $m_r=1.1\times10^{21}$ gm which is equivalent to a $64$ km radius iceball assuming
 a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
-$\Delta a = 5\times10^{-4}r_0=50$ km. This ringlet's
+$\Delta a_0 = 5\times10^{-4}r_0=50$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
 the ringlet's viscous timescale is $\tau_\nu=3.4$ years 
-which indicates that $\nu_s=\Delta a^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
+which indicates that $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
 is the ring viscosity when evaluated in physical units. 
-This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a=3500$ gm/cm$^2$, but
+This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=3500$ gm/cm$^2$, but
 Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
 ringlet's sememajor axis width $\Delta a$ grows (due to viscous spreading) until it settles into
 the anticipated self-confining state at time $t\sim20\tau_\nu$.
@@ -182,10 +182,9 @@ in units of the ringlet's viscous time $\tau_\nu$. This ringlet is composed of $
 and the outer (blue) and inner (green) streamlines' semimajor axes are plotted relative
 to their mean $a_{\text{mean}}$. 
 The simulated ringlet has total mass $m_r=2\times10^{-9}$, shear viscosity $\nu_s=1\times10^{-12}$,
-and initial width $\Delta a = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$),
+and initial width $\Delta a_0 = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$),
 and initial eccentricity $e=0.03$. See Section \ref{subsec:nominal} to convert
 these $m_r$, $a$ and $\nu_s$ from natural units to physical units.
-relative to their mean $a$.
 \label{fig:a_nominal}}
 \end{figure}
 
@@ -198,8 +197,14 @@ in units of its initial radial width $\Delta a_0$.}
 \end{figure}
 
 Figure \ref{fig:e_nominal} show that that the outer streamline's eccentricity grows at the
-expense of the innter streamline's, and this is a consequence the self-gravitating ringlet's
-secular perturbations of itself.  Figure \ref{fig:de_nominal} shows that...
+expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
+secular perturbations of itself; this is demonstrated in Fig.\ ?? which re-runs the nominal
+simulation with ringlet self-gravity turned off.  Figure \ref{fig:de_nominal} shows
+the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
+and longitude of periapse difference
+$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
+which both settle into equilibrium values when the ringlet settles into the self-confining
+state.
 
 \begin{figure}
 \plotone{figs/e_nominal.pdf}
@@ -209,12 +214,22 @@ The nominal ringlet's eccentricity evolution.}
 \end{figure}
 
 \begin{figure}
-\plotone{figs/e_nominal.pdf}
+\plotone{figs/de_nominal.pdf}
 \caption{
-\label{fig:e_nominal}
-The nominal ringlet's eccentricity evolution.}
+\label{fig:de_nominal}
+The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
+and longitude of periapse difference
+$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.}
 \end{figure}
 
+\begin{figure}
+\plotone{figs/de_prime_nominal.pdf}
+\caption{
+\label{fig:de_prime_nominal}
+The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
+and longitude of periapse difference
+$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.}
+\end{figure}
 
 \acknowledgments
 
