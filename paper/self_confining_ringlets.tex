@@ -151,12 +151,13 @@ $m_r=2\times10^{-9}$, its shear viscosity is $\nu_s=1\times10^{-12}$, and its
 bulk viscosity is $\nu_b=1.5\nu_s$. The ringet's initial radial width is
 $\Delta a_0 = 5\times10^{-4}$, its initial eccentricity is $e=0.03$, and its
 eccentricity gradient is initially zero. A convenient measure of time is the ringlet's
-viscous radial spreading timescale,
+viscous radial spreading timescale
 \begin{equation}
+\label{eqn:viscous-timesscale}
     \tau_\nu=\frac{\Delta a_0^2}{12\nu_s}, 
 \end{equation}
-which is the time for viscosity to double the radial width of an initially narrow circular ringlet
-(Pringle 1981?). This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
+which can be inferred from Eqn.\ (2.13) of \cite{P81}. 
+This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
 or $\tau_\nu/2\pi=3.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
 would be $m_r=1.1\times10^{21}$ gm which is equivalent to a $64$ km radius iceball assuming
@@ -164,27 +165,28 @@ a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width woul
 $\Delta a_0 = 5\times10^{-4}r_0=50$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
 the ringlet's viscous timescale is $\tau_\nu=3.4$ years 
-which indicates that $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
-is the ring viscosity when evaluated in physical units. 
+which indicates that shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
+when evaluated in physical units. 
 This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=3500$ gm/cm$^2$, but
 Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
 ringlet's sememajor axis width $\Delta a$ grows (due to viscous spreading) until it settles into
 the anticipated self-confining state at time $t\sim20\tau_\nu$.
-So this so-called nominal
-model is probably overdense and overly viscous compared to known planetary rings,
-but the suite of simulation described in Sections XX show how various outcomes scale when
-other initial masses orbits and viscosities are considered.
+So the so-called nominal ringlet is probably overdense and overly viscous compared to known planetary rings,
+but that is by design so that the simulated ringlet quickly settles into the self-confining state.
+Section XX also shows how outcomes scale when a wide variety of alternate initial masses, orbits,
+and viscosities are also considered.
 
 \begin{figure}
 \plotone{figs/a_nominal.pdf}
-\caption{Evolution of the nominal ringlet's semimajor axes $a$ versus time $t$, with time measured
-in units of the ringlet's viscous time $\tau_\nu$. This ringlet is composed of $N_s=2$ streamlines,
+\caption{Evolution of the nominal ringlet's semimajor axes $a$
+versus time $t$ in units of the ringlet's viscous time $\tau_\nu$.
+This ringlet is composed of $N_s=2$ streamlines,
 and the outer (blue) and inner (green) streamlines' semimajor axes are plotted relative
-to their mean $a_{\text{mean}}$. 
+to their mean $a_{\text{mean}}$, and displayed in units of the ringlet's
+initial width $\Delta a_0 = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
 The simulated ringlet has total mass $m_r=2\times10^{-9}$, shear viscosity $\nu_s=1\times10^{-12}$,
-and initial width $\Delta a_0 = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$),
 and initial eccentricity $e=0.03$. See Section \ref{subsec:nominal} to convert
-these $m_r$, $a$ and $\nu_s$ from natural units to physical units.
+$m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \label{fig:a_nominal}}
 \end{figure}
 
@@ -196,15 +198,34 @@ The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\te
 in units of its initial radial width $\Delta a_0$.}
 \end{figure}
 
-Figure \ref{fig:e_nominal} show that that the outer streamline's eccentricity grows at the
+Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity grows at the
 expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
 secular perturbations of itself; this is demonstrated in Fig.\ ?? which re-runs the nominal
-simulation with ringlet self-gravity turned off.  Figure \ref{fig:de_nominal} shows
+simulation with ringlet self-gravity turned off. Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
 and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
-which both settle into equilibrium values when the ringlet settles into the self-confining
-state.
+which both settle into equilibrium values when the ringlet arrives in the self-confining
+state. It is convenient to recast these orbit element differences as dimensionless gradients
+\begin{equation}
+    \label{eqn:e_prime}
+    e' = a\frac{de}{da}
+    \qquad\mbox{and}\qquad
+    \tilde{\omega}' = ea\frac{d\tilde{\omega}}{da}
+\end{equation}
+as both terms contribute to the nonlinearity parameter
+\begin{equation}
+    \label{eqn:q}
+    q = \sqrt{e'^2 + \tilde{\omega}'^2}
+\end{equation}
+of \cite{BGT83}; see also 
+Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
+ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$
+and nonlinearity parameter $q$ versus time. All simulations examined here have
+$|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$, and all simulated self-confining ringlets
+have a positive eccenticity gradient and a negative periapse twist such that
+the outer ringlet's periapse trails the inner ringlet's, consistent with the findings of
+\cite{BGT83}.
 
 \begin{figure}
 \plotone{figs/e_nominal.pdf}
@@ -214,26 +235,31 @@ The nominal ringlet's eccentricity evolution.}
 \end{figure}
 
 \begin{figure}
-\plotone{figs/de_nominal.pdf}
-\caption{
-\label{fig:de_nominal}
-The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
-and longitude of periapse difference
-$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.}
+    \plotone{figs/de_nominal.pdf}
+    \caption{
+        \label{fig:de_nominal}
+        The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
+        and longitude of periapse difference
+        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.
+    }
 \end{figure}
 
 \begin{figure}
-\plotone{figs/de_prime_nominal.pdf}
-\caption{
-\label{fig:de_prime_nominal}
-The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
-and longitude of periapse difference
-$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.}
+    \plotone{figs/de_prime_nominal.pdf}
+    \caption{
+        \label{fig:de_prime_nominal}
+        The nominal ringlet's dimensionless eccentricity gradient $e' = a\Delta e/\Delta a$
+        (dashed blue curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
+        (orange curve), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
+        (green curve) versus time $t/\tau_\nu$.
+    }
 \end{figure}
+
+The dotted red line in Fig.\ \ref{fig:de_prime_nominal}
 
 \acknowledgments
 
-acknowledgments...
+This resesearch was supported by the National Science Foundation via Grant No.\ AST-1313013.
 
 \appendix
 
