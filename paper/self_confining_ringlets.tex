@@ -140,11 +140,11 @@ a self-confining state, and those that do not.
 \subsection{nominal model}
 \label{subsec:nominal}
 
-Figure \ref{fig:a_nominal} shows the semimajor axis evolution of what is referred to
+Figure \ref{fig:a_nominal} shows the semimajor axis evolution of what will be referred to
 as the nominal model since this ringlet readily evolves into a self-confining state.
 The simulated ringlet is composed of $N_s=2$ streamlines having $N_p=241$ particles
 per streamline, and the integrator timestep is $\Delta t=0.5$ in natural units, so
-the integrator samples the particle orbits $2\pi/\Delta t\simeq13$ times per orbit, and this
+the integrator samples the particles' orbits $2\pi/\Delta t\simeq13$ times per orbit, and this
 ringlet is evolved for $6.7\times10^5$ orbits, which requires 40 minutes execution time
 on a 5 year old laptop. The ringlet's mass is
 $m_r=2\times10^{-9}$, its shear viscosity is $\nu_s=1\times10^{-12}$, and its
@@ -169,7 +169,7 @@ which indicates that shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\tim
 when evaluated in physical units. 
 This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=3500$ gm/cm$^2$, but
 Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
-ringlet's sememajor axis width $\Delta a$ grows (due to viscous spreading) until it settles into
+ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
 the anticipated self-confining state at time $t\sim20\tau_\nu$.
 So the so-called nominal ringlet is probably overdense and overly viscous compared to known planetary rings,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
@@ -200,8 +200,8 @@ in units of its initial radial width $\Delta a_0$.}
 
 Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity grows at the
 expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
-secular perturbations of itself; this is demonstrated in Fig.\ ?? which re-runs the nominal
-simulation with ringlet self-gravity turned off. Figure \ref{fig:de_nominal} shows
+secular perturbations of itself, see Appendix \ref{sec:Appendix D}. 
+Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
 and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
@@ -259,7 +259,7 @@ The dotted red line in Fig.\ \ref{fig:de_prime_nominal}
 
 \acknowledgments
 
-This resesearch was supported by the National Science Foundation via Grant No.\ AST-1313013.
+This research was supported by the National Science Foundation via Grant No.\ AST-1313013.
 
 \appendix
 
@@ -272,21 +272,57 @@ Derive the more accurate drift step used by epi\_int\_lite...
 \label{sec:Appendix B}
 
 Detail the $C=1$ approximation used by epi\_int\_lite, and show that the errors
-associated with this approximation are negligable...
+associated with this approximation are negligible...
 
 \section{Appendix C}
 \label{sec:Appendix C}
 
 Compare epi\_int\_lite to theoretical predictions
 
-\subsection{radial spreading of viscous viscous}
-\label{subsec:spreading}
+\section{Appendix D}
+\label{sec:Appendix D}
 
-Show that ringlet viscosity causes circular non-gravitating ringlet to
-spread at the expected rate...
+This examines the viscous evolution of a narrow eccentric non-gravitating
+ringlet that is identical to the nominal ringlet of Section \ref{subsec:nominal} but
+with ringlet self-gravity neglected and $J_2=0$.
+As the orange curve in Fig.\ \ref{fig:da_nogravity} shows, the non-gravitating ringlet's
+radial width $\Delta a$ grows steadily over time due to ringlet viscosity, 
+long after the nominal self-gravitating ringlet (blue curve)
+has settled into the self-confining state by time $t\sim15\tau_\nu$. This is due to the
+ringlet's secular gravitational perturbations of itself,
+which tends to excites the ringlet's outer streamline's eccentricity at the expense
+of the inner streamline (see Fig.\ \ref{fig:e_nominal}) until the ringlet eccentricity gradient $e'$
+(blue curve in Fig.\ \ref{fig:de_prime_nogravity}) grows beyond the
+limit required for complete angular momentum flux reversal 
+that results in the ringlet's radial confinement (dotted line). 
+Note that viscosity also excites the non-gravitating
+ringlet's eccentricity gradient some (orange curve), but insufficient to halt the ringlet's 
+viscous spreading.
 
-%bibliography
-%\bibliographystyle{apj}
+\begin{figure}
+    \plotone{figs/da_nogravity.pdf}
+    \caption{
+        \label{fig:da_nogravity}
+        Blue curve is the nominal ringlet's semimajor axis width $\Delta a$ versus time $t$,
+        and this ringlet's radial spreading ceases by time $t\sim15\tau_\nu$ when its self-gravity
+        has excited the ringlet's eccentricity gradient $e'$ sufficiently; 
+        see blue curve in Fig.\ \ref{fig:de_prime_nogravity}. Orange curve shows that
+        the non-gravitating ringlet's $\Delta a$ is never confined due to the ringlet's
+        much lower eccentricity gradient. Also note that planetary oblateness
+        cause the non-gravitating streamlines to precess differentially when $J_s>0$, 
+        eventually causing them to cross, so the non-gravitating simulation sets $J_2=0$
+        to avoid differential precession.
+    }
+\end{figure}
+
+\begin{figure}
+    \plotone{figs/de_prime_nogravity.pdf}
+    \caption{
+        \label{fig:de_prime_nogravity}
+        blah
+    }
+\end{figure}
+
 \bibliography{jmh_bibliography}
 \end{document}
 
