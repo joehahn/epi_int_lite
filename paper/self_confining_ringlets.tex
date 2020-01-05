@@ -71,7 +71,7 @@ self--confining state.
 Narrow eccentric planetary ringlets have properties both interesting and
 not well understood: sharp edges,
 sizable eccentricity gradients, and a confinement mechanism that
-inhibits radial spreading due to ring viscosity.
+opposes radial spreading due to ring viscosity.
 Prevailing ringlet confinement mechanisms include: 
 unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
 self-confinement (ref). This study uses N-body simulations to show how narrow
@@ -80,7 +80,7 @@ self--gravitating ringlets can evolve into a self-confining state.
 \section{Ringlet confinement mechanisms}
 \label{sec:confinement}
 
-This section explains the pros and cons of the various ringlet confinement mechanisms,
+This section will explain the pros and cons of the various ringlet confinement mechanisms,
 and then motivates the possibility that ringlets are self confining. That possibility
 is explored further via numerical simulations using the epi\_int\_lite N-body integrator.
 
@@ -88,7 +88,7 @@ is explored further via numerical simulations using the epi\_int\_lite N-body in
 \label{sec:epi_int_lite}
 
 Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
-simulate the outer edge of Saturn's B ring that is sculpted by satellite perturbations
+simulate the outer edge of Saturn's B ring as it is sculpted by satellite perturbations
 \citep{HS13}. The new code is very similar to its parent but differs in three significant ways:
 ({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution,
 ({\it ii}.) epi\_int\_lite uses a more accurate drift step for 
@@ -108,7 +108,15 @@ $r_0=1$, and so the ringlet masses $m_r$ and radii $r$ quoted below are in units
 Converting code output from natural units to physical units requires choosing	
 physical values for $M$ and $r_0$ and multiplying accordingly, and when this text does so
 it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
-ring radius $r_0=1.0\times10^{10}$ cm.
+ring radius $r_0=1.0\times10^{10}$ cm. Simulation time $t$ is in units of $T_{\text{orb}}/2\pi$
+where $T_{\text{orb}} = 2\pi\sqrt{r_0^3/GM}$ is the orbit period at $r_0$, 
+so dividing $t$ by $2\pi$ and then multiplying
+by $T_{\text{orb}}$ converts simulation time from natural to physical units.
+The simulated particles' motions during the drift step are also
+sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
+(see Appendix \ref{sec:Appendix B}), and all simulations
+adopt a Saturn-like value of $J_2=0.01$ and $R_p=r_0/2$ where $R_p$ is the planet's
+mean radius.
 
 Initially all particles are assigned to various streamlines across the simulated ringlet. A streamline
 is a closed eccentric path around the primary, and the $N_p$ particles in a given
@@ -116,17 +124,17 @@ streamline are initially assigned a common semimajor axis $a$ and eccentricity $
 with uniform spacing in longitude. Most of the simulations described below
 employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
 theoretical treatments that also treat the ringlet as two gravitating rings
-(e.g. BGTXX). But the following also performs a few higher-resolution simulations
+(e.g.\ \citealt{BGT83}). But the following also performs a few higher-resolution simulations
 using $N_s=11$ streamlines, to demonstrate that the $N_s=2$ treatment appears perfectly
 adequate and reproduces all the relevant dynamics. All simulations use $N_p=241$ particles 
 per streamline, and the total number of particles is $N_sN_p$.
 Note that the assignment of particles to a given streamline is merely
 for labeling purposes, as particles are still free to wander in response
-to the ring’s internal forces, namely, gravity and ring viscosity. But as \cite{HS13} as well
+to the ring’s internal forces, namely, ring gravity and viscosity. But as \cite{HS13} as well
 as this work shows, the simulated ring stays coherent and highly organized throughout the 
 simulation such that particles on the same streamline do not pass each other longitudinally,
 nor do they cross adjacent streamlines. Because the simulated ringlet stays highly organized,
-there is no radial or transverse mixing of the ring particles, and simulated particles preserve
+there is no radial or longitudinal mixing of the ring particles, and simulated particles preserve
 their streamline membership over time.
 
 
@@ -140,7 +148,7 @@ a self-confining state, and those that do not.
 \subsection{nominal model}
 \label{subsec:nominal}
 
-Figure \ref{fig:a_nominal} shows the semimajor axis evolution of what will be referred to
+Figure \ref{fig:a_nominal} shows the semimajor axis evolution of what is referred to
 as the nominal model since this ringlet readily evolves into a self-confining state.
 The simulated ringlet is composed of $N_s=2$ streamlines having $N_p=241$ particles
 per streamline, and the integrator timestep is $\Delta t=0.5$ in natural units, so
@@ -170,8 +178,9 @@ when evaluated in physical units.
 This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=3500$ gm/cm$^2$, but
 Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
 ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
-the anticipated self-confining state at time $t\sim20\tau_\nu$.
-So the so-called nominal ringlet is probably overdense and overly viscous compared to known planetary rings,
+the anticipated self-confining state at time $t\sim15\tau_\nu$.
+So the so-called nominal ringlet is probably overdense and overly viscous compared to known 
+planetary ringlets,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
 Section XX also shows how outcomes scale when a wide variety of alternate initial masses, orbits,
 and viscosities are also considered.
@@ -200,7 +209,7 @@ in units of its initial radial width $\Delta a_0$.}
 
 Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity grows at the
 expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
-secular perturbations of itself, see Appendix \ref{sec:Appendix D}. 
+secular perturbations of itself, which is also demonstrated in Appendix \ref{sec:Appendix D}. 
 Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
 and longitude of periapse difference
@@ -213,19 +222,18 @@ state. It is convenient to recast these orbit element differences as dimensionle
     \qquad\mbox{and}\qquad
     \tilde{\omega}' = ea\frac{d\tilde{\omega}}{da}
 \end{equation}
-as both terms contribute to the nonlinearity parameter
+as both terms contribute to the nonlinearity parameter of \cite{BGT83}:
 \begin{equation}
     \label{eqn:q}
-    q = \sqrt{e'^2 + \tilde{\omega}'^2}
+    q = \sqrt{e'^2 + \tilde{\omega}'^2}.
 \end{equation}
-of \cite{BGT83}; see also 
-Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
+See also Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
 ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$
 and nonlinearity parameter $q$ versus time. All simulations examined here have
 $|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$, and all simulated self-confining ringlets
 have a positive eccenticity gradient and a negative periapse twist such that
 the outer ringlet's periapse trails the inner ringlet's, consistent with the findings of
-\cite{BGT83}.
+\cite{BGT83}.\vfil
 
 \begin{figure}
 \plotone{figs/e_nominal.pdf}
@@ -249,13 +257,66 @@ The nominal ringlet's eccentricity evolution.}
     \caption{
         \label{fig:de_prime_nominal}
         The nominal ringlet's dimensionless eccentricity gradient $e' = a\Delta e/\Delta a$
-        (dashed blue curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
-        (orange curve), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
-        (green curve) versus time $t/\tau_\nu$.
+        (dashed orange curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
+        (blue curve), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
+        (green curve) versus time $t/\tau_\nu$. Dotted red curve has $e'=\sqrt{3}/2\simeq0.866$
+        and is the threshold for self-confinement in a non-gravitating ringlet.
+    }
+\end{figure}\vfil
+
+\pagebreak
+\citet{BGT82} examine angular momentum transport in a viscous eccentric non-gravitating ringlet, 
+and show that that transport has three noteworthy regimes that are distinguished by the ringlet's $q$:
+
+\begin{enumerate}
+
+\item $q<3/4$. In this case the ringlet's viscous angular momentum flux $F_\nu(\theta)>0$
+at all ringlet longitudes $\theta$. $F_\nu$ integrated over all ringlet longitudes
+is the ringlet's viscous angular momentum luminosity,
+$L_\nu=\oint F_\nu(\theta)d\ell>0$, and $L_\nu>0$ when $q<0.75$.
+Viscous friction transports angular momentum radially outwards,
+so inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
+the ringlet spreads radially.
+
+\item $3/4<q<\sqrt{3}/4$. In this regime there is a range of longitudes $\theta$
+where the viscous angular momentum flux is reversed such that $F_\nu(\theta)<0$. 
+Nonetheless $L_\nu$, which is proportional to the orbit-average of $F_\nu(\theta)$,
+is positive and the ringlet spreads radially, albeit slower than when $q<0.75$.
+
+\item $q\ge\sqrt{3}/4$. Viscous angular momentum flux reversal is complete, $L_\nu<0$,
+viscous friction transports angular momentum radially inwards, and the ringlet
+shrinks radially. But if $q=\sqrt{3}/4\simeq0.866$ then $L_\nu=0$ and the ringlet's
+radial evolution ceases, the ringlet is self confining.
+
+\end{enumerate}
+ 
+Note though that the nominal ringlet's eccentricity gradient
+$e'\simeq q$ exceeds the $q=\sqrt{3}/4\simeq0.866$ threshold (which is
+the dotted red line in Fig.\ \ref{fig:de_prime_nominal}) when it settles into
+self-confinement. The following shows that this is due to the ringlet's self-gravity,
+which also transports angular momentum radially through the ringlet.
+
+The viscous flux of angular momentum is (Pringle?)
+\begin{equation}
+    \label{eqn:F_nu_theta}
+    F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
+\end{equation}
+where $\omega=\dot{\theta}$ is the angular velocity, Eqn.\ (XX). 
+Figure \ref{fig:F_nu_nominal} plots $F_\nu$ versus relative longitude $\varphi=\theta-\tilde{\omega}$
+for the nominal ringlet at selected times $t$.
+
+\begin{equation}
+    \label{eqn:F_nu_varphi}
+    F_{\nu}(a, \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
+\end{equation}
+
+\begin{figure}
+    \plotone{figs/F_nu_nominal.pdf}
+    \caption{
+        \label{fig:F_nu_nominal}
+        yadda yadda yadda.
     }
 \end{figure}
-
-The dotted red line in Fig.\ \ref{fig:de_prime_nominal}
 
 \acknowledgments
 
@@ -322,6 +383,18 @@ viscous spreading.
         blah
     }
 \end{figure}
+
+\section{Appendix E}
+\label{sec:Appendix E}
+
+This Appendix will use the orbit elements derived in Appendix \ref{sec:Appendix A} to
+derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}. 
+
+For circular orbits
+\begin{equation}
+    \label{eqn:F_nu_circular}
+    F_{\nu,0}=\frac{3}{2}\nu_s \sigma_0a\Omega
+\end{equation}
 
 \bibliography{jmh_bibliography}
 \end{document}
