@@ -54,7 +54,7 @@ Viscous Self--Gravitating Narrow Eccentric Planetary Ringlets}
 %abstract
 \begin{abstract}
 
-The following uses a suite of N-body simulations
+N-body simulations are used
 to illustrate how narrow eccentric planetary ringlets can evolve into a 
 self--confining state.
 
@@ -74,8 +74,8 @@ sizable eccentricity gradients, and a confinement mechanism that
 opposes radial spreading due to ring viscosity.
 Prevailing ringlet confinement mechanisms include: 
 unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
-self-confinement (ref). This study uses N-body simulations to show how narrow
-self--gravitating ringlets can evolve into a self-confining state.
+self-confinement (ref). This study uses N-body simulations to show how a narrow
+self--gravitating ringlet can evolve into a self-confining state.
 
 \section{Ringlet confinement mechanisms}
 \label{sec:confinement}
@@ -100,7 +100,7 @@ Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are ide
 to that used by the parent code; see \cite{HS13} for additional details. The epi\_int\_lite 
 source code is available at https://github.com/joehahn/epi\_int\_lite, and the
 code's numerical quality is assessed in Appendix \ref{sec:Appendix C}
-where the output of several numerical experiments are compared against theoretical predictions.
+where the output of several numerical experiments are compared against theoretical expectations.
 
 Calculations performed by epi\_int\_lite use natural units with gravitation constant $G=1$, 
 central primary mass $M=1$, and the ringlet's inner edge has initial radius
@@ -110,8 +110,8 @@ physical values for $M$ and $r_0$ and multiplying accordingly, and when this tex
 it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
 ring radius $r_0=1.0\times10^{10}$ cm. Simulation time $t$ is in units of $T_{\text{orb}}/2\pi$
 where $T_{\text{orb}} = 2\pi\sqrt{r_0^3/GM}$ is the orbit period at $r_0$, 
-so dividing $t$ by $2\pi$ and then multiplying
-by $T_{\text{orb}}$ converts simulation time from natural to physical units.
+so divide $t$ by $2\pi$ and then multiply
+by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
 (see Appendix \ref{sec:Appendix B}), and all simulations
@@ -125,7 +125,7 @@ with uniform spacing in longitude. Most of the simulations described below
 employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
 theoretical treatments that also treat the ringlet as two gravitating rings
 (e.g.\ \citealt{BGT83}). But the following also performs a few higher-resolution simulations
-using $N_s=11$ streamlines, to demonstrate that the $N_s=2$ treatment appears perfectly
+using $N_s=11$ streamlines, to demonstrate that the $N_s=2$ treatment is perfectly
 adequate and reproduces all the relevant dynamics. All simulations use $N_p=241$ particles 
 per streamline, and the total number of particles is $N_sN_p$.
 Note that the assignment of particles to a given streamline is merely
@@ -168,7 +168,7 @@ which can be inferred from Eqn.\ (2.13) of \cite{P81}.
 This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
 or $\tau_\nu/2\pi=3.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
-would be $m_r=1.1\times10^{21}$ gm which is equivalent to a $64$ km radius iceball assuming
+would be $m_r=1.1\times10^{21}$ gm which is equivalent to the mass of a $64$ km radius iceball assuming
 a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
 $\Delta a_0 = 5\times10^{-4}r_0=50$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
@@ -259,34 +259,62 @@ The nominal ringlet's eccentricity evolution.}
         The nominal ringlet's dimensionless eccentricity gradient $e' = a\Delta e/\Delta a$
         (dashed orange curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
         (blue curve), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
-        (green curve) versus time $t/\tau_\nu$. Dotted red curve has $e'=\sqrt{3}/2\simeq0.866$
-        and is the threshold for self-confinement in a non-gravitating ringlet.
+        (green curve) versus time $t/\tau_\nu$. Dotted red line 
+        is the threshold for self-confinement in a non-gravitating ringlet, $e'=\sqrt{3}/2\simeq0.866$
     }
 \end{figure}\vfil
 
-\pagebreak
+
+The nominal ringlet's evolution is readily understood when the ringlet's viscous flux of angular momentum is 
+examined; that flux is (Pringle?)
+\begin{equation}
+    \label{eqn:F_nu_theta}
+    F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
+\end{equation}
+when expressed as a function of spatial coordinates $r,\theta$,
+and where $\omega=\dot{\theta}$ is the angular velocity, Eqn.\ (XX). If we imagine a small arc of 
+ring material having transverse length $d\ell$, 
+then $F_{\nu}d\ell$ would be viscous torque that that arc exert exerts on
+ring matter just exterior to the arc, and this is also the rate at which viscous friction
+transmits angular momentum radially through that arc.
+And when $F_{\nu}$ is evaluated along a single eccentric streamline, the above simplifies to
+\begin{equation}
+    \label{eqn:F_nu_varphi}
+    F_{\nu}(e', \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
+\end{equation}
+(see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
+where $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux in a
+circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$. Integrating the above
+about the streamline then yields its angular momentumum luminosity,
+\begin{equation}
+    \label{eqn:L_nu}
+    L_{\nu}(e') = \oint F_\nu(e', \varphi)rd\varphi = L_{\nu,0}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
+\end{equation}
+which is the viscous torque that one streamline exerts on its exterior neighbor, 
+where $L_{\nu,0}=3\pi\nu_s\sigma_0a^2\Omega$ viscous angular momentum luminosity of a circular streamline
+(\citealt{BGT82} and Appendix \ref{sec:Appendix E}).
+
 \citet{BGT82} examine angular momentum transport in a viscous eccentric non-gravitating ringlet, 
-and show that that transport has three noteworthy regimes that are distinguished by the ringlet's $q$:
+and use Eqns.\ (\ref{eqn:F_nu_varphi}--\ref{eqn:L_nu}) to show that this transport has three 
+noteworthy regimes that are distinguished by the ringlet's $q\simeq e'$:
 
 \begin{enumerate}
 
-\item $q<3/4$. In this case the ringlet's viscous angular momentum flux $F_\nu(\theta)>0$
-at all ringlet longitudes $\theta$. $F_\nu$ integrated over all ringlet longitudes
-is the ringlet's viscous angular momentum luminosity,
-$L_\nu=\oint F_\nu(\theta)d\ell>0$, and $L_\nu>0$ when $q<0.75$.
-Viscous friction transports angular momentum radially outwards,
-so inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
+\item $e'<3/4$, for which the ringlet's viscous angular momentum flux $F_\nu(\theta)>0$
+at all ringlet longitudes $\theta$. The ringlet's viscous
+angular momentum luminosity $L_\nu>0$, so viscous friction transports angular momentum radially outwards,
+and inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
 the ringlet spreads radially.
 
-\item $3/4<q<\sqrt{3}/4$. In this regime there is a range of longitudes $\theta$
+\item $3/4\le e'<\sqrt{3}/4$. In this regime there is a range of longitudes $\theta$
 where the viscous angular momentum flux is reversed such that $F_\nu(\theta)<0$. 
-Nonetheless $L_\nu$, which is proportional to the orbit-average of $F_\nu(\theta)$,
-is positive and the ringlet spreads radially, albeit slower than when $q<0.75$.
+Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\theta)$,
+is positive and the ringlet still spreads radially, albeit slower than when $e'<0.75$.
 
-\item $q\ge\sqrt{3}/4$. Viscous angular momentum flux reversal is complete, $L_\nu<0$,
+\item $e'\ge\sqrt{3}/4$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
 viscous friction transports angular momentum radially inwards, and the ringlet
 shrinks radially. But if $q=\sqrt{3}/4\simeq0.866$ then $L_\nu=0$ and the ringlet's
-radial evolution ceases, the ringlet is self confining.
+radial evolution ceases; the ringlet is self confining.
 
 \end{enumerate}
  
@@ -296,25 +324,20 @@ the dotted red line in Fig.\ \ref{fig:de_prime_nominal}) when it settles into
 self-confinement. The following shows that this is due to the ringlet's self-gravity,
 which also transports angular momentum radially through the ringlet.
 
-The viscous flux of angular momentum is (Pringle?)
-\begin{equation}
-    \label{eqn:F_nu_theta}
-    F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
-\end{equation}
-where $\omega=\dot{\theta}$ is the angular velocity, Eqn.\ (XX). 
 Figure \ref{fig:F_nu_nominal} plots $F_\nu$ versus relative longitude $\varphi=\theta-\tilde{\omega}$
 for the nominal ringlet at selected times $t$.
 
-\begin{equation}
-    \label{eqn:F_nu_varphi}
-    F_{\nu}(a, \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
-\end{equation}
+
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
     \caption{
         \label{fig:F_nu_nominal}
-        yadda yadda yadda.
+        Nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$,
+        Eqn.\ (\ref{eqn:F_nu_varphi}),  is plotted versus ringlet
+        relative longitude $\varphi=\theta-\tilde{\omega}$ along inner (or outer?)
+        streamline, and at selected times $t/\tau_\nu$. 
+        Also detail how $F_{\nu}(\varphi)$ is computed.
     }
 \end{figure}
 
@@ -388,13 +411,8 @@ viscous spreading.
 \label{sec:Appendix E}
 
 This Appendix will use the orbit elements derived in Appendix \ref{sec:Appendix A} to
-derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}. 
+derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}, and then Eqn.\ (\ref{eqn:L_nu}).
 
-For circular orbits
-\begin{equation}
-    \label{eqn:F_nu_circular}
-    F_{\nu,0}=\frac{3}{2}\nu_s \sigma_0a\Omega
-\end{equation}
 
 \bibliography{jmh_bibliography}
 \end{document}
