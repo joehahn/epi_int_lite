@@ -268,22 +268,23 @@ The nominal ringlet's eccentricity evolution.}
 \subsection{viscous angular momentum transport}
 \label{subsec:viscous_flux}
 
-The nominal ringlet's evolution is readily understood when the ringlet's viscous flux of angular momentum is 
+The nominal ringlet's evolution is more easily understood when the ringlet's viscous flux of angular momentum is 
 considered; that flux is 
 \begin{equation}
     \label{eqn:F_nu_theta}
     F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
-(Pringle?) when written as a function of spatial coordinates and
+\citep{HS13} when written as a function of spatial coordinates and
 angular velocity $\omega=\dot{\theta}$ (Eqn.\ XX). If we imagine a small arc of 
 ring material of transverse length $d\ell$, 
 then $F_{\nu}d\ell$ would be the torque that arc exert exerts on
 ring matter just exterior, due to viscous friction.
 Which is also the rate that friction transmits angular momentum radially across that arc.
-And when $F_{\nu}$ is evaluated along a single eccentric streamline, the above simplifies to
+And when $F_{\nu}$ is evaluated along a single eccentric streamline of semimajor axis $a$, 
+the above simplifies to
 \begin{equation}
     \label{eqn:F_nu_varphi}
-    F_{\nu}(e', \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
+    F_{\nu}(a, \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
 (see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
 where $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
@@ -292,13 +293,13 @@ $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$. Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
     \label{eqn:L_nu}
-    L_{\nu}(e') = \oint F_\nu(e', \varphi)rd\varphi = L_{\nu,0}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
+    L_{\nu}(a) = \oint F_\nu(e', \varphi)rd\varphi = L_{\nu,0}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
 \end{equation}
 which is the torque that one streamline exerts on its exterior neighbor due to viscous friction
 (\citealt{BGT82} and Appendix \ref{sec:Appendix E}),
 where $L_{\nu,0}=3\pi\nu_s\sigma_0a^2\Omega$ viscous angular momentum luminosity of a circular streamline.
 
-\citet{BGT82} examine angular momentum transport through a viscous eccentric non-gravitating ringlet, 
+\citet{BGT82} examine angular momentum transport through a viscous eccentric but non-gravitating ringlet, 
 and use Eqns.\ (\ref{eqn:F_nu_varphi}--\ref{eqn:L_nu}) to show that this transport has three 
 regimes distinguished by the ringlet's $e'$:
 
@@ -334,7 +335,8 @@ Early in the ringlet's evolution when time $t \le 4\tau_\nu$ (blue, orange, gree
 the ringlet is in regime 1 since $e'<0.75$ and $F_\nu(\theta)>0$ at all longitudes.
 But by time $t = 6\tau_\nu$ (dark purple curve), this ringlet's eccentricity gradient exceeds $0.75$,
 and angular momentum flux reversal $F_\nu(\theta)<0$ occurs near periapse where $|\varphi|\simeq0$
-where the ringlet is most overdense due to its eccentricity gradient, see Fig.\ \ref{fig:radial_sigma_nominal};
+where the ringlet is most overdense due to its eccentricity gradient, see 
+alsoFig.\ \ref{fig:radial_sigma_nominal};
 this ringlet is in regime 2 and its radial spreading begins to deaccelerate. 
 And by time $t = 10\tau_\nu$ (brown curve), this ringlet is seemingly in regime 3
 since $e'>0.866$, so one might expect the ringlet's spreading to have stalled by
@@ -343,8 +345,10 @@ of angular momentum via ringlet self--gravity. Figure (\ref{fig:da_nominal})
 shows that this gravitating ringlet's spreading ceases soon after time $t \simeq20\tau_\nu$, 
 at which point $e'=0.9$ (light purple curve), angular momentum flux reversal is complete,
 and the ringlet's total angular momentum luminosity $L=0$
-(see Fig.\ \ref{fig:angular_momentum_luminosity_nominal}).
+(see Figs.\ \ref{fig:angular_momentum_luminosity_nominal}--\ref{fig:angular_momentum_luminosity_zoom_nominal}).
 
+An interesting question is why a gravitating ringlet's viscous angular momentum luminosity is
+positive event though $e'>0.866$. Dunno...
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
@@ -363,8 +367,8 @@ and the ringlet's total angular momentum luminosity $L=0$
     \caption{
         \label{fig:radial_sigma_nominal}
         Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=50$
-        when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ from 
-        $r_{mid}$ which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}=0$,
+        when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
+        relative to $r_{mid}$ which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}=0$,
         with these radial distances $r - r_{mid}$ also measured in units of the ringlet's final semimajor axis width $\Delta a$.
         Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
         where the ringlet's streamlines are most concentrated and surface denisity $\sigma$ is
@@ -379,9 +383,47 @@ and the ringlet's total angular momentum luminosity $L=0$
     \plotone{figs/angular_momentum_luminosity_nominal.pdf}
     \caption{
         \label{fig:angular_momentum_luminosity_nominal}
-        ang...
+        Nominal ringlet's viscous angular momentum luminosity $L_\nu/L_{\nu,0}$ (blue curve) versus time $t/\tau_\nu$,
+        where $L_{\nu,0}$ is circular ring's viscous angular momentum luminosity, 
+        as well as the ringlet gravitational angular momentum luminosity $L_g$ (orange curve) in units of $L_{\nu,0}$.
     }
 \end{figure}
+
+\begin{figure}
+    \plotone{figs/angular_momentum_luminosity_zoom_nominal.pdf}
+    \caption{
+        \label{fig:angular_momentum_luminosity_zoom_nominal}
+        Figure \ref{fig:angular_momentum_luminosity_nominal} is replotted to highlight that the ringlet's 
+        viscous angular momentum luminosity $L_\nu$ (blue curve)
+        always stays positive (indicating that the viscous transport of angular momentum is radially outwards) while balancing
+        the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
+        $L_g$ (orange) such that the ringlet's total angular momentum luminosity $L=L_\nu+L_g=0$  (green curve)
+        after time $t\gg20\tau_\nu$.
+    }
+\end{figure}
+
+\begin{figure}
+    \plotone{figs/F_vs_longitude_nominal.pdf}
+    \caption{
+        \label{fig:F_vs_longitude_nominal}
+        The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$ (blue curve), plotted in units of $F_{\nu,0}$
+        and versus relative longitude $\varphi$ at time $t=50\tau_\nu$, as well as the ringlet's gravitational
+        angular momentum flux $F_{g}(\varphi)$ (orange curve).
+    }
+\end{figure}
+
+Figure \ref{fig:F_vs_longitude_nominal} shows how viscosity and self-gravity transport angular
+momentum across a self-confining ringlet at various longitudes $\varphi$. That figure shows that ringlet viscosity
+transports angular momentum inwards {\it i.e.}\ $F_{\nu}(\varphi)<0$ near periapse, and outwards 
+with $F_{\nu}(\varphi)>0$ at all other longitudes. Which is rather distinct from the ringlet's gravitational
+transport, which has $F_{g}(\varphi)<0$ as
+ring-matter travels towards periapse, and outwards $F_{g}(\varphi)>0$ after periapse.
+Despite these spatial differences, the influence of both forces still sum to zero
+in the orbit-integrated sense {\it i.e.}\ $\oint (F_\nu+F_g)rd\varphi=0$ after the ringlet has
+settled into the self-confining state.
+
+Ring viscosity and self-gravity can also transport energy across the ring, 
+and that is assessed in Appendix \ref{sec:Appendix F}.
 
 \acknowledgments
 
@@ -454,6 +496,11 @@ viscous spreading.
 
 This Appendix will use the orbit elements derived in Appendix \ref{sec:Appendix A} to
 derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}, and then Eqn.\ (\ref{eqn:L_nu}).
+
+\section{Appendix F}
+\label{sec:Appendix F}
+
+Viscous and gravitational energy transport...
 
 
 \bibliography{jmh_bibliography}
