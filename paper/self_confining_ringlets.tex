@@ -74,26 +74,26 @@ sizable eccentricity gradients, and a confinement mechanism that
 opposes radial spreading due to ring viscosity.
 Prevailing ringlet confinement mechanisms include: 
 unseen shepherd satellites (reference), periapse pinch (ref), self gravity (ref), and
-self-confinement (ref). This study uses N-body simulations to show how a narrow
+self-confinement (ref). This study uses N-body simulations to show how a viscous narrow
 self--gravitating ringlet can evolve into a self-confining state.
 
 \section{Ringlet confinement mechanisms}
 \label{sec:confinement}
 
 This section will explain the pros and cons of the various ringlet confinement mechanisms,
-and then motivates the possibility that ringlets are self confining. That possibility
+and will then motivate the possibility that ringlets are self confining. That possibility
 is explored further via numerical simulations using the epi\_int\_lite N-body integrator.
 
 \section{epi\_int\_lite}
 \label{sec:epi_int_lite}
 
 Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
-simulate the outer edge of Saturn's B ring as it is sculpted by satellite perturbations
+simulate the outer edge of Saturn's B ring while it is sculpted by satellite perturbations
 \citep{HS13}. The new code is very similar to its parent but differs in three significant ways:
 ({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution,
-({\it ii}.) epi\_int\_lite uses a more accurate drift step for 
+({\it ii}.) epi\_int\_lite uses a more accurate drift step to handle
 unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}),
-and ({\it iii}.) epi\_int\_lite uses the $C=1$ approximation that is justified below 
+and ({\it iii}.) epi\_int\_lite makes the $C=1$ approximation that is justified below 
 (Appendix \ref{sec:Appendix B}).
 
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
@@ -102,7 +102,7 @@ source code is available at https://github.com/joehahn/epi\_int\_lite, and the
 code's numerical quality is assessed in Appendix \ref{sec:Appendix C}
 where the output of several numerical experiments are compared against theoretical expectations.
 
-Calculations performed by epi\_int\_lite use natural units with gravitation constant $G=1$, 
+Calculations by epi\_int\_lite use natural units with gravitation constant $G=1$, 
 central primary mass $M=1$, and the ringlet's inner edge has initial radius
 $r_0=1$, and so the ringlet masses $m_r$ and radii $r$ quoted below are in units of $M$ and $r_0$.
 Converting code output from natural units to physical units requires choosing	
@@ -115,13 +115,13 @@ by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
 (see Appendix \ref{sec:Appendix B}), and all simulations
-adopt a Saturn-like value of $J_2=0.01$ and $R_p=r_0/2$ where $R_p$ is the planet's
+adopt Saturn-like values of $J_2=0.01$ and $R_p=r_0/2$ where $R_p$ is the planet's
 mean radius.
 
 Initially all particles are assigned to various streamlines across the simulated ringlet. A streamline
 is a closed eccentric path around the primary, and the $N_p$ particles in a given
-streamline are initially assigned a common semimajor axis $a$ and eccentricity $e$, 
-with uniform spacing in longitude. Most of the simulations described below
+streamline are initially assigned a common semimajor axis $a$ and eccentricity $e$ and are
+distributed uniformly in longitude. Most of the simulations described below
 employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
 theoretical treatments that also treat the ringlet as two gravitating rings
 (e.g.\ \citealt{BGT83}). But the following also performs a few higher-resolution simulations
@@ -222,7 +222,7 @@ state. It is convenient to recast these orbit element differences as dimensionle
     \qquad\mbox{and}\qquad
     \tilde{\omega}' = ea\frac{d\tilde{\omega}}{da}
 \end{equation}
-as both terms contribute to the nonlinearity parameter of \cite{BGT83}:
+as these are the terms that contribute to the nonlinearity parameter of \cite{BGT83}:
 \begin{equation}
     \label{eqn:q}
     q = \sqrt{e'^2 + \tilde{\omega}'^2}.
@@ -268,7 +268,7 @@ The nominal ringlet's eccentricity evolution.}
 \subsection{viscous angular momentum transport}
 \label{subsec:viscous_flux}
 
-The nominal ringlet's evolution is more easily understood when the ringlet's viscous flux of angular momentum is 
+The ringlet's evolution is more easily understood when the ringlet's viscous flux of angular momentum is 
 considered; that flux is 
 \begin{equation}
     \label{eqn:F_nu_theta}
@@ -336,13 +336,13 @@ the ringlet is in regime 1 since $e'<0.75$ and $F_\nu(\theta)>0$ at all longitud
 But by time $t = 6\tau_\nu$ (dark purple curve), this ringlet's eccentricity gradient exceeds $0.75$,
 and angular momentum flux reversal $F_\nu(\theta)<0$ occurs near periapse where $|\varphi|\simeq0$
 where the ringlet is most overdense due to its eccentricity gradient, see 
-alsoFig.\ \ref{fig:radial_sigma_nominal};
-this ringlet is in regime 2 and its radial spreading begins to deaccelerate. 
+also Fig.\ \ref{fig:radial_sigma_nominal};
+this ringlet is in regime 2 and its radial spreading is reduced by angular momentum flux reversal. 
 And by time $t = 10\tau_\nu$ (brown curve), this ringlet is seemingly in regime 3
 since $e'>0.866$, so one might expect the ringlet's spreading to have stalled by
 now, but keep in mind that the above analysis ignores any transport
-of angular momentum via ringlet self--gravity. Figure (\ref{fig:da_nominal})
-shows that this gravitating ringlet's spreading ceases soon after time $t \simeq20\tau_\nu$, 
+of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
+shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq20\tau_\nu$, 
 at which point $e'=0.9$ (light purple curve), angular momentum flux reversal is complete,
 and the ringlet's total angular momentum luminosity $L=0$
 (see Figs.\ \ref{fig:angular_momentum_luminosity_nominal}--\ref{fig:angular_momentum_luminosity_zoom_nominal}).
@@ -369,7 +369,8 @@ positive event though $e'>0.866$. Dunno...
         Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=50$
         when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
         relative to $r_{mid}$ which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}=0$,
-        with these radial distances $r - r_{mid}$ also measured in units of the ringlet's final semimajor axis width $\Delta a$.
+        with these radial distances $r - r_{mid}$ also measured in units of the ringlet's final semimajor axis width $\Delta a$,
+        and surface density is shown in units of the ringlet's longitudinally-averaged surface density $\sigma_0$.
         Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
         where the ringlet's streamlines are most concentrated and surface denisity $\sigma$ is
         greatest due to the ringlet's eccentricity gradient $e'$, at quadrature ($|\varphi|=\pi/2$, green curve),
