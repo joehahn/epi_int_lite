@@ -36,35 +36,43 @@ r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particle
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
+null_coordinate = False
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
 import time as tm
 clock_start = tm.time()
 
-#evolve system...this largely follows Chamber's (1993) 2nd order drift-kick scheme but assumes
-#the central mass has negligable motion about system's center-of-mass ie the ring is nearly
-#circular and there are no point-mass satellites such that Chamber's exp(tau*C/2)=1
+#evolve system using Chamber's (1993) 2nd order kick-drift-kick scheme 
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity)
+    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
+        #kick coordinates to account for central body's motion about center of mass
+        r, t = coordinate_kick(dt/2.0, total_ring_mass, r, t, vr, vt)
         #convert coordinates to elements
         a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
         #advance mean anomaly during drift step
         M = drift(a, M, J2, Rp, dt)
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+        #kick coordinates to account for central body's motion about center of mass
+        r, t = coordinate_kick(dt/2.0, total_ring_mass, r, t, vr, vt)    
         #kick velocities
-        vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity)
+        vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity)
         #updates
         timestep += 1
         timesteps_since_output += 1
-        #print timestep
+        #alert if null is obtained
+        if ((np.isnan(r).any() == True) and (null_coordinate == False)):
+            print ('null coordinate at timestep = ', timestep)
+            null_coordinate = True
     #kick velocities backwards by timestep -dt/2
-    vr, vt = kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)
+    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)
     #save output
     number_of_outputs += 1
+    #convert mixed-center coordinates to planetocentric
+    r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
     rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep)
     run_time_min = (tm.time() - clock_start)/60.0
     eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
