@@ -31,7 +31,7 @@ print 'output_folder =', output_folder
 #initialize orbits
 from helper_fns import *
 r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particles_per_streamline,
-    radial_width, total_ring_mass, Q_ring, J2, Rp, initial_orbits)
+    radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, Q_ring, J2, Rp, initial_orbits)
 
 #prep for main loop
 timestep = 0
@@ -65,7 +65,7 @@ while (number_of_outputs < total_number_of_outputs):
         timesteps_since_output += 1
         #alert if null is obtained
         if ((np.isnan(r).any() == True) and (null_coordinate == False)):
-            print ('null coordinate at timestep = ', timestep)
+            print 'null coordinate at timestep = ', timestep
             null_coordinate = True
     #kick velocities backwards by timestep -dt/2
     vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)

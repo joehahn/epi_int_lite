@@ -412,7 +412,7 @@ def restore_output(output_folder):
 
 #initialize streamlines
 def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
-    total_ring_mass, Q_ring, J2, Rp, initial_orbits):
+    total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, Q_ring, J2, Rp, initial_orbits):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -470,6 +470,13 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         sd = surface_density(lambda0, delta_r)
         G = 1.0
         c = (Q_ring*np.pi*G*sd/Omg).mean()
+    
+    #adjust vt to compensate for ring's radial accelerations
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity)
+    rAr = r*Ar
+    for idx in range(number_of_streamlines):
+        rAr[idx] = rAr[idx].mean()
+    vt = np.sqrt(vt*vt - rAr)
     
     #convert planetocentric coordinates to mixed-center coordinates
     r, t, vr, vt = planeto2mixed(total_ring_mass, r, t, vr, vt)
