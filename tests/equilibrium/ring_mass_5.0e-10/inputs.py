@@ -12,8 +12,8 @@ particles_per_streamline = 101
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.2
-timesteps_per_output = 1000
+dt = 0.5
+timesteps_per_output = 400
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -42,7 +42,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,
-    'e_prime':0.590175,
+    'e_prime':0.5901225703569246,
     'w_prime':0.0
 }
 
