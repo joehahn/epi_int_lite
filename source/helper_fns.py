@@ -251,8 +251,15 @@ def ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lambda0, sd, r, t, vr, 
     Ar = A_P(lambda0, sd, P, t, delta_P, delta_r)
     return Ar
 
+#additional tangential acceleration due to edge-torques
+def  edge_torques(r, At):
+    for idx in [0, -1]:
+        specific_torque = (r[idx]*At[idx]).mean()
+        At[idx] -= specific_torque/r[idx]
+    return At
+
 #calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity):
+def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
@@ -284,12 +291,15 @@ def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
         Ar = Ar[:, 1:-1]
     if (type(At) != int):
         At = At[:, 1:-1]
+    #add confinement torque at ring edges, as needed
+    if (confine_edges):
+        At = edge_torques(r, At)
     return Ar, At
 
 #velocity kicks due to ring gravity, viscosity, pressure
-def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity):
+def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity, confine_edges):
     #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -412,7 +422,8 @@ def restore_output(output_folder):
 
 #initialize streamlines
 def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
-    total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, Q_ring, J2, Rp, initial_orbits):
+    total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, confine_edges,
+    Q_ring, J2, Rp, initial_orbits):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -433,9 +444,10 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     if (initial_orbits['shape'] == 'eccentric'):
         e_init = initial_orbits['e']
         adeda = initial_orbits['e_prime']
-        e = e_init + adeda*(a - a[0])/a[0]
+        a_mean = a_streamlines.mean()
+        e = e_init + adeda*(a - a_mean)/a_mean
         aedwtda = initial_orbits['w_prime']
-        wt += aedwtda*(a - a[0])/a[0]/e
+        wt += aedwtda*(a - a_mean)/a_mean/e_init
     if (initial_orbits['shape'] == 'breathing mode'):
         e_init = initial_orbits['e']
         e[:] = e_init
@@ -472,7 +484,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         c = (Q_ring*np.pi*G*sd/Omg).mean()
     
     #adjust vt to compensate for ring's radial accelerations
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity)
+    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     rAr = r*Ar
     for idx in range(number_of_streamlines):
         rAr[idx] = rAr[idx].mean()

@@ -22,6 +22,7 @@ print 'ring gravitation constant =', G_ring
 print 'fast_gravity =', fast_gravity
 print 'shear_viscosity =', shear_viscosity
 print 'bulk_viscosity =', bulk_viscosity
+print 'confine_edges =', confine_edges
 print "Toomre's Q_ring =", Q_ring
 print 'Rp =', Rp
 print 'J2 =', J2
@@ -31,7 +32,8 @@ print 'output_folder =', output_folder
 #initialize orbits
 from helper_fns import *
 r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particles_per_streamline,
-    radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, Q_ring, J2, Rp, initial_orbits)
+    radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, confine_edges,
+    Q_ring, J2, Rp, initial_orbits)
 
 #prep for main loop
 timestep = 0
@@ -45,7 +47,7 @@ clock_start = tm.time()
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity)
+    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity, confine_edges)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #kick coordinates to account for central body's motion about center of mass
@@ -59,7 +61,7 @@ while (number_of_outputs < total_number_of_outputs):
         #kick coordinates to account for central body's motion about center of mass
         r, t = coordinate_kick(dt/2.0, total_ring_mass, r, t, vr, vt)    
         #kick velocities
-        vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity)
+        vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity, confine_edges)
         #updates
         timestep += 1
         timesteps_since_output += 1
@@ -68,7 +70,7 @@ while (number_of_outputs < total_number_of_outputs):
             print 'null coordinate at timestep = ', timestep
             null_coordinate = True
     #kick velocities backwards by timestep -dt/2
-    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity)
+    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
     #save output
     number_of_outputs += 1
     #convert mixed-center coordinates to planetocentric
