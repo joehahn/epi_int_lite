@@ -93,7 +93,7 @@ simulate the outer edge of Saturn's B ring while it is sculpted by satellite per
 ({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution,
 ({\it ii}.) epi\_int\_lite uses a more accurate drift step to handle
 unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}),
-and ({\it iii}.) epi\_int\_lite makes the $C=1$ approximation that is justified below 
+and ({\it iii}.) epi\_int\_lite makes the $C=0$ approximation that is justified below 
 (Appendix \ref{sec:Appendix B}).
 
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
@@ -440,8 +440,22 @@ Derive the more accurate drift step used by epi\_int\_lite...
 \section{Appendix B}
 \label{sec:Appendix B}
 
-Detail the $C=1$ approximation used by epi\_int\_lite, and show that the errors
-associated with this approximation are negligible...
+The epi\_int integrator advances the motions of $N$ interacting particles as they orbit 
+the primary mass $M$ via an approximate solution to Hamilton's equations of motion.
+That solution is derived in \cite{DLL98} and \cite{C99} and summarized again in
+Section 2.1 of \cite{HS13}. The Hamiltonian $H$ used there
+is a function of what \cite{DLL98} refer to as {\it democratic} and \cite{C99} refer to as
+{\it mixed-center} coordinates, with the spatial coordinates of all orbiting bodies
+$\mathbf{r}_i$ measured relative to center of primary mass $M$,
+and all velocities $\mathbf{v}_i$ measured relative to the system's barycenter,
+which is displaced from the primary's center by $\mathbf{r}_0=-\sum_{j=1}^N(m_j/M)\mathbf{r}_j$.
+
+In the mixed-center coordinate system, the Hamiltonian has three parts, $H=H_A + H_B + H_C$,
+where $H_A$ accounts for the two-body gravitational forces
+exerted between primary mass $M$ and the $N$ other orbiting bodies, $H_B$ accounts for the mutual
+interactions exerted between the $N$ small bodies of mass $\mathbf{r}_i$, and $H_C$
+is due to the non-inertial movement of the spatial coordinates' origin about the barycenter.
+
 
 \section{Appendix C}
 \label{sec:Appendix C}
@@ -465,7 +479,7 @@ of the inner streamline (see Fig.\ \ref{fig:e_nominal}) until the ringlet eccent
 limit required for complete angular momentum flux reversal 
 that results in the ringlet's radial confinement (dotted line). 
 Note that viscosity also excites the non-gravitating
-ringlet's eccentricity gradient some (orange curve), but insufficient to halt the ringlet's 
+ringlet's eccentricity gradient some (orange curve), but not sufficiently to halt the ringlet's 
 viscous spreading.
 
 \begin{figure}
@@ -554,9 +568,6 @@ below in Section \ref{subsec:approximations} and they simplify code development 
 shorten run times significantly. Section \ref{sec:testing} then assesses the impact
 of those approximations, and shows that they are truly negligable and do not affect outcomes
 or conclusions.
-
-
-
 
 Although the epi\_int integrator was well-suited for evolving the
 B ring edge over the $\sim3\times10^4$ orbits needed to monitor the B ring's response to Mimas

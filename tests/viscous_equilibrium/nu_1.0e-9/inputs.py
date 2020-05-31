@@ -13,37 +13,40 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 2100
+timesteps_per_output = 133
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
-radial_width = 0.0005
+radial_width = 1.0e-3
 
 #total ring mass
-total_ring_mass = 2.0e-09
+total_ring_mass = 3.0e-9
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
-#Also set fast_gravity=False since there is very little speed benefit when the fast_gravity approximation is used
-G_ring = -1.0
+#Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
+G_ring = 1.0
 fast_gravity = False
 
 #ring kinematic shear and bulk viscosity, set < 0 to turn off
-shear_viscosity = 1.0e-12
-bulk_viscosity = 1.5*shear_viscosity
+shear_viscosity = 1.0e-9
+bulk_viscosity = shear_viscosity
+
+#add fictitious torque at inner and outer streamlines, to oppose any radial spreading
+confine_edges = True
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
 
 #oblateness parameters
 Rp = 0.5
-J2 = 0.0
+J2 = 0.01
 
 #choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
-    'e':0.03,
-    'e_prime':0.0,
-    'w_prime':0.0
+    'e':0.005,
+    'e_prime':0.09811242443369501,
+    'w_prime':0.00947703328946614
 }
 
 #output folder

@@ -12,8 +12,8 @@ particles_per_streamline = 241
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.5
-timesteps_per_output = 2100
+dt = 0.5*2
+timesteps_per_output = 2100/6
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -32,7 +32,7 @@ shear_viscosity = 1.0e-12
 bulk_viscosity = 1.5*shear_viscosity
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
-Q_ring = -1.0
+Q_ring = 1.0
 
 #oblateness parameters
 Rp = 0.5
@@ -41,7 +41,7 @@ J2 = 0.01
 #choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
-    'e':0.03,
+    'e':0.01,
     'e_prime':0.0,
     'w_prime':0.0
 }

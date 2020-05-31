@@ -78,18 +78,6 @@ def sort_particles(r, t, vr, vt):
 def drift(a, M, J2, Rp, dt):
     return M + Kappa(J2, Rp, a)*dt
 
-#kick coordinates to account for central body's motion about center of mass
-def coordinate_kick(dt, total_ring_mass, r, t, vr, vt):
-    mass_0 = 1.0
-    N_particles = r.size
-    factor = dt*total_ring_mass/(N_particles*mass_0)
-    x, y, vx, vy = rt2xy(r, t, vr, vt)
-    x += factor*vx.sum()
-    y += factor*vy.sum()
-    r, t, vr, vt = xy2rt(x, y, vx, vy)
-    r, t, vr, vt = sort_particles(r, t, vr, vt)
-    return r, t
-
 #shift 2D array 1 element to right when n=1 and left when -1, is significantly faster than .roll()
 def sidestep(x, n):
     Ny, Nx = x.shape
@@ -125,9 +113,6 @@ def interpolate_fn(t, f, n, interpolate=True):
 
 #fit 2nd order lagrange polynomial to data (x0,y0),(x1,y1),(x2,y2) & interpolate y(x)
 def lagrange_poly_fit(x0, x1, x2, y0, y1, y2, x):
-    #l0 = ((x - x1)/(x0 - x1))*((x - x2)/(x0 - x2))
-    #l1 = ((x - x0)/(x1 - x0))*((x - x2)/(x1 - x2))
-    #l2 = ((x - x0)/(x2 - x0))*((x - x1)/(x2 - x1))
     dx0 = x - x0
     dx1 = x - x1
     dx2 = x - x2
@@ -252,7 +237,7 @@ def ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lambda0, sd, r, t, vr, 
     return Ar
 
 #additional tangential acceleration due to edge-torques
-def  edge_torques(r, At):
+def edge_torques(r, At):
     for idx in [0, -1]:
         specific_torque = (r[idx]*At[idx]).mean()
         At[idx] -= specific_torque/r[idx]
@@ -286,24 +271,40 @@ def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
             At += ring_shear_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
         if (bulk_viscosity > 0.0):
             Ar += ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
+    #add confinement torque at ring edges, as needed
+    if (confine_edges):
+        At = edge_torques(rw, At)
     #drop left and right edges from Ar,At
     if (type(Ar) != int):
         Ar = Ar[:, 1:-1]
     if (type(At) != int):
         At = At[:, 1:-1]
-    #add confinement torque at ring edges, as needed
-    if (confine_edges):
-        At = edge_torques(r, At)
     return Ar, At
 
 #velocity kicks due to ring gravity, viscosity, pressure
-def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity, confine_edges):
+def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt, fast_gravity, confine_edges):
+    #convert mixed-center coordinates to planetocentric
+    r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
+    #order particles by longitude
+    r, t, vr, vt = sort_particles(r, t, vr, vt)
     #radial acceleration due to ring gravity and pressure
     Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
-    return vr, vt
+    #convert planetocentric coordinates to mixed-center coordinates
+    r, t, vr, vt = planeto2mixed(total_ring_mass, r, t, vr, vt)
+    return r, t, vr, vt
+
+#kick coordinates to account for central body's motion about center of mass
+def coordinate_kick(dt, total_ring_mass, r, t, vr, vt):
+    mass_0 = 1.0
+    factor = dt*total_ring_mass/mass_0
+    x, y, vx, vy = rt2xy(r, t, vr, vt)
+    x += factor*vx.mean()
+    y += factor*vy.mean()
+    r, t, vr, vt = xy2rt(x, y, vx, vy)
+    return r, t, vr, vt
 
 #convert orbit elements to coordinates
 def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
@@ -317,9 +318,6 @@ def elem2coords(J2, Rp, a, e, wt, M, Ar=0.0, sort_particle_longitudes=True):
     ra3 = ra*ra*ra
     vr = (a*Kap*ra3)*e_sin_M
     vt = a*a*Omg/r
-    #sort each streamline's particles by longitude as needed
-    if (sort_particle_longitudes):
-        r, t, vr, vt = sort_particles(r, t, vr, vt)
     return r, t, vr, vt
 
 #convert coordinates to orbit elements
@@ -357,7 +355,7 @@ def planeto2bary(total_ring_mass, r, t, vr, vt):
     vx_bc = vx + vx_0
     vy_bc = vy + vy_0
     r_bc, t_bc, vr_bc, vt_bc = xy2rt(x_bc, y_bc, vx_bc, vy_bc)
-    r_bc, t_bc, vr_bc, vt_bc = sort_particles(r_bc, t_bc, vr_bc, vt_bc)
+    #r_bc, t_bc, vr_bc, vt_bc = sort_particles(r_bc, t_bc, vr_bc, vt_bc)
     return r_bc, t_bc, vr_bc, vt_bc
 
 #convert barycentric coordinates and velocities to planetocentric
@@ -375,7 +373,7 @@ def bary2planeto(total_ring_mass, r_bc, t_bc, vr_bc, vt_bc):
     vx = vx_bc - vx_0_bc
     vy = vy_bc - vy_0_bc
     r, t, vr, vt = xy2rt(x, y, vx, vy)
-    r, t, vr, vt = sort_particles(r, t, vr, vt)
+    #r, t, vr, vt = sort_particles(r, t, vr, vt)
     return r, t, vr, vt
 
 #convert planetocentric r,v to planetocentic r and barycentric v
@@ -390,11 +388,17 @@ def mixed2planeto(total_ring_mass, r, t, vr_bc, vt_bc):
     return r, t, vr, vt
 
 #append current r,t,vr,vt,a,timestep to lists rz,tz etc
-def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep):
-    rz.append(r)
-    tz.append(t)
-    vrz.append(vr)
-    vtz.append(vt)
+def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, timestep):
+    rc = r.copy()
+    tc = t.copy()
+    vrc = vr.copy()
+    vtc = vt.copy()
+    rc, tc, vrc, vtc = mixed2planeto(total_ring_mass, rc, tc, vrc, vtc)
+    rc, tc, vrc, vtc = sort_particles(rc, tc, vrc, vtc)
+    rz.append(rc)
+    tz.append(tc)
+    vrz.append(vrc)
+    vtz.append(vtc)
     timestepz.append(timestep)
     return rz, tz, vrz, vtz, timestepz
 
@@ -474,6 +478,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     #ring coordinates
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
+    r, t, vr, vt = sort_particles(r, t, vr, vt)
     
     #ring sound speed c
     c = 0.0

@@ -5,7 +5,7 @@
 #by Joe Hahn, jmh.datasciences@gmail.com, 27 August 2017.
 #
 #this simulates the dynamical evolution of self-gravitating planetary rings.
-#The majority of this code was written while drinking and singing at
+#A portion of this code was written while drinking and singing at
 #the Water Tank karaoke bar in northwest Austin TX, so buyer beware.
 
 #read input parameters
@@ -47,11 +47,11 @@ clock_start = tm.time()
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt/2.0, fast_gravity, confine_edges)
+    r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt/2.0, fast_gravity, confine_edges)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #kick coordinates to account for central body's motion about center of mass
-        r, t = coordinate_kick(dt/2.0, total_ring_mass, r, t, vr, vt)
+        r, t, vr, vt = coordinate_kick(dt/2, total_ring_mass, r, t, vr, vt)
         #convert coordinates to elements
         a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
         #advance mean anomaly during drift step
@@ -59,9 +59,9 @@ while (number_of_outputs < total_number_of_outputs):
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick coordinates to account for central body's motion about center of mass
-        r, t = coordinate_kick(dt/2.0, total_ring_mass, r, t, vr, vt)    
+        r, t, vr, vt = coordinate_kick(dt/2, total_ring_mass, r, t, vr, vt)    
         #kick velocities
-        vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, dt, fast_gravity, confine_edges)
+        r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt, fast_gravity, confine_edges)
         #updates
         timestep += 1
         timesteps_since_output += 1
@@ -70,13 +70,11 @@ while (number_of_outputs < total_number_of_outputs):
             print 'null coordinate at timestep = ', timestep
             null_coordinate = True
     #kick velocities backwards by timestep -dt/2
-    vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
+    r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
     #save output
-    number_of_outputs += 1
-    #convert mixed-center coordinates to planetocentric
-    r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
-    rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, timestep)
+    rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, timestep)
     run_time_min = (tm.time() - clock_start)/60.0
+    number_of_outputs += 1
     eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
     if (20*number_of_outputs%total_number_of_outputs == 0):
         print 'time = ' + str(timestep*dt) + \
