@@ -31,6 +31,9 @@ fast_gravity = False
 shear_viscosity = -1.0e-11
 bulk_viscosity = shear_viscosity
 
+#add fictitious torque at inner and outer streamlines, to oppose any radial spreading
+confine_edges = False
+
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
 
@@ -42,7 +45,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':0.005,
-    'e_prime':0.21990019752052828,
+    'e_prime':0.2155310787255745,
     'w_prime':0.0
 }
 
