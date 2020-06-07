@@ -8,63 +8,74 @@
 import numpy as np
 
 #calculate da, de, dwt differences at inner & outer streamline's periapse
-def calculate_deltas(r, a, e, wt):
-    dwt_list = []
-    de_list = []
-    da_list = []
-    a_avg_list = []
-    e_avg_list = []
-    N_times = r.shape[0]
-    for tidx in range(N_times):
-        r0 = r[tidx]
-        r_inner = r0[0]
-        r_outer = r0[-1]
+def orbit_deltas(times, r, a, e, wt):
+    a_inner_list = []
+    a_outer_list = []
+    e_inner_list = []
+    e_outer_list = []
+    wt_inner_list = []
+    wt_outer_list = []
+    for tidx, time_ in enumerate(times):
+        r_now = r[tidx]
+        r_inner = r_now[0]
+        r_outer = r_now[-1]
         pidx_inner = r_inner.argmin()  
         pidx_outer = r_outer.argmin()    
-        wt0 = wt[tidx]
-        wt_inner = wt0[0]
-        wt_outer = wt0[-1]
-        dwt = wt_outer[pidx_outer] - wt_inner[pidx_inner]
-        if (dwt > np.pi):
-            dwt -= 2*np.pi
-        if (dwt < -np.pi):
-            dwt += 2*np.pi
-        dwt_list += [dwt]
-        e0 = e[tidx]
-        e_inner = e0[0]
-        e_outer = e0[-1]
-        de = e_outer[pidx_outer] - e_inner[pidx_inner]
-        de_list += [de]
-        e_avg = (e_inner[pidx_inner] + e_outer[pidx_outer])/2
-        e_avg_list += [e_avg]
-        a0 = a[tidx]
-        a_inner = a0[0]
-        a_outer = a0[-1]
-        da = a_outer[pidx_outer] - a_inner[pidx_inner]
-        da_list += [da]
-        a_avg = (a_inner[pidx_inner] + a_outer[pidx_outer])/2
-        a_avg_list += [a_avg]
-    dwt = np.array(dwt_list)
-    de = np.array(de_list)
-    da = np.array(da_list)
-    a_avg = np.array(a_avg_list)
-    e_avg = np.array(e_avg_list)
-    return da, de, dwt, a_avg, e_avg
+        wt_now = wt[tidx]
+        wt_inner_streamline = wt_now[0]
+        wt_outer_streamline = wt_now[-1]
+        wt_inner = wt_inner_streamline[pidx_inner]
+        wt_outer = wt_outer_streamline[pidx_outer]
+        e_now = e[tidx]
+        e_inner_streamline = e_now[0]
+        e_outer_streamline = e_now[-1]
+        e_inner = e_inner_streamline.mean()
+        e_outer = e_outer_streamline.mean()
+        a_now = a[tidx]
+        a_inner_streamline = a_now[0]
+        a_outer_streamline = a_now[-1]
+        a_inner = a_inner_streamline.mean()
+        a_outer = a_outer_streamline.mean()
+        a_inner_list += [a_inner]
+        a_outer_list += [a_outer]
+        e_inner_list += [e_inner]
+        e_outer_list += [e_outer]
+        wt_inner_list += [wt_inner]
+        wt_outer_list += [wt_outer]
+    a_inner = np.array(a_inner_list)
+    a_outer = np.array(a_outer_list)
+    e_inner = np.array(e_inner_list)
+    e_outer = np.array(e_outer_list)
+    wt_inner = np.array(wt_inner_list)
+    wt_outer = np.array(wt_outer_list)
+    a_mean = (a_outer + a_inner)/2
+    da = a_outer - a_inner
+    e_mean = (e_outer + e_inner)/2
+    de = e_outer - e_inner
+    dwt = wt_outer - wt_inner
+    idx = (dwt > np.pi)
+    dwt[idx] = dwt[idx] - 2*np.pi
+    idx = (dwt < -np.pi)
+    dwt[idx] = dwt[idx] + 2*np.pi
+    return a_inner, a_outer, a_mean, da, e_inner, e_outer, e_mean, de, wt_inner, wt_outer, dwt
 
-#compute q2 to lowest order and H(q2)
-def H_q2(a_avg, e_avg, da, de, dwt):
-    q2 = (a_avg*de/da)**2 + (a_avg*e_avg*dwt/da)**2
+#compute e_prime, wt_prime, q to lowest order, and H(q)
+def calculate_Hq(a_mean, e_mean, da, de, dwt):
+    e_prime = e_mean + a_mean*de/da
+    wt_prime = e_mean*a_mean*dwt/da
+    q2 = e_prime**2 + wt_prime**2
+    q = np.sqrt(q2)
     q_factor = np.sqrt(1 - q2)
     H = (1 - q_factor)/q2/q_factor
-    return H, q2
+    return H, q, e_prime, wt_prime
 
-#unroll angle
-def unroll_angle(angle):
-    unrolled_angle = angle.copy()
-    for idx in range(1, len(unrolled_angle)):
-        delta = unrolled_angle[idx] - unrolled_angle[idx - 1]
-        if (delta > np.pi):
-            unrolled_angle[idx:] -= 2*np.pi
-        if (delta < -np.pi):
-            unrolled_angle[idx:] += 2*np.pi
-    return unrolled_angle
+##unroll angle
+#def unroll_angle(angle):
+#    unrolled_angle = angle.copy()
+#    for idx in range(1, len(unrolled_angle)):
+#        delta = unrolled_angle[idx] - unrolled_angle[idx - 1]
+#        if (delta > np.pi):
+#            unrolled_angle[idx:] -= 2*np.pi
+#        if (delta < -np.pi):
+#            unrolled_angle[idx:] += 2*np.pi
+#    return unrolled_angle
