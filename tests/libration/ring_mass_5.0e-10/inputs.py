@@ -8,12 +8,12 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 2
-particles_per_streamline = 101
+particles_per_streamline = 241
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 400
+timesteps_per_output = 700
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -31,6 +31,9 @@ fast_gravity = False
 shear_viscosity = -1.0e-11
 bulk_viscosity = shear_viscosity
 
+#add fictitious torque at inner and outer streamlines, to oppose any radial spreading
+confine_edges = False
+
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
 
@@ -42,7 +45,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':5.0e-3,
-    'e_prime':0.638,
+    'e_prime':0.5,
     'w_prime':0.0
 }
 
