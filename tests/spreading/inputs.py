@@ -31,6 +31,9 @@ fast_gravity = False
 shear_viscosity = 1.0e-12
 bulk_viscosity = 1.5*shear_viscosity
 
+#add fictitious torque at inner and outer streamlines, to oppose any radial spreading
+confine_edges = False
+
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
 
