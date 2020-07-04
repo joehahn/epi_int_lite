@@ -10,29 +10,44 @@ execution time (minutes) =  5.90326240063
    Ordered by: internal time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-  5040084  138.190    0.000  138.190    0.000 helper_fns.py:85(lagrange_poly_fit)
- 30840514   57.622    0.000   57.622    0.000 {numpy.core.multiarray.concatenate}
-   120002   34.844    0.000  218.417    0.002 helper_fns.py:137(ring_gravity)
- 20160336   27.291    0.000   69.692    0.000 helper_fns.py:52(sidestep)
-  5040084   17.797    0.000  254.400    0.000 helper_fns.py:70(interpolate_fn)
- 10080168    9.400    0.000   28.722    0.000 helper_fns.py:63(advance)
-   120000    7.680    0.000   14.726    0.000 helper_fns.py:283(coords2elem)
-   360002    7.674    0.000    7.674    0.000 helper_fns.py:16(Kappa)
-   600010    7.064    0.000   68.355    0.000 helper_fns.py:119(delta_f)
- 21360356    5.985    0.000    5.985    0.000 {method 'reshape' of 'numpy.ndarray' objects}
-   120001    5.920    0.000   18.798    0.000 helper_fns.py:266(elem2coords)
-   240002    5.505    0.000    5.505    0.000 helper_fns.py:8(Omega)
-   120001    4.534    0.000    6.360    0.000 helper_fns.py:302(sort_particles)
-   120002    4.353    0.000  314.344    0.003 helper_fns.py:218(accelerations)
-   240001    2.985    0.000    2.985    0.000 helper_fns.py:28(adjust_angle)
-   120002    2.717    0.000   36.698    0.000 helper_fns.py:199(ring_bulk_viscosity)
-   240004    2.706    0.000   13.017    0.000 helper_fns.py:160(A_P)
-   120002    2.120    0.000   36.185    0.000 helper_fns.py:184(ring_shear_viscosity)
-   120002    2.074    0.000  316.418    0.003 helper_fns.py:257(kick)
-   600010    2.020    0.000    4.331    0.000 helper_fns.py:102(wrap_ring)
-  1320011    1.686    0.000    1.686    0.000 {method 'argsort' of 'numpy.ndarray' objects}
-   480008    1.363    0.000    1.363    0.000 helper_fns.py:133(df_dr)
-        1    1.245    1.245  354.368  354.368 epi_int_lite.py:12(<module>)
-  1200050    0.427    0.000    0.427    0.000 {method 'copy' of 'numpy.ndarray' objects}
-   120000    0.402    0.000    3.002    0.000 helper_fns.py:48(drift)
-   120002    0.350    0.000    0.350    0.000 helper_fns.py:114(surface_density)
+  5040126  138.917    0.000  138.917    0.000 helper_fns.py:115(lagrange_poly_fit)
+ 30840771   58.247    0.000   58.247    0.000 {numpy.concatenate}
+ 20160504   36.664    0.000   79.109    0.000 helper_fns.py:82(sidestep)
+   120003   35.495    0.000  230.886    0.002 helper_fns.py:164(ring_gravity)
+   600009   27.482    0.000   27.482    0.000 helper_fns.py:58(xy2rt)
+  5040126   20.791    0.000  270.582    0.000 helper_fns.py:100(interpolate_fn)
+   600009   14.335    0.000   14.335    0.000 helper_fns.py:48(rt2xy)
+ 10080252   11.910    0.000   31.765    0.000 helper_fns.py:93(advance)
+   360002    7.626    0.000    7.626    0.000 helper_fns.py:16(Kappa)
+  2040050    7.472    0.000    7.472    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+   600015    7.228    0.000   72.211    0.000 helper_fns.py:146(delta_f)
+   120000    7.138    0.000   14.306    0.000 helper_fns.py:324(coords2elem)
+ 21360536    6.013    0.000    6.013    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+   120001    5.734    0.000   12.311    0.000 helper_fns.py:310(elem2coords)
+   240002    5.456    0.000    5.456    0.000 helper_fns.py:8(Omega)
+   120004    5.261    0.000    7.131    0.000 helper_fns.py:68(sort_particles)
+   120003    4.204    0.000  330.098    0.003 helper_fns.py:247(accelerations)
+   240006    3.594    0.000   25.080    0.000 helper_fns.py:343(planeto2bary)
+   240001    3.288    0.000    3.288    0.000 helper_fns.py:28(adjust_angle)
+   240000    3.246    0.000   28.258    0.000 helper_fns.py:300(coordinate_kick)
+   120002    2.820    0.000  377.374    0.003 helper_fns.py:285(velocity_kick)
+        1    2.778    2.778  438.826  438.826 epi_int_lite.py:12(<module>)
+   240006    2.772    0.000   13.746    0.000 helper_fns.py:187(A_P)
+   480012    2.709    0.000    7.962    0.000 _methods.py:58(_mean)
+   600015    2.581    0.000    4.962    0.000 helper_fns.py:129(wrap_ring)
+  1320044    1.768    0.000    1.768    0.000 {method 'argsort' of 'numpy.ndarray' objects}
+   120003    1.747    0.000   37.691    0.000 helper_fns.py:223(ring_bulk_viscosity)
+   120003    1.611    0.000   11.389    0.000 helper_fns.py:362(bary2planeto)
+   480012    1.471    0.000    1.832    0.000 _methods.py:48(_count_reduce_items)
+   480012    1.343    0.000    1.343    0.000 helper_fns.py:160(df_dr)
+   120003    1.316    0.000   37.257    0.000 helper_fns.py:211(ring_shear_viscosity)
+  1440036    0.674    0.000    5.635    0.000 _methods.py:34(_sum)
+  1440036    0.581    0.000    6.216    0.000 {method 'sum' of 'numpy.ndarray' objects}
+   120003    0.559    0.000   23.757    0.000 helper_fns.py:385(mixed2planeto)
+   480022    0.478    0.000    0.582    0.000 numeric.py:541(asanyarray)
+   720187    0.464    0.000    0.464    0.000 {range}
+  1200094    0.422    0.000    0.422    0.000 {method 'copy' of 'numpy.ndarray' objects}
+   120000    0.413    0.000    3.039    0.000 helper_fns.py:78(drift)
+   963050    0.371    0.000    0.371    0.000 {isinstance}
+   120003    0.352    0.000    0.352    0.000 helper_fns.py:141(surface_density)
+
