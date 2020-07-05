@@ -22,6 +22,8 @@ a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 #recompute r,t in coordinate system that co-rotates with inner streamline's peri
 for t_idx in range(len(times)):
     rs, ts, vrs, vts, wts = peri_corotate(r[t_idx], t[t_idx], vr[t_idx], vt[t_idx], wt[t_idx])
+    rs[1] -= rs[0]
+    rs[0] -= rs[0]
     r[t_idx] = rs
     t[t_idx] = ts
     vr[t_idx] = vrs
@@ -48,7 +50,7 @@ def xyt(i):
     tp = pad_array(ti, longitudes=True)
     rp = pad_array(ri, longitudes=False)
     x = tp/np.pi
-    y = rp - 1
+    y = rp #- 1
     y_mid = 0*y[len(y)/2].copy()
     for ys in y:
         ys -= y_mid
@@ -72,8 +74,8 @@ def draw(xyt):
 #show animation
 rm1 = r - 1.0
 y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
-y_rng = (-0.015, 0.015)
-fig = plt.figure()
+y_rng = (-0.00030, 0.0025)
+fig = plt.figure(figsize=(14, 6))
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
 x, y, tm = xyt(0)
@@ -81,7 +83,7 @@ ax.set_title('t = ' + str(tm))
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 while(len(colors) < number_of_streamlines):
     colors += colors
-lines = [ax.plot([],[], 'o-', color=colors[idx], linewidth=1.5, markersize=0)[0]
+lines = [ax.plot([],[], 'o-', color=colors[idx], linewidth=0.1, markersize=1)[0]
     for idx in range(number_of_streamlines)]
 for line in lines:
     line.set_data([],[])
