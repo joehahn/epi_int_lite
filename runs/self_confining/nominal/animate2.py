@@ -17,7 +17,7 @@ import numpy as np
 from helper_fns import *
 execfile('inputs.py')
 r, t, vr, vt, times, lambda0 = restore_output(output_folder)
-tidx = 9071
+tidx = 1002
 r = r[0:tidx]
 t = t[0:tidx]
 vr = vr[0:tidx]
@@ -81,7 +81,7 @@ def draw(xyt):
 #show animation
 rm1 = r - 1.0
 y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
-y_rng = (-0.0005, 0.003)
+y_rng = (-0.0005, 0.006)
 fig = plt.figure()
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')
