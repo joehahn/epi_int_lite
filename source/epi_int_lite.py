@@ -31,14 +31,13 @@ print 'output_folder =', output_folder
 
 #initialize orbits
 from helper_fns import *
-r, t, vr, vt, lambda0, c = initialize_streamline(number_of_streamlines, particles_per_streamline,
+r, t, vr, vt, lambda0, c, monitor = initialize_streamline(number_of_streamlines, particles_per_streamline,
     radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, confine_edges,
     Q_ring, J2, Rp, initial_orbits)
 
 #prep for main loop
 timestep = 0
 number_of_outputs = 0
-null_coordinate = False
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
 import time as tm
 clock_start = tm.time()
@@ -65,24 +64,20 @@ while (number_of_outputs < total_number_of_outputs):
         #updates
         timestep += 1
         timesteps_since_output += 1
-        #alert if null is obtained
-        if ((np.isnan(r).any() == True) and (null_coordinate == False)):
-            print 'null coordinate at timestep = ', timestep
-            null_coordinate = True
+        #update streamline monitor
+        monitor = monitor_streamlines(monitor, r, t, timestep)
     #kick velocities backwards by timestep -dt/2
     r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
     #save output
     rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, timestep)
-    run_time_min = (tm.time() - clock_start)/60.0
     number_of_outputs += 1
-    eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
+    #update display as needed
     if (20*number_of_outputs%total_number_of_outputs == 0):
-        print 'time = ' + str(timestep*dt) + \
-            '    number of outputs = ' + str(number_of_outputs) + \
-            '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi)) + \
-            '    eta (minutes) = ', eta_min
+         continue_sim = update_display(number_of_outputs, total_number_of_outputs, clock_start, dt, timestep, monitor)
+         if (continue_sim == False):
+             break
 
 #save results
 timez = np.array(timestepz)*dt
-save_output(rz, tz, vrz, vtz, timez, lambda0, output_folder)
+save_output(rz, tz, vrz, vtz, timez, lambda0, monitor, output_folder)
 print 'execution time (minutes) = ', (tm.time() - clock_start)/60.0

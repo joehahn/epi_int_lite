@@ -402,9 +402,29 @@ def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, tim
     timestepz.append(timestep)
     return rz, tz, vrz, vtz, timestepz
 
+#check for streamine crossing and nans
+def monitor_streamlines(monitor, r, t, timestep):
+    #check for nan in r
+    nan_timestep = monitor['nan_timestep']
+    if ((np.isnan(r).any() == True) and (nan_timestep == None)):
+        print 'nan coordinate at timestep = ', timestep
+        monitor['nan_timestep'] = timestep
+    #check for streamline crossing
+    shft = 1
+    dr = interpolate_fn(t, r, -shft, interpolate=False) - r
+    number_of_streamlines = dr.shape[0]
+    dr = dr[:number_of_streamlines - 1]
+    idx = (dr < 0)
+    streamline_crossing_timestep = monitor['streamline_crossing_timestep']
+    if ((idx.sum() > 0) and (streamline_crossing_timestep == None)):
+        print 'steamlines cross at timestep = ', timestep
+        monitor['streamline_crossing_timestep'] = timestep
+    return monitor
+
 #save orbit element arrays in files
-def save_output(r, t, vr, vt, times, lambda0, output_folder):
-    import os
+import pickle
+import os
+def save_output(r, t, vr, vt, times, lambda0, monitor, output_folder):
     cmd = 'mkdir -p ' + output_folder
     q = os.system(cmd)
     np.save(output_folder + '/r.npy', r)
@@ -413,6 +433,8 @@ def save_output(r, t, vr, vt, times, lambda0, output_folder):
     np.save(output_folder + '/vt.npy', vt)
     np.save(output_folder + '/times.npy', times)
     np.save(output_folder + '/lambda0.npy', lambda0)
+    with open(output_folder + '/monitor.pkl', 'wb') as fp:
+        pickle.dump(monitor, fp, protocol=pickle.HIGHEST_PROTOCOL)
 
 #restore orbit elements from files
 def restore_output(output_folder):
@@ -422,7 +444,25 @@ def restore_output(output_folder):
     vt = np.load(output_folder + '/vt.npy')
     times = np.load(output_folder + '/times.npy')
     lambda0 = np.load(output_folder + '/lambda0.npy')
-    return r, t, vr, vt, times, lambda0
+    with open(output_folder + '/monitor.pkl', 'rb') as fp:
+        monitor = pickle.load(fp)
+    return r, t, vr, vt, times, lambda0, monitor
+
+#print eta as needed, and end simulation if monitor says something bad happened
+import time as tm
+def update_display(number_of_outputs, total_number_of_outputs, clock_start, dt, timestep, monitor):
+    run_time_min = (tm.time() - clock_start)/60.0
+    eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
+    print 'time = ' + str(timestep*dt) + \
+        '    number of outputs = ' + str(number_of_outputs) + \
+        '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi)) + \
+        '    eta (minutes) = ', eta_min
+    continue_sim = True
+    for k, v in monitor.iteritems():
+        if (v):
+            print 'sim terminated at timestep = ' + str(timestep)
+            continue_sim = False
+    return continue_sim
 
 #initialize streamlines
 def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
@@ -498,7 +538,10 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #convert planetocentric coordinates to mixed-center coordinates
     r, t, vr, vt = planeto2mixed(total_ring_mass, r, t, vr, vt)
     
-    return r, t, vr, vt, lambda0, c
+    #this dict is used to track when streamlines cross or nan is generated
+    monitor = {'streamline_crossing_timestep':None, 'nan_timestep':None}
+    
+    return r, t, vr, vt, lambda0, c, monitor
 
 #recompute coordinates in coordinate system that co-rotates with ringlet's middle streamline's peri
 def peri_corotate(r, t, vr, vt, wt):
