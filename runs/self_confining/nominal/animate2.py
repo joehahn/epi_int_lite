@@ -16,7 +16,7 @@ import numpy as np
 #restore output
 from helper_fns import *
 execfile('inputs.py')
-r, t, vr, vt, times, lambda0 = restore_output(output_folder)
+r, t, vr, vt, times, lambda0, monitor = restore_output(output_folder)
 tidx = 1002
 r = r[0:tidx]
 t = t[0:tidx]
