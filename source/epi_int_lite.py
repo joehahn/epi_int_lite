@@ -39,8 +39,8 @@ r, t, vr, vt, lambda0, c, monitor = initialize_streamline(number_of_streamlines,
 timestep = 0
 number_of_outputs = 0
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
-import time as tm
-clock_start = tm.time()
+#import time as tm
+#clock_start = tm.time()
 
 #evolve system using Chamber's (1993) 2nd order kick-drift-kick scheme 
 print 'evolving system...'
@@ -73,11 +73,11 @@ while (number_of_outputs < total_number_of_outputs):
     number_of_outputs += 1
     #update display as needed
     if (20*number_of_outputs%total_number_of_outputs == 0):
-         continue_sim = update_display(number_of_outputs, total_number_of_outputs, clock_start, dt, timestep, monitor)
+         continue_sim = update_display(number_of_outputs, total_number_of_outputs, dt, timestep, monitor)
          if (continue_sim == False):
              break
 
 #save results
 timez = np.array(timestepz)*dt
 save_output(rz, tz, vrz, vtz, timez, lambda0, monitor, output_folder)
-print 'execution time (minutes) = ', (tm.time() - clock_start)/60.0
+print 'execution time (minutes) = ', (monitor['current_time'] - monitor['start_time'])/60.0

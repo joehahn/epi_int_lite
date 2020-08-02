@@ -450,16 +450,17 @@ def restore_output(output_folder):
 
 #print eta as needed, and end simulation if monitor says something bad happened
 import time as tm
-def update_display(number_of_outputs, total_number_of_outputs, clock_start, dt, timestep, monitor):
-    run_time_min = (tm.time() - clock_start)/60.0
-    eta_min = int((total_number_of_outputs - number_of_outputs)*run_time_min/number_of_outputs)
+def update_display(number_of_outputs, total_number_of_outputs, dt, timestep, monitor):
+    monitor['current_time'] = int(tm.time())
+    exec_time_min = (monitor['current_time'] - monitor['start_time'])/60.0
+    eta_min = int((total_number_of_outputs - number_of_outputs)*exec_time_min/number_of_outputs)
     print 'time = ' + str(timestep*dt) + \
         '    number of outputs = ' + str(number_of_outputs) + \
         '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi)) + \
         '    eta (minutes) = ', eta_min
     continue_sim = True
-    for k, v in monitor.iteritems():
-        if (v):
+    for key in ['streamline_crossing_timestep', 'nan_timestep']:
+        if (monitor[key]):
             print 'sim terminated at timestep = ' + str(timestep)
             continue_sim = False
     return continue_sim
@@ -538,9 +539,10 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #convert planetocentric coordinates to mixed-center coordinates
     r, t, vr, vt = planeto2mixed(total_ring_mass, r, t, vr, vt)
     
-    #this dict is used to track when streamlines cross or nan is generated
-    monitor = {'streamline_crossing_timestep':None, 'nan_timestep':None}
-    
+    #this dict is used to track execution time and when streamlines cross or nan is generated
+    start_time = int(tm.time())
+    monitor = {'start_time':start_time, 'current_time':start_time, 'streamline_crossing_timestep':None, 'nan_timestep':None}
+
     return r, t, vr, vt, lambda0, c, monitor
 
 #recompute coordinates in coordinate system that co-rotates with ringlet's middle streamline's peri
