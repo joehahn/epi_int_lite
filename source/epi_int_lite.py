@@ -79,5 +79,5 @@ while (number_of_outputs < total_number_of_outputs):
 
 #save results
 timez = np.array(timestepz)*dt
-save_output(rz, tz, vrz, vtz, timez, lambda0, monitor, output_folder)
+save_output(rz, tz, vrz, vtz, timez, lambda0, modified_params, monitor, output_folder)
 print 'execution time (minutes) = ', (monitor['current_time'] - monitor['start_time'])/60.0

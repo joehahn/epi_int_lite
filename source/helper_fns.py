@@ -404,6 +404,7 @@ def store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, tim
 
 #check for streamine crossing and nans
 def monitor_streamlines(monitor, r, t, timestep):
+    monitor['current_timestep'] = timestep
     #check for nan in r
     nan_timestep = monitor['nan_timestep']
     if ((np.isnan(r).any() == True) and (nan_timestep == None)):
@@ -424,7 +425,7 @@ def monitor_streamlines(monitor, r, t, timestep):
 #save orbit element arrays in files
 import pickle
 import os
-def save_output(r, t, vr, vt, times, lambda0, monitor, output_folder):
+def save_output(r, t, vr, vt, times, lambda0, modified_params, monitor, output_folder):
     cmd = 'mkdir -p ' + output_folder
     q = os.system(cmd)
     np.save(output_folder + '/r.npy', r)
@@ -433,6 +434,7 @@ def save_output(r, t, vr, vt, times, lambda0, monitor, output_folder):
     np.save(output_folder + '/vt.npy', vt)
     np.save(output_folder + '/times.npy', times)
     np.save(output_folder + '/lambda0.npy', lambda0)
+    monitor['modified_params'] = modified_params
     with open(output_folder + '/monitor.pkl', 'wb') as fp:
         pickle.dump(monitor, fp, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -541,7 +543,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     
     #this dict is used to track execution time and when streamlines cross or nan is generated
     start_time = int(tm.time())
-    monitor = {'start_time':start_time, 'current_time':start_time, 'streamline_crossing_timestep':None, 'nan_timestep':None}
+    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 'nan_timestep':None}
 
     return r, t, vr, vt, lambda0, c, monitor
 

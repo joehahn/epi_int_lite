@@ -9,36 +9,37 @@
 #set number of concurrent processes
 N_processes = 7
 
-#set nominal_viscosity and timesteps_per_output
-nominal_viscosity = 1.0e-11
-nominal_timesteps_per_output = 420
-
 #all possible parameter variations
 params = {
     'total_ring_mass':[2.0e-10, 2.0e-09, 2.0e-8],
-    'radial_width':[0.0001, 0.0002, 0.0005, 0.001],
-    'viscosity_multiplier':[0.2, 1.0, 5.0]
+    'radial_width':[0.0003, 0.0005, 0.0007],
+    'shear_viscosity':[1.0e-12, 1.0e-11, 1.0e-10]
 }
 
 #execution start time
 import time as tm
 clock_start = tm.time()
 
+#calculate nominal nominal_timesteps_per_output and viscous_timescale
+execfile('inputs.py')
+nominal_timesteps_per_output = timesteps_per_output
+import numpy as np
+nominal_viscous_timescale = (radial_width**2)/(12*np.abs(shear_viscosity))
+
 #generate all permutations of the above
 keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-#update viscosities as needed, with timesteps_per_output scaling as 1/shear_viscosity
-if ('viscosity_multiplier' in params.keys()): 
-    for p in permutations:
-        viscosity_multiplier = p.pop('viscosity_multiplier')
-        p['shear_viscosity'] = viscosity_multiplier*nominal_viscosity
-        p['bulk_viscosity'] = p['shear_viscosity']
-        timesteps_per_output = int(nominal_timesteps_per_output*nominal_viscosity/p['shear_viscosity'])
-        if (timesteps_per_output < 1):
-            timesteps_per_output = 1
-        p['timesteps_per_output'] = timesteps_per_output
+#adjust timesteps_per_output to scale with viscous_timescale
+for p in permutations:
+    radial_width = p['radial_width']
+    shear_viscosity = p['shear_viscosity']
+    viscous_timescale = (radial_width**2)/(12*np.abs(shear_viscosity))
+    timesteps_per_output = int(nominal_timesteps_per_output*viscous_timescale/nominal_viscous_timescale)
+    if (timesteps_per_output < 1):
+        timesteps_per_output = 1
+    p['timesteps_per_output'] = timesteps_per_output
 
 #add output_folders to each permutation
 for p in permutations:
@@ -69,4 +70,4 @@ from multiprocessing import Pool
 pool = Pool(processes=N_processes)
 results = pool.map(os.system, commands)
 print 'number of simulations executed = ', len(results)
-print ('execution time (minutes) = ', (tm.time() - clock_start)/60.0
+print 'execution time (minutes) = ', (tm.time() - clock_start)/60.0
