@@ -43,10 +43,14 @@ for idx, p in enumerate(permutations):
     p['sim_id'] = idx
 
 #manually tweak selected sims' timesteps_per_output
-ids = [40, 21, 44, 36, 24, 18, 39, 25, 43]
+ids = [40, 21, 44, 36, 18, 25]
 for idx, p in enumerate(permutations):
     if (p['sim_id'] in ids):
         p['timesteps_per_output'] *= 2
+ids = [43, 24, 39, 27, 42, 12]
+for idx, p in enumerate(permutations):
+    if (p['sim_id'] in ids):
+        p['timesteps_per_output'] *= 4
 ids = [4]
 for idx, p in enumerate(permutations):
     if (p['sim_id'] in ids):
