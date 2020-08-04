@@ -11,9 +11,9 @@ N_processes = 7
 
 #all possible parameter variations
 params = {
-    'total_ring_mass':[2.0e-10, 2.0e-09, 2.0e-8],
+    'total_ring_mass':[5.0e-10, 2.0e-09, 8.0e-9],
     'radial_width':[0.0003, 0.0005, 0.0007],
-    'shear_viscosity':[1.0e-12, 1.0e-11, 1.0e-10]
+    'shear_viscosity':[1.0e-12, 3.3e-12, 1.0e-11, 3.3e-11, 1.0e-10]
 }
 
 #execution start time
@@ -32,7 +32,7 @@ import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 #adjust timesteps_per_output to scale with viscous_timescale
-for p in permutations:
+for idx, p in enumerate(permutations):
     radial_width = p['radial_width']
     shear_viscosity = p['shear_viscosity']
     viscous_timescale = (radial_width**2)/(12*np.abs(shear_viscosity))
@@ -40,6 +40,17 @@ for p in permutations:
     if (timesteps_per_output < 1):
         timesteps_per_output = 1
     p['timesteps_per_output'] = timesteps_per_output
+    p['sim_id'] = idx
+
+#manually tweak selected sims' timesteps_per_output
+ids = [40, 21, 44, 36, 24, 18, 39, 25, 43]
+for idx, p in enumerate(permutations):
+    if (p['sim_id'] in ids):
+        p['timesteps_per_output'] *= 2
+ids = [4]
+for idx, p in enumerate(permutations):
+    if (p['sim_id'] in ids):
+        p['timesteps_per_output'] //= 2
 
 #add output_folders to each permutation
 for p in permutations:
