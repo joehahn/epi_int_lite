@@ -9,47 +9,60 @@
 #set number of concurrent processes
 N_processes = 7
 
-#all possible parameter variations
+#generate range of logarithmically-spaced values for total_ring_mass
+import numpy as np
+mass_min = 5.0e-10
+mass_max = 5.0e-9
+N_masses = 7
+total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
+print 'total_ring_mass = ', total_ring_mass.tolist()
+
+#values for radial_width
+radial_width = np.array([0.0005])
+print 'radial_width = ', radial_width.tolist()
+
+#assume viscosity values = total_ring_mass/200
+shear_viscosity = total_ring_mass/200.0
+print 'shear_viscosity = ', shear_viscosity.tolist()
+
+#gather the parameter ranges in the params dict
 params = {
-    'total_ring_mass':[1.0e-12, 3.3e-12, 1.0e-11, 3.3e-11, 1.0e-10, 3.3e-10, 1.0e-9, 3.3e-9, 1.0e-8, 3.3e-8, 1.0e-7],
-    'radial_width':[0.0001, 0.0002, 0.0003, 0.0005, 0.0007, 0.001, 0.0015, 0.002, 0.003],
-    'shear_viscosity':[1.0e-11, 1.0e-10, 1.0e-9]
+    'total_ring_mass':total_ring_mass,
+    'radial_width':radial_width,
+    'shear_viscosity':shear_viscosity
 }
 
-#all possible parameter variations
-params = {
-    'total_ring_mass':[8.0e-11, 4.0e-10, 2.0e-9, 1.0e-8, 5.0e-8],
-    'radial_width':[0.0002, 0.0004, 0.0006, 0.0008, 0.0012],
-    'shear_viscosity':[1.0e-12, 5.0e-12, 3.0e-11, 2.0e-10, 1.0e-9]
-}
+#set power laws employed below
+mass_power_law = 1.0
+viscosity_power_law = -1.0
+width_power_law = -0.33
 
 #execution start time
 import time as tm
 clock_start = tm.time()
 
-#calculate nominal nominal_viscous_timescale
+#get nominal input parameters
 execfile('inputs.py')
-import numpy as np
 nominal_timesteps_per_output = timesteps_per_output
 nominal_total_ring_mass = total_ring_mass
 nominal_radial_width = radial_width
 nominal_shear_viscosity = shear_viscosity
 
-#generate all permutations of the above
+#generate all possible permutations of the values in params
 keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-#adjust timesteps_per_output to scale as 1/shear_viscosity, 1/total_ring_mass
+#adjust timesteps_per_output to scale as total_ring_mass, 1/shear_viscosity, and 1/radial_width^(1/3)
 for idx, p in enumerate(permutations):
     total_ring_mass = p['total_ring_mass']
     radial_width = p['radial_width']
     shear_viscosity = p['shear_viscosity']
-    factor = total_ring_mass/nominal_total_ring_mass
-    factor *= (nominal_shear_viscosity/shear_viscosity)**0.5
-    factor *= (nominal_radial_width/radial_width)**0.5
+    factor = (total_ring_mass/nominal_total_ring_mass)**mass_power_law
+    factor *= (shear_viscosity/nominal_shear_viscosity)**viscosity_power_law
+    factor *= (radial_width/nominal_radial_width)**width_power_law
     timesteps_per_output = int(nominal_timesteps_per_output*factor)
-    print total_ring_mass, nominal_total_ring_mass, factor
+    print idx, total_ring_mass, radial_width, shear_viscosity, factor
     if (timesteps_per_output < 1):
         timesteps_per_output = 1
     p['timesteps_per_output'] = timesteps_per_output
