@@ -12,8 +12,8 @@ N_processes = 7
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
 mass_min = 5.0e-10
-mass_max = 5.0e-9
-N_masses = 7
+mass_max = 1.0e-8
+N_masses = 11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
@@ -21,8 +21,11 @@ print 'total_ring_mass = ', total_ring_mass.tolist()
 radial_width = np.array([0.0005])
 print 'radial_width = ', radial_width.tolist()
 
-#assume viscosity values = total_ring_mass/200
-shear_viscosity = total_ring_mass/200.0
+#assume viscosity values
+viscosity_min = 5.0e-13
+viscosity_max = 1.0e-10
+N_viscosities = 17
+shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
 
 #gather the parameter ranges in the params dict
