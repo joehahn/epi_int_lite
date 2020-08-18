@@ -13,7 +13,7 @@ N_processes = 7
 import numpy as np
 mass_min = 1.0e-10
 mass_max = 1.0e-8
-N_masses = 10
+N_masses = 11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
@@ -24,7 +24,7 @@ print 'radial_width = ', radial_width.tolist()
 #assume viscosity values
 viscosity_min = 1.0e-13
 viscosity_max = 1.0e-10
-N_viscosities = 20
+N_viscosities = 21
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
 
