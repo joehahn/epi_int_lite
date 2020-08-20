@@ -57,7 +57,7 @@ import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 #adjust timesteps_per_output to scale as total_ring_mass, 1/shear_viscosity, and 1/radial_width^(1/3)
-for idx, p in enumerate(permutations):
+for sim_id, p in enumerate(permutations):
     total_ring_mass = p['total_ring_mass']
     radial_width = p['radial_width']
     shear_viscosity = p['shear_viscosity']
@@ -65,11 +65,11 @@ for idx, p in enumerate(permutations):
     factor *= (shear_viscosity/nominal_shear_viscosity)**viscosity_power_law
     factor *= (radial_width/nominal_radial_width)**width_power_law
     timesteps_per_output = int(nominal_timesteps_per_output*factor)
-    print idx, total_ring_mass, radial_width, shear_viscosity, factor
+    print sim_id, total_ring_mass, radial_width, shear_viscosity, factor
     if (timesteps_per_output < 1):
         timesteps_per_output = 1
     p['timesteps_per_output'] = timesteps_per_output
-    p['sim_id'] = idx
+    p['sim_id'] = sim_id
 
 #add output_folders to each permutation
 for p in permutations:
