@@ -18,7 +18,7 @@ total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_m
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
 #values for radial_width
-radial_width = np.array([0.0005])
+radial_width = np.array([0.0005, 0.0007])
 print 'radial_width = ', radial_width.tolist()
 
 #assume viscosity values
