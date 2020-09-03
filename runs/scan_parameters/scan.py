@@ -18,12 +18,12 @@ total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_m
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
 #values for radial_width
-radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012])
+radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012, 0.0016])
 print 'radial_width = ', radial_width.tolist()
 
 #generate range of logarithmically-spaced values for shear_viscosity
-viscosity_min = 4.0e-13
-viscosity_max = 4.0e-10
+viscosity_min = 3.0e-13
+viscosity_max = 3.0e-10
 N_viscosities = 21
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
