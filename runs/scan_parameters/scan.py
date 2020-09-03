@@ -11,19 +11,19 @@ N_processes = 7
 
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
-mass_min = 1.5e-10
-mass_max = 1.5e-8
+mass_min = 2.0e-10
+mass_max = 2.0e-8
 N_masses = 11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
 #values for radial_width
-radial_width = np.array([0.00025, 0.0005, 0.001])
+radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012])
 print 'radial_width = ', radial_width.tolist()
 
-#assume viscosity values
-viscosity_min = 2.0e-13
-viscosity_max = 2.0e-10
+#generate range of logarithmically-spaced values for shear_viscosity
+viscosity_min = 4.0e-13
+viscosity_max = 4.0e-10
 N_viscosities = 21
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
@@ -36,9 +36,9 @@ params = {
 }
 
 #set power laws employed below
-mass_power_law = 1.0
-viscosity_power_law = -1.0
-width_power_law = -0.33
+mass_power_law = 0.8
+viscosity_power_law = -0.75
+width_power_law = -0.5
 
 #execution start time
 import time as tm
@@ -56,7 +56,8 @@ keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-#adjust timesteps_per_output to scale as total_ring_mass, 1/shear_viscosity, and 1/radial_width^(1/3)
+#adjust timesteps_per_output to scale as total_ring_mass^0.8, shear_viscosity^(-0.75), and radial_width^(-0.5),
+#such that execution_time > 10*viscous_timescale. Also set bulk_viscosity=shear_viscosity
 for sim_id, p in enumerate(permutations):
     total_ring_mass = p['total_ring_mass']
     radial_width = p['radial_width']
@@ -65,17 +66,24 @@ for sim_id, p in enumerate(permutations):
     factor *= (shear_viscosity/nominal_shear_viscosity)**viscosity_power_law
     factor *= (radial_width/nominal_radial_width)**width_power_law
     timesteps_per_output = int(nominal_timesteps_per_output*factor)
-    print sim_id, total_ring_mass, radial_width, shear_viscosity, factor
     if (timesteps_per_output < 1):
         timesteps_per_output = 1
+    execution_time = dt*timesteps_per_output*total_number_of_outputs
+    ten_viscous_timescales = 10*(radial_width**2)/(12*shear_viscosity)
+    if (execution_time < ten_viscous_timescales):
+        print 'resetting timesteps_per_output from ', timesteps_per_output, 
+        timesteps_per_output = int(timesteps_per_output*ten_viscous_timescales/execution_time)
+        print 'to ', timesteps_per_output
     p['timesteps_per_output'] = timesteps_per_output
     p['sim_id'] = sim_id
+    p['bulk_viscosity'] = shear_viscosity
+    print sim_id, total_ring_mass, radial_width, shear_viscosity, timesteps_per_output
 
 #add output_folders to each permutation
 for p in permutations:
     output_folder = 'permutations/'
     for k,v in p.iteritems():
-        output_folder += k + '=' + str(v) + '_'
+        output_folder += k + '=' + str(v) + '!'
     p['output_folder'] = output_folder
 
 #generate list of commands to be executed in parallel
