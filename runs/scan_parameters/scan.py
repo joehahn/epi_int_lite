@@ -98,6 +98,8 @@ for p in permutations:
 import os
 cmd = 'rm -rf permutations/*'
 r = os.system(cmd)
+cmd = 'touch permutations/nothing'
+r = os.system(cmd)
 
 #execute simulations in parallel
 print '********'
