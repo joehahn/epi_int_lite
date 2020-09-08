@@ -22,8 +22,8 @@ radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012, 0.0016])
 print 'radial_width = ', radial_width.tolist()
 
 #generate range of logarithmically-spaced values for shear_viscosity
-viscosity_min = 3.0e-13
-viscosity_max = 3.0e-10
+viscosity_min = 3.1623e-13
+viscosity_max = 3.1623e-10
 N_viscosities = 21
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
@@ -36,9 +36,9 @@ params = {
 }
 
 #set power laws employed below
-mass_power_law = 0.8
-viscosity_power_law = -0.75
-width_power_law = -0.5
+mass_power_law = 1.0
+viscosity_power_law = -1.0
+width_power_law = 0.0
 
 #execution start time
 import time as tm
