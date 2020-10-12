@@ -8,7 +8,8 @@ import numpy as np
 from helper_fns import accelerations
 
 #compute angular momentum flux and luminosity
-def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, fast_gravity):
+def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, 
+        fast_gravity, confine_edges):
     #select two central streamlines
     total_number_of_outputs, number_of_streamlines, particles_per_streamline = r.shape
     middle_index = number_of_streamlines/2
@@ -29,7 +30,7 @@ def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_visco
         vr_now = vrc[t_idx]
         vt_now = vtc[t_idx]
         Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, r_now, t_now, 
-           vr_now, vt_now, fast_gravity)
+           vr_now, vt_now, fast_gravity, confine_edges)
         angular_momentum_flux = lambdac*r_now*At
         angular_momentum_flux = angular_momentum_flux[-1]
         angular_momentum_flux_list += [angular_momentum_flux]
@@ -47,7 +48,8 @@ def calculate_angular_momentum_flux(lambda0, G_ring, shear_viscosity, bulk_visco
     return angular_momentum_flux, angular_momentum_luminosity, rc, tc, wtc
 
 #compute energy momentum flux and luminosity
-def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, fast_gravity):
+def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, 
+        fast_gravity, confine_edges):
     #select two central streamlines
     total_number_of_outputs, number_of_streamlines, particles_per_streamline = r.shape
     middle_index = number_of_streamlines/2
@@ -67,7 +69,7 @@ def calculate_energy_flux(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r
         vr_now = vrc[t_idx]
         vt_now = vtc[t_idx]
         Ar, At = accelerations(lambdac, G_ring, shear_viscosity, bulk_viscosity, c, r_now, t_now, 
-            vr_now, vt_now, fast_gravity)
+            vr_now, vt_now, fast_gravity, confine_edges)
         energy_flux = lambdac*(Ar*vr_now + At*vt_now)
         energy_flux = energy_flux[-1]
         energy_flux_list += [energy_flux]
