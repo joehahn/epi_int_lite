@@ -89,17 +89,15 @@ is explored further via numerical simulations using the epi\_int\_lite N-body in
 
 Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
 simulate the outer edge of Saturn's B ring while it is sculpted by satellite perturbations
-\citep{HS13}. The new code is very similar to its parent but differs in three significant ways:
-({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution,
-({\it ii}.) epi\_int\_lite uses a more accurate drift step to handle
-unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}),
-and ({\it iii}.) epi\_int\_lite makes the $C=0$ approximation that is justified below 
-(Appendix \ref{sec:Appendix B}).
+\citep{HS13}. The new code is very similar to its parent but differs in two significant ways:
+({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution, and
+({\it ii}.) epi\_int\_lite uses a more reliable drift step to handle
+unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}).
 
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
 to that used by the parent code; see \cite{HS13} for additional details. The epi\_int\_lite 
 source code is available at https://github.com/joehahn/epi\_int\_lite, and the
-code's numerical quality is assessed in Appendix \ref{sec:Appendix C}
+code's numerical quality is assessed in Appendix \ref{sec:Appendix B}
 where the output of several numerical experiments are compared against theoretical expectations.
 
 Calculations by epi\_int\_lite use natural units with gravitation constant $G=1$, 
@@ -110,7 +108,7 @@ physical values for $M$ and $r_0$ and multiplying accordingly, and when this tex
 it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
 ring radius $r_0=1.0\times10^{10}$ cm. Simulation time $t$ is in units of $T_{\text{orb}}/2\pi$
 where $T_{\text{orb}} = 2\pi\sqrt{r_0^3/GM}$ is the orbit period at $r_0$, 
-so divide $t$ by $2\pi$ and then multiply
+so divide simulation time $t$ by $2\pi$ and then multiply
 by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
@@ -153,11 +151,11 @@ as the nominal model since this ringlet readily evolves into a self-confining st
 The simulated ringlet is composed of $N_s=2$ streamlines having $N_p=241$ particles
 per streamline, and the integrator timestep is $\Delta t=0.5$ in natural units, so
 the integrator samples the particles' orbits $2\pi/\Delta t\simeq13$ times per orbit, and this
-ringlet is evolved for $6.7\times10^5$ orbits, which requires 40 minutes execution time
+ringlet is evolved for $4.7\times10^3$ orbits, which requires 15 minutes execution time
 on a 5 year old laptop. The ringlet's mass is
-$m_r=2\times10^{-9}$, its shear viscosity is $\nu_s=1\times10^{-12}$, and its
-bulk viscosity is $\nu_b=1.5\nu_s$. The ringet's initial radial width is
-$\Delta a_0 = 5\times10^{-4}$, its initial eccentricity is $e=0.03$, and its
+$m_r=5\times10^{-10}$, its shear viscosity is $\nu_s=2.5\times10^{-12}$, and its
+bulk viscosity is $\nu_b=\nu_s$. The ringet's initial radial width is
+$\Delta a_0 = 3\times10^{-4}$, its initial eccentricity is $e=0.01$, and its
 eccentricity gradient is initially zero. A convenient measure of time is the ringlet's
 viscous radial spreading timescale
 \begin{equation}
@@ -165,20 +163,20 @@ viscous radial spreading timescale
     \tau_\nu=\frac{\Delta a_0^2}{12\nu_s}, 
 \end{equation}
 which can be inferred from Eqn.\ (2.13) of \cite{P81}. 
-This simulation's viscous timescale is $\tau_\nu=2.1\times10^4$ in natural units
-or $\tau_\nu/2\pi=3.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
+This simulation's viscous timescale is $\tau_\nu=3.0\times10^3$ in natural units
+or $\tau_\nu/2\pi=4.8\times10^2$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
-would be $m_r=1.1\times10^{21}$ gm which is equivalent to the mass of a $64$ km radius iceball assuming
+would be $m_r=2.8\times10^{20}$ gm which is equivalent to the mass of a $41$ km radius iceball assuming
 a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
-$\Delta a_0 = 5\times10^{-4}r_0=50$ km. This ringlet's
+$\Delta a_0 = 3\times10^{-4}r_0=30$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
-the ringlet's viscous timescale is $\tau_\nu=3.4$ years 
-which indicates that shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^4$ cm$^2$/sec
+the ringlet's viscous timescale is $\tau_\nu=12$ years,
+so its shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 4.8\times10^4$ cm$^2$/sec
 when evaluated in physical units. 
-This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=3500$ gm/cm$^2$, but
-Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 3 as the 
+This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=1500$ gm/cm$^2$, but
+Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 4 as the 
 ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
-the anticipated self-confining state at time $t\sim15\tau_\nu$.
+the anticipated self-confining state at time $t\sim20\tau_\nu$.
 So the so-called nominal ringlet is probably overdense and overly viscous compared to known 
 planetary ringlets,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
@@ -192,9 +190,9 @@ versus time $t$ in units of the ringlet's viscous time $\tau_\nu$.
 This ringlet is composed of $N_s=2$ streamlines,
 and the outer (blue) and inner (green) streamlines' semimajor axes are plotted relative
 to their mean $a_{\text{mean}}$, and displayed in units of the ringlet's
-initial width $\Delta a_0 = 5\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
-The simulated ringlet has total mass $m_r=2\times10^{-9}$, shear viscosity $\nu_s=1\times10^{-12}$,
-and initial eccentricity $e=0.03$. See Section \ref{subsec:nominal} to convert
+initial width $\Delta a_0 = 3\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
+The simulated ringlet has total mass $m_r=5\times10^{-10}$, shear viscosity $\nu_s=2.5\times10^{-12}$,
+and initial eccentricity $e=0.01$. See Section \ref{subsec:nominal} to convert
 $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \label{fig:a_nominal}}
 \end{figure}
@@ -207,15 +205,17 @@ The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\te
 in units of its initial radial width $\Delta a_0$.}
 \end{figure}
 
-Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity grows at the
+Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity initially grows at the
 expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
 secular perturbations of itself, which is also demonstrated in Appendix \ref{sec:Appendix D}. 
 Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
 and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
-which both settle into equilibrium values when the ringlet arrives in the self-confining
-state. It is convenient to recast these orbit element differences as dimensionless gradients
+which both settle into equilibrium values after the ringlet arrives in the self-confining
+state.
+
+It is convenient to recast these orbit element differences as dimensionless gradients
 \begin{equation}
     \label{eqn:e_prime}
     e' = a\frac{de}{da}
@@ -243,12 +243,13 @@ The nominal ringlet's eccentricity evolution.}
 \end{figure}
 
 \begin{figure}
-    \plotone{figs/de_nominal.pdf}
+    \plotone{figs/de_dwt_nominal.pdf}
     \caption{
         \label{fig:de_nominal}
         The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
         and longitude of periapse difference
-        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$.
+        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$
+        divided by 10.
     }
 \end{figure}
 
@@ -257,9 +258,9 @@ The nominal ringlet's eccentricity evolution.}
     \caption{
         \label{fig:de_prime_nominal}
         The nominal ringlet's dimensionless eccentricity gradient $e' = a\Delta e/\Delta a$
-        (dashed orange curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
-        (blue curve), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
-        (green curve) versus time $t/\tau_\nu$. Dotted red line 
+        (blue curve), dimensionless periapse twist $\tilde{\omega}' = ea\Delta\tilde{\omega}/\Delta a$
+        (orange), and nonlinearity parameter $q=\sqrt{e'^2 + \tilde{\omega}'^2}$
+        (green) versus time $t/\tau_\nu$. Dotted red line 
         is the threshold for self-confinement in a non-gravitating ringlet, $e'=\sqrt{3}/2\simeq0.866$
     }
 \end{figure}\vfil
@@ -439,26 +440,6 @@ Derive the more accurate drift step used by epi\_int\_lite...
 
 \section{Appendix B}
 \label{sec:Appendix B}
-
-The epi\_int integrator advances the motions of $N$ interacting particles as they orbit 
-the primary mass $M$ via an approximate solution to Hamilton's equations of motion.
-That solution is derived in \cite{DLL98} and \cite{C99} and summarized again in
-Section 2.1 of \cite{HS13}. The Hamiltonian $H$ used there
-is a function of what \cite{DLL98} refer to as {\it democratic} and \cite{C99} refer to as
-{\it mixed-center} coordinates, with the spatial coordinates of all orbiting bodies
-$\mathbf{r}_i$ measured relative to center of primary mass $M$,
-and all velocities $\mathbf{v}_i$ measured relative to the system's barycenter,
-which is displaced from the primary's center by $\mathbf{r}_0=-\sum_{j=1}^N(m_j/M)\mathbf{r}_j$.
-
-In the mixed-center coordinate system, the Hamiltonian has three parts, $H=H_A + H_B + H_C$,
-where $H_A$ accounts for the two-body gravitational forces
-exerted between primary mass $M$ and the $N$ other orbiting bodies, $H_B$ accounts for the mutual
-interactions exerted between the $N$ small bodies of mass $\mathbf{r}_i$, and $H_C$
-is due to the non-inertial movement of the spatial coordinates' origin about the barycenter.
-
-
-\section{Appendix C}
-\label{sec:Appendix C}
 
 Compare epi\_int\_lite to theoretical predictions
 
