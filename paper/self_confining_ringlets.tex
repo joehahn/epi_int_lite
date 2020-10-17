@@ -170,14 +170,14 @@ would be $m_r=2.8\times10^{20}$ gm which is equivalent to the mass of a $41$ km 
 a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
 $\Delta a_0 = 3\times10^{-4}r_0=30$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
-the ringlet's viscous timescale is $\tau_\nu=12$ years,
+the ringlet's viscous timescale is $\tau_\nu=12$ years, and
 so its shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 4.8\times10^4$ cm$^2$/sec
 when evaluated in physical units. 
 This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=1500$ gm/cm$^2$, but
 Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 4 as the 
 ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
-the anticipated self-confining state at time $t\sim20\tau_\nu$.
-So the so-called nominal ringlet is probably overdense and overly viscous compared to known 
+the self-confining state at time $t\sim20\tau_\nu$.
+This so-called nominal ringlet is probably overdense and overly viscous compared to known 
 planetary ringlets,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
 Section XX also shows how outcomes scale when a wide variety of alternate initial masses, orbits,
@@ -192,7 +192,7 @@ and the outer (blue) and inner (green) streamlines' semimajor axes are plotted r
 to their mean $a_{\text{mean}}$, and displayed in units of the ringlet's
 initial width $\Delta a_0 = 3\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
 The simulated ringlet has total mass $m_r=5\times10^{-10}$, shear viscosity $\nu_s=2.5\times10^{-12}$,
-and initial eccentricity $e=0.01$. See Section \ref{subsec:nominal} to convert
+and initial eccentricity $e=0.01$, and see Section \ref{subsec:nominal} to convert
 $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \label{fig:a_nominal}}
 \end{figure}
@@ -228,7 +228,7 @@ as these are the terms that contribute to the nonlinearity parameter of \cite{BG
     q = \sqrt{e'^2 + \tilde{\omega}'^2}.
 \end{equation}
 See also Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
-ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$
+ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$,
 and nonlinearity parameter $q$ versus time. All simulations examined here have
 $|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$, and all simulated self-confining ringlets
 have a positive eccenticity gradient and a negative periapse twist such that
@@ -269,26 +269,27 @@ The nominal ringlet's eccentricity evolution.}
 \subsection{viscous angular momentum transport}
 \label{subsec:viscous_flux}
 
-The ringlet's evolution is more easily understood when the ringlet's viscous flux of angular momentum is 
+The ringlet's evolution is readily understood when the ringlet's viscous flux of angular momentum is 
 considered; that flux is 
 \begin{equation}
     \label{eqn:F_nu_theta}
     F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 \citep{HS13} when written as a function of spatial coordinates and
-angular velocity $\omega=\dot{\theta}$ (Eqn.\ XX). If we imagine a small arc of 
+angular velocity $\omega=\dot{\theta}$ (Eqn.\ XX). If we consider a small arc of 
 ring material of transverse length $d\ell$, 
 then $F_{\nu}d\ell$ would be the torque that arc exert exerts on
-ring matter just exterior, due to viscous friction.
-Which is also the rate that friction transmits angular momentum radially across that arc.
+ring matter just exterior, due to viscous friction,
+so that is the rate that friction transmits angular momentum radially across that arc.
 And when $F_{\nu}$ is evaluated along a single eccentric streamline of semimajor axis $a$, 
 the above simplifies to
 \begin{equation}
     \label{eqn:F_nu_varphi}
     F_{\nu}(a, \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
+where $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse
 (see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
-where $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
+and $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$ and assuming
 $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$. Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
@@ -306,15 +307,15 @@ regimes distinguished by the ringlet's $e'$:
 
 \begin{enumerate}
 
-\item $e'<3/4$, for which the ringlet's viscous angular momentum flux $F_\nu(\theta)>0$
+\item $e'<3/4$, so the ringlet's viscous angular momentum flux $F_\nu(\varphi)>0$
 at all ringlet longitudes $\theta$. The ringlet's viscous
 angular momentum luminosity $L_\nu>0$, so viscous friction transports angular momentum radially outwards,
 so inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
 the ringlet spreads radially.
 
 \item $3/4\le e'<\sqrt{3}/4$. In this regime there is a range of longitudes $\theta$
-where the viscous angular momentum flux is reversed such that $F_\nu(\theta)<0$. 
-Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\theta)$,
+where the viscous angular momentum flux is reversed such that $F_\nu(\varphi)<0$. 
+Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\varphi)$,
 is positive and the ringlet still spreads radially, albeit slower than when $e'<0.75$.
 
 \item $e'\ge\sqrt{3}/4$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
@@ -332,34 +333,36 @@ which also transports angular momentum radially through the ringlet.
 
 Figure \ref{fig:F_nu_nominal} shows the nominal ringlet's viscous angular momentum flux
 $F_\nu$ versus relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
-Early in the ringlet's evolution when time $t \le 4\tau_\nu$ (blue, orange, green, and red curves),
-the ringlet is in regime 1 since $e'<0.75$ and $F_\nu(\theta)>0$ at all longitudes.
-But by time $t = 6\tau_\nu$ (dark purple curve), this ringlet's eccentricity gradient exceeds $0.75$,
-and angular momentum flux reversal $F_\nu(\theta)<0$ occurs near periapse where $|\varphi|\simeq0$
+Early in the ringlet's evolution when time $t \le 8\tau_\nu$ (blue, orange, green, red,
+and purple curves),
+the ringlet is in regime 1 since $e'<0.75$ and $F_\nu(\varphi)>0$ at all longitudes.
+But by time $t = 10\tau_\nu$ (brown curve), this ringlet's eccentricity gradient exceeds $0.75$,
+and angular momentum flux reversal $F_\nu(\varphi)<0$ occurs near periapse where $|\varphi|\simeq0$
 where the ringlet is most overdense due to its eccentricity gradient, see 
 also Fig.\ \ref{fig:radial_sigma_nominal};
 this ringlet is in regime 2 and its radial spreading is reduced by angular momentum flux reversal. 
-And by time $t = 10\tau_\nu$ (brown curve), this ringlet is seemingly in regime 3
-since $e'>0.866$, so one might expect the ringlet's spreading to have stalled by
+And by time $t = 20\tau_\nu$ (brown curve), this ringlet is seemingly in regime 3
+since $e'=0.866$, so one might expect the ringlet's spreading to have stalled by
 now, but keep in mind that the above analysis ignores any transport
 of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
-shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq20\tau_\nu$, 
-at which point $e'=0.9$ (light purple curve), angular momentum flux reversal is complete,
-and the ringlet's total angular momentum luminosity $L=0$
-(see Figs.\ \ref{fig:angular_momentum_luminosity_nominal}--\ref{fig:angular_momentum_luminosity_zoom_nominal}).
-
-An interesting question is why a gravitating ringlet's viscous angular momentum luminosity is
-positive event though $e'>0.866$. Dunno...
+shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq35\tau_\nu$, 
+at which point $e'=0.88$ (cyan curve), angular momentum flux reversal is nearly complete,
+with the ringlet's total angular momentum luminosity $L=L_\nu+L_g=0$ is very close to zero.
+Figure \ref{fig:angular_momentum_luminosity_nominal} and
+Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that the ringlet's positive
+viscous angular momentum luminosity $L_\nu$ is nearly matched by the by the ringlet's negative
+gravitational angular momentum luminosity $L_g$. {\em But I still need to explain why $L$ isn't precisely zero 
+when ringlet is seemingly self--confining...}
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
     \caption{
         \label{fig:F_nu_nominal}
-        Nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$,
-        Eqn.\ (\ref{eqn:F_nu_varphi}),  is plotted versus ringlet
-        relative longitude $\varphi=\theta-\tilde{\omega}$ along inner (double-check this)
-        streamline, with the ringlet's eccentricy gradient $e'$ also indicated
-        at selected times $t/\tau_\nu$. Also explain how $F_{\nu}(\varphi)$ is computed.
+        The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$,
+        Eqn.\ (\ref{eqn:F_nu_varphi}), is plotted versus ringlet
+        relative longitude $\varphi=\theta-\tilde{\omega}$ about the ringlet's inner
+        streamline at selected times $t/\tau_\nu$, 
+        with the ringlet's eccentricy gradient $e'$ also indicated.
     }
 \end{figure}
 
@@ -367,10 +370,10 @@ positive event though $e'>0.866$. Dunno...
     \plotone{figs/radial_sigma_nominal.pdf}
     \caption{
         \label{fig:radial_sigma_nominal}
-        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=50$
+        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=100$
         when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
-        relative to $r_{mid}$ which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}=0$,
-        with these radial distances $r - r_{mid}$ also measured in units of the ringlet's final semimajor axis width $\Delta a$,
+        relative to $r_{mid}$, which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}$,
+        with those radial distances $r - r_{mid}$ measured in units of the ringlet's final semimajor axis width $\Delta a$,
         and surface density is shown in units of the ringlet's longitudinally-averaged surface density $\sigma_0$.
         Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
         where the ringlet's streamlines are most concentrated and surface denisity $\sigma$ is
@@ -397,10 +400,9 @@ positive event though $e'>0.866$. Dunno...
         \label{fig:angular_momentum_luminosity_zoom_nominal}
         Figure \ref{fig:angular_momentum_luminosity_nominal} is replotted to highlight that the ringlet's 
         viscous angular momentum luminosity $L_\nu$ (blue curve)
-        always stays positive (indicating that the viscous transport of angular momentum is radially outwards) while balancing
-        the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
-        $L_g$ (orange) such that the ringlet's total angular momentum luminosity $L=L_\nu+L_g=0$  (green curve)
-        after time $t\gg20\tau_\nu$.
+        always stays positive (indicating that the viscous transport of angular momentum is radially outwards) which is 
+        nearly balanced by the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
+        $L_g$ (orange) after time $t\gg35\tau_\nu$.
     }
 \end{figure}
 
