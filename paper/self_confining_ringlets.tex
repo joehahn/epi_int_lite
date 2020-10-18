@@ -313,14 +313,14 @@ angular momentum luminosity $L_\nu>0$, so viscous friction transports angular mo
 so inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
 the ringlet spreads radially.
 
-\item $3/4\le e'<\sqrt{3}/4$. In this regime there is a range of longitudes $\theta$
+\item $3/4\le e'<\sqrt{3}/2$. In this regime there is a range of longitudes $\theta$
 where the viscous angular momentum flux is reversed such that $F_\nu(\varphi)<0$. 
 Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\varphi)$,
 is positive and the ringlet still spreads radially, albeit slower than when $e'<0.75$.
 
-\item $e'\ge\sqrt{3}/4$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
+\item $e'\ge\sqrt{3}/2$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
 viscous friction transports angular momentum radially inwards, and the ringlet
-shrinks radially. But if $e'=\sqrt{3}/4\simeq0.866$ then $L_\nu=0$ and the ringlet's
+shrinks radially. But if $e'=\sqrt{3}/2\simeq0.866$ then $L_\nu=0$ and the ringlet's
 radial evolution ceases, and the viscous but non-gravitating ringlet is self confining.
 
 \end{enumerate}
@@ -348,11 +348,11 @@ of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
 shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq35\tau_\nu$, 
 at which point $e'=0.88$ (cyan curve), angular momentum flux reversal is nearly complete,
 with the ringlet's total angular momentum luminosity $L=L_\nu+L_g=0$ is very close to zero.
+
 Figure \ref{fig:angular_momentum_luminosity_nominal} and
-Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that the ringlet's positive
-viscous angular momentum luminosity $L_\nu$ is nearly matched by the by the ringlet's negative
-gravitational angular momentum luminosity $L_g$. {\em But I still need to explain why $L$ isn't precisely zero 
-when ringlet is seemingly self--confining...}
+Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining,
+it's positive viscous angular momentum luminosity $L_\nu$ is nearly counterbalanced
+by it's negative gravitational angular momentum luminosity $L_g$. 
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
@@ -411,13 +411,33 @@ when ringlet is seemingly self--confining...}
     \caption{
         \label{fig:F_vs_longitude_nominal}
         The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$ (blue curve), plotted in units of $F_{\nu,0}$
-        and versus relative longitude $\varphi$ at time $t=50\tau_\nu$, as well as the ringlet's gravitational
-        angular momentum flux $F_{g}(\varphi)$ (orange curve).
+        and versus relative longitude $\varphi$ as the simulation's end at time $t=100\tau_\nu$, 
+        as well as the ringlet's gravitational angular momentum flux $F_{g}(\varphi)$ 
+        in units of $F_{\nu,0}$ (orange curve).
     }
 \end{figure}
 
-Figure \ref{fig:F_vs_longitude_nominal} shows how viscosity and self-gravity transport angular
-momentum across a self-confining ringlet at various longitudes $\varphi$. That figure shows that ringlet viscosity
+The ringlet's viscous $F_{\nu}$ and gravitational $F_g$
+angular momentum fluxes are shown Fig.\ \ref{fig:F_vs_longitude_nominal}, and that figure
+shows how viscosity and self-gravity both transport angular
+momentum radially through the self-confining ringlet at various longitudes $\varphi$. To compute
+the ringlet's gravitational angular momentum flux $F_g$, note that the gravitational torque that is exerted on
+a small streamline segment of mass $\delta m$ due to the ring material orbiting interior is
+$T_g=\delta m r A^1_{g,\theta}=F_g\delta\ell$, where $A^1_g$ is the so-called one-sided gravitational acceleration
+{\it i.e.}\ the gravitational acceleration that segment $\delta m$ experiences due to the ring matter orbiting interior to it.
+The tangential component of that one-sided acceleration is
+$A^1_{g,\theta}$, so for a segment whose length is $\delta\ell$, its gravitational angular momentum flux is
+$F_g=\lambda r A^1_{g,\theta}$ where $\lambda=m_r/Ns/2\pi a$ is the streamline's linear density.
+The streamline's total gravitational angular momentum luminosity is
+\begin{equation}
+    \label{eqn:L_g}
+    L_{g}(a) = \oint F_g(\varphi)rd\varphi = \oint \lambda r^2 A^1_{g}(\varphi)d\varphi,
+\end{equation}
+which is the orange curve in Figs.\ \ref{fig:angular_momentum_luminosity_nominal}--\ref{fig:angular_momentum_luminosity_zoom_nominal}
+and is the gravitational torque that the inner streamline exerts on the outer.
+{\em To do: explain why $L$ isn't precisely zero when ringlet is seemingly self--confining...}
+
+That figure shows that ringlet viscosity
 transports angular momentum inwards {\it i.e.}\ $F_{\nu}(\varphi)<0$ near periapse, and outwards 
 with $F_{\nu}(\varphi)>0$ at all other longitudes. Which is rather distinct from the ringlet's gravitational
 transport, which has $F_{g}(\varphi)<0$ as
