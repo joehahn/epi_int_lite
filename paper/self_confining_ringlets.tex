@@ -201,8 +201,8 @@ $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \plotone{figs/da_nominal.pdf}
 \caption{
 \label{fig:da_nominal}
-The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\text{inner}}$ over time, 
-in units of its initial radial width $\Delta a_0$.}
+The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\text{inner}}$ over time
+and in units of its initial radial width $\Delta a_0$.}
 \end{figure}
 
 Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity initially grows at the
@@ -214,6 +214,78 @@ and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
 which both settle into equilibrium values after the ringlet arrives in the self-confining
 state.
+
+\begin{figure}
+\plotone{figs/e_nominal.pdf}
+\caption{
+\label{fig:e_nominal}
+The nominal ringlet's eccentricity evolution.}
+\end{figure}
+
+\begin{figure}
+    \plotone{figs/de_dwt_nominal.pdf}
+    \caption{
+        \label{fig:de_nominal}
+        The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
+        and longitude of periapse difference
+        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$
+        in radians and divided by 10.
+    }
+\end{figure}
+
+Figure \ref{fig:nominal_streamlines} shows the radii of the ringlet's two streamlines plotted
+versus their relative longitude $\varphi=\theta-\tilde{\omega}_{\text{inner}}$ at time $t=100\tau_\nu$
+when the simulation ends. In all simulations examined here, the ringlet's periapse twist 
+$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$ is negative,
+so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
+the inner streamline's, which in turn causes the streamlines' separations along
+the ringlet's pre-periapse side (where $\varphi < 0$) to be smaller than at post-periapse ($\varphi>0$).
+Which makes the ringlet's surface density asymmetric, with maximum surface density
+occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref{fig:radial_sigma_nominal}.
+
+\begin{figure}
+    \plotone{figs/nominal_streamlines.pdf}
+    \caption{
+        \label{fig:nominal_streamlines}
+        The radii of the nominal ringlet's streamlines are plotted versus relative longitude
+        $\varphi=\theta-\tilde{\omega}$ at time $t=100\tau_\nu$, with inset plot
+        showing outer streamline's longitude of periapse $\tilde{\omega}$ trailing
+        the inner streamline's.
+    }
+\end{figure}
+
+\begin{figure}
+    \plotone{figs/nominal_sigma_vs_longitude.pdf}
+    \caption{
+        \label{fig:nominal_sigma_vs_longitude}
+        Nominal ringlet's surface density $\sigma(\varphi)$ is plotted versus relative
+        longitude $\varphi$ at selected times $t$. That the ringlet's surface
+        density maxima occurs just before peripase is due to the ringlet's
+        negative periapse twist 
+        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}} < 0$.
+    }
+\end{figure}
+
+\begin{figure}
+    \plotone{figs/radial_sigma_nominal.pdf}
+    \caption{
+        \label{fig:radial_sigma_nominal}
+        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=100$
+        when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
+        relative to $r_{mid}$, which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}$,
+        with those radial distances $r - r_{mid}$ measured in units of the ringlet's final semimajor axis width $\Delta a$,
+        and surface density is shown in units of the ringlet's longitudinally-averaged surface density $\sigma_0$.
+        Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
+        where the ringlet's streamlines are most concentrated and surface denisity $\sigma$ is
+        greatest due to the ringlet's eccentricity gradient $e'$, at quadrature ($|\varphi|=\pi/2$, green curve),
+        and at apoapse ($|\varphi|=\pi$, orange curve) where streamlines have their greatest separation
+        and ringlet surface density is lowest. This ringlet's surface density contrast, between periapse and
+        apoapse, is 14.
+    }
+\end{figure}
+
+\subsection{angular momentum and energy fluxes}
+\label{subsec:fluxes}
 
 It is convenient to recast these orbit element differences as dimensionless gradients
 \begin{equation}
@@ -234,24 +306,6 @@ $|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$, and all simulated self-confini
 have a positive eccenticity gradient and a negative periapse twist such that
 the outer ringlet's periapse trails the inner ringlet's, consistent with the findings of
 \cite{BGT83}.\vfil
-
-\begin{figure}
-\plotone{figs/e_nominal.pdf}
-\caption{
-\label{fig:e_nominal}
-The nominal ringlet's eccentricity evolution.}
-\end{figure}
-
-\begin{figure}
-    \plotone{figs/de_dwt_nominal.pdf}
-    \caption{
-        \label{fig:de_nominal}
-        The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
-        and longitude of periapse difference
-        $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$
-        divided by 10.
-    }
-\end{figure}
 
 \begin{figure}
     \plotone{figs/de_prime_nominal.pdf}
@@ -341,7 +395,7 @@ and angular momentum flux reversal $F_\nu(\varphi)<0$ occurs near periapse where
 where the ringlet is most overdense due to its eccentricity gradient, see 
 also Fig.\ \ref{fig:radial_sigma_nominal};
 this ringlet is in regime 2 and its radial spreading is reduced by angular momentum flux reversal. 
-And by time $t = 20\tau_\nu$ (brown curve), this ringlet is seemingly in regime 3
+And by time $t = 20\tau_\nu$ (yellow curve), this ringlet is seemingly in regime 3
 since $e'=0.866$, so one might expect the ringlet's spreading to have stalled by
 now, but keep in mind that the above analysis ignores any transport
 of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
@@ -363,34 +417,6 @@ by it's negative gravitational angular momentum luminosity $L_g$.
         relative longitude $\varphi=\theta-\tilde{\omega}$ about the ringlet's inner
         streamline at selected times $t/\tau_\nu$, 
         with the ringlet's eccentricy gradient $e'$ also indicated.
-    }
-\end{figure}
-
-
-\begin{figure}
-    \plotone{figs/nominal_streamlines.pdf}
-    \caption{
-        \label{fig:nominal_streamlines}
-        blah blah blah
-    }
-\end{figure}
-
-
-\begin{figure}
-    \plotone{figs/radial_sigma_nominal.pdf}
-    \caption{
-        \label{fig:radial_sigma_nominal}
-        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=100$
-        when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
-        relative to $r_{mid}$, which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}$,
-        with those radial distances $r - r_{mid}$ measured in units of the ringlet's final semimajor axis width $\Delta a$,
-        and surface density is shown in units of the ringlet's longitudinally-averaged surface density $\sigma_0$.
-        Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
-        where the ringlet's streamlines are most concentrated and surface denisity $\sigma$ is
-        greatest due to the ringlet's eccentricity gradient $e'$, at quadrature ($|\varphi|=\pi/2$, green curve),
-        and at apoapse ($|\varphi|=\pi$, orange curve) where streamlines have their greatest separation
-        and ringlet surface density is lowest. This ringlet's surface density contrast, between periapse and
-        apoapse, is 14.
     }
 \end{figure}
 
