@@ -15,6 +15,7 @@
 %bibliography, see
 %http://ads.harvard.edu/pubs/bibtex/astronat/doc/html/astronat_3.html
 \usepackage{natbib}
+\usepackage{amsmath}
 %\citestyle{aa}
 
 %journal
@@ -192,7 +193,7 @@ and the outer (blue) and inner (green) streamlines' semimajor axes are plotted r
 to their mean $a_{\text{mean}}$, and displayed in units of the ringlet's
 initial width $\Delta a_0 = 3\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
 The simulated ringlet has total mass $m_r=5\times10^{-10}$, shear viscosity $\nu_s=2.5\times10^{-12}$,
-and initial eccentricity $e=0.01$, and see Section \ref{subsec:nominal} to convert
+and initial eccentricity $e=0.01$. See Section \ref{subsec:nominal} to convert
 $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \label{fig:a_nominal}}
 \end{figure}
@@ -229,7 +230,7 @@ The nominal ringlet's eccentricity evolution.}
         The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
         and longitude of periapse difference
         $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$
-        in radians and divided by 10.
+        in radians divided by 10.
     }
 \end{figure}
 
@@ -248,7 +249,7 @@ occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref
     \caption{
         \label{fig:nominal_streamlines}
         The radii of the nominal ringlet's streamlines are plotted versus relative longitude
-        $\varphi=\theta-\tilde{\omega}$ at time $t=100\tau_\nu$, and $\Delta a$ is the streamlines'
+        $\varphi=\theta-\tilde{\omega}$ at time $t=100\tau_\nu$, with $\Delta a$ being the streamlines'
         semimajor axis difference then. Inset plot
         shows outer streamline's longitude of periapse $\tilde{\omega}$ trailing
         the inner streamline's.
@@ -287,9 +288,6 @@ occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref
     }
 \end{figure}
 
-\subsection{angular momentum and energy fluxes}
-\label{subsec:fluxes}
-
 It is convenient to recast these orbit element differences as dimensionless gradients
 \begin{equation}
     \label{eqn:e_prime}
@@ -323,11 +321,64 @@ the outer ringlet's periapse trails the inner ringlet's, consistent with the fin
 \end{figure}\vfil
 
 
+\section{angular momentum and energy fluxes, and luminosities}
+\label{sec:fluxes}
+
+The above evolution is readily understood when the ringlet's flux of angular momentum and energy are considered. 
+
+\subsection{angular momentum and energy fluxes}
+\label{subsec:fluxes}
+
+The torque that is exerted on a small streamline segment of mass $\delta m$
+at location $\mathbf{r}=r\hat{\mathbf{r}}$
+due to the streamlines orbiting interior to it is $\delta T=\delta m\mathbf{r}\times\mathbf{A}^1$ where 
+$\mathbf{A}^1=A^1_r\hat{\mathbf{r}} + A^1_\theta\hat{\boldsymbol\theta}$
+is the so-called one-sided acceleration that is exerted on $\delta m$ by the interior streamlines. 
+Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear mass density
+and $\delta\ell$ is the segment's length, the ringlet's radial flux of angular momentum is then
+\begin{equation}
+    \label{eqn:F_L}
+    F_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
+\end{equation}
+where $A^1_\theta$ is the tangential component of the one-sided acceleration.
+A simulated ringlet composed of $N_s$ streamlines and total mass $m_r$ will have a
+linear mass density $\lambda=m_r/Ns/2\pi a$.
+
+The work that the interior streamlines exert on $\delta m$ as that segment travels a small distance
+$\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
+is $\delta W=\delta m\mathbf{A}^1\cdot\delta\mathbf{r}$ where 
+$\mathbf{v}=v_r\hat{\mathbf{r}} + v_\theta\hat{\boldsymbol\theta}$ is the segment's velocity, and
+that work accrues at $\delta m$ at the rate $\delta W/\delta t=\lambda(A^1_rv_r+A^1_\theta v_\theta)\delta\ell$,
+so the radial flux of energy through the ringlet is 
+\begin{equation}
+    \label{eqn:F_E}
+    F_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda(A^1_rv_r+A^1_\theta v_\theta),
+\end{equation}
+and is due to the ringlet's viscosity and self-gravity. 
+
+\subsection{luminosities}
+\label{subsec:luminosities}
+
+The streamline containing segment $\delta m$ has semimajor axis $a$, and 
+integrating the radial angular momentum flux $F_L$ about the entire streamline $a$
+then yields the ringlet's radial angular momentum luminosity,
+\begin{equation}
+    \label{eqn:L_L}
+    L_L(a) = \oint F_Ld\ell , 
+\end{equation}
+which is the torque that is exerted on streamline $a$ by those orbiting interior to it. Similarly,
+integrating the radial energy flux $F_E$ about streamline $a$ also yields the ringlet's radial energy luminosity
+\begin{equation}
+    \label{eqn:L_E}
+    L_E(a) = \oint F_Ed\ell,
+\end{equation}
+and this is the rate that streamlines interior to $a$ communicate energy to the streamline just beyond.
+
 \subsection{viscous angular momentum transport}
 \label{subsec:viscous_flux}
 
-The ringlet's evolution is readily understood when the ringlet's viscous flux of angular momentum is 
-considered; that flux is 
+Angular momentum is transported radially through the ring via viscosity and self-gravity, so $F_L=F_\nu + F_g$,
+where the ringlet's viscous flux of angular momentum is
 \begin{equation}
     \label{eqn:F_nu_theta}
     F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
@@ -347,7 +398,7 @@ the above simplifies to
 where $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse
 (see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
 and $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
-circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$ and assuming
+circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$ assuming
 $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$. Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
@@ -367,7 +418,7 @@ regimes distinguished by the ringlet's $e'$:
 \item $e'<3/4$, so the ringlet's viscous angular momentum flux $F_\nu(\varphi)>0$
 at all ringlet longitudes $\theta$. The ringlet's viscous
 angular momentum luminosity $L_\nu>0$, so viscous friction transports angular momentum radially outwards,
-so inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
+and the inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
 the ringlet spreads radially.
 
 \item $3/4\le e'<\sqrt{3}/2$. In this regime there is a range of longitudes $\theta$
@@ -375,7 +426,7 @@ where the viscous angular momentum flux is reversed such that $F_\nu(\varphi)<0$
 Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\varphi)$,
 is positive and the ringlet still spreads radially, albeit slower than when $e'<0.75$.
 
-\item $e'\ge\sqrt{3}/2$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
+\item $e'>\sqrt{3}/2$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
 viscous friction transports angular momentum radially inwards, and the ringlet
 shrinks radially. But if $e'=\sqrt{3}/2\simeq0.866$ then $L_\nu=0$ and the ringlet's
 radial evolution ceases, and the viscous but non-gravitating ringlet is self confining.
@@ -386,7 +437,7 @@ Note though that the nominal ringlet's eccentricity gradient
 exceeds the $e'=\sqrt{3}/4\simeq0.866$ threshold (which is
 the dotted red line in Fig.\ \ref{fig:de_prime_nominal}) when it settles into
 self-confinement. This is due to the ringlet's self-gravity,
-which also transports angular momentum radially through the ringlet.
+which also transports a flux of angular momentum $F_g$ radially through the ringlet.
 
 Figure \ref{fig:F_nu_nominal} shows the nominal ringlet's viscous angular momentum flux
 $F_\nu$ versus relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
@@ -404,12 +455,22 @@ now, but keep in mind that the above analysis ignores any transport
 of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
 shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq35\tau_\nu$, 
 at which point $e'=0.88$ (cyan curve), angular momentum flux reversal is nearly complete,
-with the ringlet's total angular momentum luminosity $L=L_\nu+L_g=0$ is very close to zero.
+with the ringlet's total angular momentum luminosity $L_L=L_\nu+L_g$ is very close to zero.
 
 Figure \ref{fig:angular_momentum_luminosity_nominal} and
-Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining,
-it's positive viscous angular momentum luminosity $L_\nu$ is nearly counterbalanced
-by it's negative gravitational angular momentum luminosity $L_g$. 
+Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining
+at times $t\gg35\tau_\nu$,
+its positive viscous angular momentum luminosity $L_\nu\sim0.01L_{\nu,0}$ is nearly counterbalanced
+by its negative gravitational angular momentum luminosity $L_g\sim-0.01L_{\nu,0}$. That $L_\nu$ and $L_g$
+are offset slightly from zero also tells us that ringlet self-gravity causes
+the ringlet's shape to deviate slightly from the non-gravitating solution of \citet{BGT82},
+which in turn accounts for those offsets. Interestingly, 
+Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} also shows that $L_\nu+L_g$ does not sum
+precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\sim{\cal O}(0.001)L_{\nu,0}$, yet Section XXX
+will show that the ringlet's energy luminosity $L_E$ is zero, which tells us that the ringlet
+really is self-confining since the streamlines' semimajor axes $a$ are not evolving relative to each other,
+but that $L_L\ne0$ tells us that the ringlet's shape {\it i.e.} its eccentricities are still evolving.
+{\it look into this further...}
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
@@ -449,24 +510,19 @@ by it's negative gravitational angular momentum luminosity $L_g$.
     \plotone{figs/F_vs_longitude_nominal.pdf}
     \caption{
         \label{fig:F_vs_longitude_nominal}
-        The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$ (blue curve), plotted in units of $F_{\nu,0}$
-        and versus relative longitude $\varphi$ as the simulation's end at time $t=100\tau_\nu$, 
-        as well as the ringlet's gravitational angular momentum flux $F_{g}(\varphi)$ 
-        in units of $F_{\nu,0}$ (orange curve).
+        The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$ (blue curve) is computed
+        via Eqn.\ (\ref{eqn:F_nu_theta}) and plotted in units of $F_{\nu,0}$
+        versus relative longitude $\varphi$ as the simulation's end at time $t=100\tau_\nu$, 
+        as well as the ringlet's gravitational angular momentum flux $F_{g}(\varphi)$ in  units of $F_{\nu,0}$
+        (orange curve via Eqn.\ \ref{eqn:F_L}).
     }
 \end{figure}
 
 The ringlet's viscous $F_{\nu}$ and gravitational $F_g$
 angular momentum fluxes are shown Fig.\ \ref{fig:F_vs_longitude_nominal}, and that figure
 shows how viscosity and self-gravity both transport angular
-momentum radially through the self-confining ringlet at various longitudes $\varphi$. To compute
-the ringlet's gravitational angular momentum flux $F_g$, note that the gravitational torque that is exerted on
-a small streamline segment of mass $\delta m$ due to the ring material orbiting interior is
-$T_g=\delta m r A^1_{g,\theta}=F_g\delta\ell$, where $A^1_g$ is the so-called one-sided gravitational acceleration
-{\it i.e.}\ the gravitational acceleration that segment $\delta m$ experiences due to the ring matter orbiting interior to it.
-The tangential component of that one-sided acceleration is
-$A^1_{g,\theta}$, so for a segment whose length is $\delta\ell$, its gravitational angular momentum flux is
-$F_g=\lambda r A^1_{g,\theta}$ where $\lambda=m_r/Ns/2\pi a$ is the streamline's linear density.
+momentum radially through the self-confining ringlet at various longitudes $\varphi$. 
+
 The streamline's total gravitational angular momentum luminosity is
 \begin{equation}
     \label{eqn:L_g}
