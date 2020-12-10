@@ -334,14 +334,14 @@ at location $\mathbf{r}=r\hat{\mathbf{r}}$
 due to the streamlines orbiting interior to it is $\delta T=\delta m\mathbf{r}\times\mathbf{A}^1$ where 
 $\mathbf{A}^1=A^1_r\hat{\mathbf{r}} + A^1_\theta\hat{\boldsymbol\theta}$
 is the so-called one-sided acceleration that is exerted on $\delta m$ by the interior streamlines. 
-Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear mass density
+Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear mass density,
 and $\delta\ell$ is the segment's length, the ringlet's radial flux of angular momentum is then
 \begin{equation}
     \label{eqn:F_L}
     F_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
 \end{equation}
 where $A^1_\theta$ is the tangential component of the one-sided acceleration.
-A simulated ringlet composed of $N_s$ streamlines and total mass $m_r$ will have a
+A simulated ringlet total mass $m_r$ distributed across $N_s$ streamlines will have a
 linear mass density $\lambda=m_r/Ns/2\pi a$.
 
 The work that the interior streamlines exert on $\delta m$ as that segment travels a small distance
@@ -349,7 +349,7 @@ $\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
 is $\delta W=\delta m\mathbf{A}^1\cdot\delta\mathbf{r}$ where 
 $\mathbf{v}=v_r\hat{\mathbf{r}} + v_\theta\hat{\boldsymbol\theta}$ is the segment's velocity, and
 that work accrues at $\delta m$ at the rate $\delta W/\delta t=\lambda(A^1_rv_r+A^1_\theta v_\theta)\delta\ell$,
-so the radial flux of energy through the ringlet is 
+so the radial flux of energy through that ringlet segment is 
 \begin{equation}
     \label{eqn:F_E}
     F_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda(A^1_rv_r+A^1_\theta v_\theta),
@@ -460,17 +460,18 @@ with the ringlet's total angular momentum luminosity $L_L=L_\nu+L_g$ is very clo
 Figure \ref{fig:angular_momentum_luminosity_nominal} and
 Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining
 at times $t\gg35\tau_\nu$,
-its positive viscous angular momentum luminosity $L_\nu\sim0.01L_{\nu,0}$ is nearly counterbalanced
-by its negative gravitational angular momentum luminosity $L_g\sim-0.01L_{\nu,0}$. That $L_\nu$ and $L_g$
+its positive viscous angular momentum luminosity $L_\nu\simeq0.0085L_{\nu,0}$ is nearly counterbalanced
+by its negative gravitational angular momentum luminosity $L_g\simeq-0.0075L_{\nu,0}$. That $L_\nu$ and $L_g$
 are offset slightly from zero also tells us that ringlet self-gravity causes
 the ringlet's shape to deviate slightly from the non-gravitating solution of \citet{BGT82},
 which in turn accounts for those offsets. Interestingly, 
 Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} also shows that $L_\nu+L_g$ does not sum
-precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\sim{\cal O}(0.001)L_{\nu,0}$, yet Section XXX
+precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\simeq0.001L_{\nu,0}$, yet Section XXX
 will show that the ringlet's energy luminosity $L_E$ is zero, which tells us that the ringlet
 really is self-confining since the streamlines' semimajor axes $a$ are not evolving relative to each other,
-but that $L_L\ne0$ tells us that the ringlet's shape {\it i.e.} its eccentricities are still evolving.
-{\it look into this further...}
+but that $L_L\ne0$ tells us that the ringlet's shape {\it i.e.} its eccentricities are still evolving,
+see Fig.\ \ref{fig:de_nominal}
+{\it describe into this further...}
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
@@ -503,6 +504,15 @@ but that $L_L\ne0$ tells us that the ringlet's shape {\it i.e.} its eccentriciti
         always stays positive (indicating that the viscous transport of angular momentum is radially outwards) which is 
         nearly balanced by the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
         $L_g$ (orange) after time $t\gg35\tau_\nu$.
+    }
+\end{figure}
+
+
+\begin{figure}
+    \plotone{figs/de_nominal.pdf}
+    \caption{
+        \label{fig:de_nominal}
+        blah...
     }
 \end{figure}
 
