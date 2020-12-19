@@ -459,19 +459,19 @@ with the ringlet's total angular momentum luminosity $L_L=L_\nu+L_g$ is very clo
 
 Figure \ref{fig:angular_momentum_luminosity_nominal} and
 Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining
-at times $t\gg35\tau_\nu$,
-its positive viscous angular momentum luminosity $L_\nu\simeq0.0085L_{\nu,0}$ is nearly counterbalanced
+at times $t\gg35\tau_\nu$, its positive viscous angular momentum luminosity $L_\nu\simeq0.0085L_{\nu,0}$ 
+is nearly but not quitely counterbalanced
 by its negative gravitational angular momentum luminosity $L_g\simeq-0.0075L_{\nu,0}$. That $L_\nu$ and $L_g$
-are offset slightly from zero also tells us that ringlet self-gravity causes
-the ringlet's shape to deviate slightly from the non-gravitating solution of \citet{BGT82},
-which in turn accounts for those offsets. Interestingly, 
+are both offset slightly from zero also tells us that ringlet self-gravity causes
+the ringlet's shape to deviate slightly from the non-gravitating solution of \citet{BGT82}. Interestingly, 
 Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} also shows that $L_\nu+L_g$ does not sum
-precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\simeq0.001L_{\nu,0}$, yet Section XXX
-will show that the ringlet's energy luminosity $L_E$ is zero, which tells us that the ringlet
-really is self-confining since the streamlines' semimajor axes $a$ are not evolving relative to each other,
-but that $L_L\ne0$ tells us that the ringlet's shape {\it i.e.} its eccentricities are still evolving,
-see Fig.\ \ref{fig:de_nominal}
-{\it describe into this further...}
+precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\simeq0.001L_{\nu,0}$, yet Section \ref{subsec:gravitational_flux}
+will show that this ringlet's energy luminosity $L_E$ is zero. Evidently it is 
+$L_E$ that must be zero (rather than $L_L$) in order for a viscous gravitating ringlet
+to be self-confining, since the streamlines' semimajor axes $a$ are not evolving relative to each other.
+That this ringlet's $L_L$ is slightly nonzero while $L_E$ is also implies that this ringlet's
+shape {\it i.e.} the ringlet's eccentricities still slowly evolving despite
+self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
 
 \begin{figure}
     \plotone{figs/F_nu_nominal.pdf}
@@ -502,8 +502,9 @@ see Fig.\ \ref{fig:de_nominal}
         Figure \ref{fig:angular_momentum_luminosity_nominal} is replotted to highlight that the ringlet's 
         viscous angular momentum luminosity $L_\nu$ (blue curve)
         always stays positive (indicating that the viscous transport of angular momentum is radially outwards) which is 
-        nearly balanced by the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
-        $L_g$ (orange) after time $t\gg35\tau_\nu$.
+        nearly but not entirely balanced by the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
+        $L_g$ (orange) after time $t\gg35\tau_\nu$. Green curve is total angular momentum luminosity 
+        $L_nu + L_g\simeq0.001L_{\nu,0}$.
     }
 \end{figure}
 
@@ -511,8 +512,10 @@ see Fig.\ \ref{fig:de_nominal}
 \begin{figure}
     \plotone{figs/de_nominal.pdf}
     \caption{
-        \label{fig:de_nominal}
-        blah...
+        \label{fig:}
+        The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$ 
+        (from Fig. \ref{fig:de_nominal}), 
+        with inset plot showing $\Delta e$'s continued slow growth despite self-confinement. 
     }
 \end{figure}
 
@@ -540,7 +543,6 @@ The streamline's total gravitational angular momentum luminosity is
 \end{equation}
 which is the orange curve in Figs.\ \ref{fig:angular_momentum_luminosity_nominal}--\ref{fig:angular_momentum_luminosity_zoom_nominal}
 and is the gravitational torque that the inner streamline exerts on the outer.
-{\em To do: explain why $L$ isn't precisely zero when ringlet is seemingly self--confining...}
 
 That figure shows that ringlet viscosity
 transports angular momentum inwards {\it i.e.}\ $F_{\nu}(\varphi)<0$ near periapse, and outwards 
@@ -550,6 +552,10 @@ ring-matter travels towards periapse, and outwards $F_{g}(\varphi)>0$ after peri
 Despite these spatial differences, the influence of both forces still sum to zero
 in the orbit-integrated sense {\it i.e.}\ $\oint (F_\nu+F_g)rd\varphi=0$ after the ringlet has
 settled into the self-confining state.
+
+
+\subsection{gravitational transport}
+\label{subsec:gravitational_flux}
 
 Ring viscosity and self-gravity can also transport energy across the ring, 
 and that is assessed in Appendix \ref{sec:Appendix F}.
