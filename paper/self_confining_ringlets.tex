@@ -338,7 +338,7 @@ Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear ma
 and $\delta\ell$ is the segment's length, the ringlet's radial flux of angular momentum is then
 \begin{equation}
     \label{eqn:F_L}
-    F_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
+    {\cal F}_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
 \end{equation}
 where $A^1_\theta$ is the tangential component of the one-sided acceleration.
 A simulated ringlet total mass $m_r$ distributed across $N_s$ streamlines will have a
@@ -348,66 +348,69 @@ The work that the interior streamlines exert on $\delta m$ as that segment trave
 $\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
 is $\delta W=\delta m\mathbf{A}^1\cdot\delta\mathbf{r}$ where 
 $\mathbf{v}=v_r\hat{\mathbf{r}} + v_\theta\hat{\boldsymbol\theta}$ is the segment's velocity, and
-that work accrues at $\delta m$ at the rate $\delta W/\delta t=\lambda(A^1_rv_r+A^1_\theta v_\theta)\delta\ell$,
+that work accrues at $\delta m$ at the rate 
+$\delta W/\delta t=\lambda\mathbf{A}^1\cdot\mathbf{v}\delta\ell$,
 so the radial flux of energy through that ringlet segment is 
 \begin{equation}
     \label{eqn:F_E}
-    F_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda(A^1_rv_r+A^1_\theta v_\theta),
+    {\cal F}_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda\mathbf{A}^1\cdot\mathbf{v},
 \end{equation}
-and is due to the ringlet's viscosity and self-gravity. 
+and is due to the ringlet's viscosity and self-gravity
+{\it i.e.}\ ${\cal F}_E = {\cal F}_{E,\nu} + {\cal F}_{E,g}$. 
 
 \subsection{luminosities}
 \label{subsec:luminosities}
 
 The streamline containing segment $\delta m$ has semimajor axis $a$, and 
-integrating the radial angular momentum flux $F_L$ about the entire streamline $a$
+integrating the radial angular momentum flux ${\cal F}_L$ about the entire streamline $a$
 then yields the ringlet's radial angular momentum luminosity,
 \begin{equation}
     \label{eqn:L_L}
-    L_L(a) = \oint F_Ld\ell , 
+    {\cal L}_L(a) = \oint {\cal F}_Ld\ell , 
 \end{equation}
 which is the torque that is exerted on streamline $a$ by those orbiting interior to it. Similarly,
-integrating the radial energy flux $F_E$ about streamline $a$ also yields the ringlet's radial energy luminosity
+integrating the radial energy flux ${\cal F}_E$ about streamline $a$ also yields the ringlet's radial energy luminosity
 \begin{equation}
     \label{eqn:L_E}
-    L_E(a) = \oint F_Ed\ell,
+    {\cal L}_E(a) = \oint {\cal F}_Ed\ell,
 \end{equation}
 and this is the rate that streamlines interior to $a$ communicate energy to the streamline just beyond.
 
 \subsection{viscous angular momentum transport}
 \label{subsec:viscous_flux}
 
-Angular momentum is transported radially through the ring via viscosity and self-gravity, so $F_L=F_\nu + F_g$,
+Angular momentum is transported radially through the ring via viscosity and self-gravity, 
+so ${\cal F}_L={\cal F}_{L,\nu} + {\cal F}_{L,g}$,
 where the ringlet's viscous flux of angular momentum is
 \begin{equation}
     \label{eqn:F_nu_theta}
-    F_{\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
+    {\cal F}_{L,\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 \citep{HS13} when written as a function of spatial coordinates and
 angular velocity $\omega=\dot{\theta}$ (Eqn.\ XX). If we consider a small arc of 
 ring material of transverse length $d\ell$, 
-then $F_{\nu}d\ell$ would be the torque that arc exert exerts on
+then ${\cal F}_{L,\nu}d\ell$ would be the torque that arc exert exerts on
 ring matter just exterior, due to viscous friction,
 so that is the rate that friction transmits angular momentum radially across that arc.
-And when $F_{\nu}$ is evaluated along a single eccentric streamline of semimajor axis $a$, 
+And when ${\cal F}_{L,\nu}$ is evaluated along a single eccentric streamline of semimajor axis $a$, 
 the above simplifies to
 \begin{equation}
     \label{eqn:F_nu_varphi}
-    F_{\nu}(a, \varphi) = F_{\nu,0}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
+    {\cal F}_{L,\nu}(a, \varphi) = {\cal F}_{L,\nu,c}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
 where $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse
 (see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
-and $F_{\nu,0}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
-circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$ assuming
+and ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
+circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$, and the above assumes that
 $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$. Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
     \label{eqn:L_nu}
-    L_{\nu}(a) = \oint F_\nu(e', \varphi)rd\varphi = L_{\nu,0}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
+    {\cal L}_{L,\nu}(a) = \oint {\cal F}_{L,\nu}(a, \varphi)rd\varphi = {\cal L}_{L,\nu,c}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
 \end{equation}
 which is the torque that one streamline exerts on its exterior neighbor due to viscous friction
 (\citealt{BGT82} and Appendix \ref{sec:Appendix E}),
-where $L_{\nu,0}=3\pi\nu_s\sigma_0a^2\Omega$ viscous angular momentum luminosity of a circular streamline.
+where ${\cal L}_{L,\nu,c}=3\pi\nu_s\sigma_0a^2\Omega$ viscous angular momentum luminosity of a circular streamline.
 
 \citet{BGT82} examine angular momentum transport through a viscous eccentric but non-gravitating ringlet, 
 and use Eqns.\ (\ref{eqn:F_nu_varphi}--\ref{eqn:L_nu}) to show that this transport has three 
@@ -415,23 +418,23 @@ regimes distinguished by the ringlet's $e'$:
 
 \begin{enumerate}
 
-\item $e'<3/4$, so the ringlet's viscous angular momentum flux $F_\nu(\varphi)>0$
+\item $e'<3/4$, so the ringlet's viscous angular momentum flux ${\cal F}_{L,\nu}(\varphi)>0$
 at all ringlet longitudes $\theta$. The ringlet's viscous
-angular momentum luminosity $L_\nu>0$, so viscous friction transports angular momentum radially outwards,
+angular momentum luminosity ${\cal L}_{L,\nu}>0$, so viscous friction transports angular momentum radially outwards,
 and the inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
 the ringlet spreads radially.
 
 \item $3/4\le e'<\sqrt{3}/2$. In this regime there is a range of longitudes $\theta$
-where the viscous angular momentum flux is reversed such that $F_\nu(\varphi)<0$. 
+where the viscous angular momentum flux is reversed such that ${\cal F}_{L,\nu}(\varphi)<0$. 
 That angular momentum flux reversal is due to the $\partial\omega/\partial r$
 term in Eqn.\ (\ref{eqn:F_nu_theta}) changing sign near periapse when $e'>0.75$; 
 see Fig.\ \ref{fig:nominal_shear}.
-Nonetheless $L_\nu$, which is the orbit-average of $F_\nu(\varphi)$,
+Nonetheless ${\cal L}_{L,\nu}$, which is proportional to the orbit-average of ${\cal F}_{L,\nu}(\varphi)$,
 is positive and the ringlet still spreads radially, albeit slower than when $e'<0.75$.
 
-\item $e'>\sqrt{3}/2$. Viscous angular momentum flux reversal is complete such that $L_\nu<0$,
+\item $e'>\sqrt{3}/2$. Viscous angular momentum flux reversal is complete such that ${\cal L}_{L,\nu}<0$,
 viscous friction transports angular momentum radially inwards, and the ringlet
-shrinks radially. But if $e'=\sqrt{3}/2\simeq0.866$ then $L_\nu=0$ and the ringlet's
+shrinks radially. But if $e'=\sqrt{3}/2\simeq0.866$ then ${\cal L}_{L,\nu}=0$ and the ringlet's
 radial evolution ceases, and the viscous but non-gravitating ringlet is self confining.
 
 \end{enumerate}
@@ -440,15 +443,15 @@ Note though that the nominal ringlet's eccentricity gradient
 exceeds the $e'=\sqrt{3}/4\simeq0.866$ threshold (which is
 the dotted red line in Fig.\ \ref{fig:de_prime_nominal}) when it settles into
 self-confinement. This is due to the ringlet's self-gravity,
-which also transports a flux of angular momentum $F_g$ radially through the ringlet.
+which also transports a flux of angular momentum ${\cal F}_{L,g}$ radially through the ringlet.
 
 Figure \ref{fig:F_nu_nominal} shows the nominal ringlet's viscous angular momentum flux
-$F_\nu$ versus relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
+${\cal F}_{L,\nu}$ versus relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
 Early in the ringlet's evolution when time $t \le 8\tau_\nu$ (blue, orange, green, red,
 and purple curves),
-the ringlet is in regime 1 since $e'<0.75$ and $F_\nu(\varphi)>0$ at all longitudes.
+the ringlet is in regime 1 since $e'<0.75$ and ${\cal F}_{L,\nu}(\varphi)>0$ at all longitudes.
 But by time $t = 10\tau_\nu$ (brown curve), this ringlet's eccentricity gradient exceeds $0.75$,
-and angular momentum flux reversal $F_\nu(\varphi)<0$ occurs near periapse where $|\varphi|\simeq0$
+and angular momentum flux reversal ${\cal F}_{L,\nu}(\varphi)<0$ occurs near periapse where $|\varphi|\simeq0$
 where the ringlet is most overdense due to its eccentricity gradient, see 
 also Fig.\ \ref{fig:radial_sigma_nominal};
 this ringlet is in regime 2 and its radial spreading is reduced by angular momentum flux reversal. 
@@ -458,30 +461,35 @@ now, but keep in mind that the above analysis ignores any transport
 of angular momentum via ringlet self--gravity. Figure \ref{fig:da_nominal}
 shows that this gravitating ringlet's spreading has ceased soon after time $t \simeq35\tau_\nu$, 
 at which point $e'=0.88$ (cyan curve), angular momentum flux reversal is nearly complete,
-with the ringlet's total angular momentum luminosity $L_L=L_\nu+L_g$ is very close to zero.
+with the ringlet's total angular momentum luminosity ${\cal L}_L={\cal L}_{L,\nu}+{\cal L}_{L,g}$ is very close to zero.
 
 Figure \ref{fig:angular_momentum_luminosity_nominal} and
 Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} show that, when the ringlet is self-confining
-at times $t\gg35\tau_\nu$, its positive viscous angular momentum luminosity $L_\nu\simeq0.0085L_{\nu,0}$ 
+at times $t\gg35\tau_\nu$, its positive viscous angular momentum luminosity ${\cal L}_{L,\nu}\simeq0.0085{\cal L}_{L,\nu,c}$ 
 is nearly but not quitely counterbalanced
-by its negative gravitational angular momentum luminosity $L_g\simeq-0.0075L_{\nu,0}$. That $L_\nu$ and $L_g$
+by its negative gravitational angular momentum luminosity ${\cal L}_{L,g}\simeq-0.0075{\cal L}_{L,\nu,c}$. 
+That ${\cal L}_{L,\nu}$ and ${\cal L}_{L,g}$
 are both offset slightly from zero also tells us that ringlet self-gravity causes
-the ringlet's shape to deviate slightly from the non-gravitating solution of \citet{BGT82}. Interestingly, 
-Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} also shows that $L_\nu+L_g$ does not sum
-precisely to zero, {\it i.e.}\ $L_L=L_\nu+L_g\simeq0.001L_{\nu,0}$, yet Section \ref{subsec:gravitational_flux}
-will show that this ringlet's energy luminosity $L_E$ is zero. Evidently it is 
-$L_E$ that must be zero (rather than $L_L$) in order for a viscous gravitating ringlet
+the streamline's shape and/or orientations to differ 
+slightly from the non-gravitating solution of \citet{BGT82}. Interestingly, 
+Fig.\ \ref{fig:angular_momentum_luminosity_zoom_nominal} also shows that ${\cal L}_{L,\nu}+{\cal L}_{L,g}$ does not sum
+precisely to zero, {\it i.e.}\ 
+${\cal L}_{L}={\cal L}_{L,\nu}+{\cal L}_{L,g}\simeq0.001{\cal L}_{L,\nu,c}$, 
+yet Section \ref{subsec:gravitational_flux}
+will show that this ringlet's energy luminosity ${\cal L}_E$ is zero. Evidently it is 
+${\cal L}_E$ that must be zero (rather than ${\cal L}_L$) in order for a viscous gravitating ringlet
 to be self-confining, since the streamlines' semimajor axes $a$ are not evolving relative to each other.
-That this ringlet's $L_L$ is slightly nonzero while $L_E$ is also implies that this ringlet's
-shape {\it i.e.} the its eccentricities are still slowly evolving despite the 
-self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
+That this ringlet's ${\cal L}_L$ is slightly nonzero while ${\cal L}_E$ is also implies that this ringlet's
+eccentricities are still slowly evolving despite the 
+self-confinement, and this is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
 
 \begin{figure}
     \plotone{figs/nominal_shear.pdf}
     \caption{
         \label{fig:nominal_shear}
         The nominal ringlet's angular shear $\partial\omega/\partial r$ is plotted versus relative 
-        longitude $\varphi$ at selected moments in time. When the simulation starts, this nearly circular
+        longitude $\varphi$ at selected moments in time; this quantity is negative when the inner streamline
+        has the higher angular speed $\omega=v_\theta/r$. When the simulation starts, this nearly circular
         ringlet has eccentricity gradient $e'=0$, so $\partial\omega/\partial r\simeq-3\Omega/2r\simeq-1.5$ 
         when evaluated natural units (blue curve).
         The ringlet's $e'$ then grows over time (orange, green, red curves),
@@ -496,11 +504,12 @@ self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
     \plotone{figs/F_nu_nominal.pdf}
     \caption{
         \label{fig:F_nu_nominal}
-        The nominal ringlet's viscous angular momentum flux $F_{\nu}(\varphi)$,
+        The nominal ringlet's viscous angular momentum flux ${\cal F}_{L,\nu}(\varphi)$,
         Eqn.\ (\ref{eqn:F_nu_varphi}), is plotted versus ringlet
         relative longitude $\varphi=\theta-\tilde{\omega}$ about the ringlet's inner
         streamline at selected times $t/\tau_\nu$, 
-        with the ringlet's eccentricy gradient $e'$ also indicated.
+        with the ringlet's eccentricy gradient $e'$ also indicated, 
+        and ${\cal F}_{L,\nu,c}$ the angular momentum flux in a circular ringlet
     }
 \end{figure}
 
@@ -508,9 +517,9 @@ self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
     \plotone{figs/angular_momentum_luminosity_nominal.pdf}
     \caption{
         \label{fig:angular_momentum_luminosity_nominal}
-        Nominal ringlet's viscous angular momentum luminosity $L_\nu/L_{\nu,0}$ (blue curve) versus time $t/\tau_\nu$,
-        where $L_{\nu,0}$ is circular ring's viscous angular momentum luminosity, 
-        as well as the ringlet gravitational angular momentum luminosity $L_g$ (orange curve) in units of $L_{\nu,0}$.
+        Nominal ringlet's viscous angular momentum luminosity ${\cal L}_{L,\nu}$ (blue curve) versus time $t/\tau_\nu$
+        and in units of a circular ring's viscous angular momentum luminosity ${\cal L}_{L,\nu,c}$, 
+        as well as the ringlet gravitational angular momentum luminosity ${\cal L}_{L,g}$ (orange curve).
     }
 \end{figure}
 
@@ -519,14 +528,13 @@ self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
     \caption{
         \label{fig:angular_momentum_luminosity_zoom_nominal}
         Figure \ref{fig:angular_momentum_luminosity_nominal} is replotted to highlight that the ringlet's 
-        viscous angular momentum luminosity $L_\nu$ (blue curve)
+        viscous angular momentum luminosity ${\cal L}_{L,\nu}$ (blue curve)
         always stays positive (indicating that the viscous transport of angular momentum is radially outwards) which is 
         nearly but not entirely balanced by the ringlet's negative ({\it i.e.}\ inwards) gravitational angular momentum luminosity 
-        $L_g$ (orange) after time $t\gg35\tau_\nu$. Green curve is total angular momentum luminosity 
-        $L_\nu + L_g\simeq0.001L_{\nu,0}$.
+        ${\cal L}_{L,g}$ (orange) after time $t\gg35\tau_\nu$. Green curve is total angular momentum luminosity 
+        ${\cal L}_{L,\nu} + {\cal L}_{L,g}\simeq0.001{\cal L}_{L,\nu,c}$.
     }
 \end{figure}
-
 
 \begin{figure}
     \plotone{figs/de_nominal_zoom.pdf}
@@ -534,7 +542,8 @@ self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
         \label{fig:de_nominal_zoom}
         The nominal ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$ 
         from Fig. \ref{fig:de_nominal}, 
-        with inset plot showing that $\Delta e$ continues to slowly grow despite self-confinement. 
+        with inset plot showing that $\Delta e$ continues to slowly grow even after self-confinement
+        is established. 
     }
 \end{figure}
 
@@ -550,14 +559,15 @@ self-confinement, which is evident in inset Fig.\ \ref{fig:de_nominal_zoom}.
     }
 \end{figure}
 
-The ringlet's viscous $F_{\nu}$ and gravitational $F_g$
+The ringlet's viscous ${\cal F}_{L,\nu}$ and gravitational ${\cal F}_{L,g}$
 angular momentum fluxes are shown Fig.\ \ref{fig:F_vs_longitude_nominal}. That figure
-shows how viscous friction tends to transport angular momentum radially inwards, $F_{\nu}(\varphi)<0$, 
-at longitudes nearer periapse where $|\varphi|\sim0$ (due to reversal of angular velocity gradient?), and outwards
-at all other longitudes. That figure also shows that the ringlet's gravitational
+shows how viscous friction tends to transport angular momentum radially inwards, ${\cal F}_{L,\nu}(\varphi)<0$, 
+at longitudes nearer periapse where $|\varphi|\sim0$, and outwards
+at all other longitudes, due to reversal of angular velocity gradient (Fig.\ \ref{fig:nominal_shear}). 
+Figuew \ref{fig:F_vs_longitude_nominal} also shows that the ringlet's gravitational
 transport of angular momentum is inwards as
 ring-matter approaches periapse where $\varphi<0$, 
-and is outwards $F_{g}(\varphi)>0$ post-periapse, with this asymmetry being due to the ringlet's
+and is outwards ${\cal F}_{L,g}(\varphi)>0$ post-periapse, with this asymmetry being due to the ringlet's
 negative periapse twist, $\tilde{\omega}'<0$ (Fig.\ \ref{fig:de_prime_nominal}).
 
 \subsection{gravitational transport}
@@ -567,9 +577,9 @@ negative periapse twist, $\tilde{\omega}'<0$ (Fig.\ \ref{fig:de_prime_nominal}).
 The ringlet's total gravitational angular momentum luminosity is computed via
 \begin{equation}
     \label{eqn:L_g}
-    L_{g}(a) = \oint F_g(\varphi)rd\varphi = \oint \lambda r^2 A^1_{g}(\varphi)d\varphi.
+    {\cal L}_{E,g}(a) = \oint {\cal F}_{E,g}(\varphi)rd\varphi = \oint \lambda r\mathbf{A}^1_g\cdot\mathbf{v}d\varphi.
 \end{equation}
-
+where $\mathbf{A}^1_g$ is the one-sided gravitational acceleration experienced by a particle in streamline $a$.
 
 That figure shows that ringlet viscosity
 transports angular momentum inwards {\it i.e.}\ $F_{\nu}(\varphi)<0$ near periapse, and outwards 
