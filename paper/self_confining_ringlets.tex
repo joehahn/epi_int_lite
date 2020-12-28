@@ -109,7 +109,7 @@ physical values for $M$ and $r_0$ and multiplying accordingly, and when this tex
 it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
 ring radius $r_0=1.0\times10^{10}$ cm. Simulation time $t$ is in units of $T_{\text{orb}}/2\pi$
 where $T_{\text{orb}} = 2\pi\sqrt{r_0^3/GM}$ is the orbit period at $r_0$, 
-so divide simulation time $t$ by $2\pi$ and then multiply
+so divide simulation time $t$ by $2\pi$ and multiply
 by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
@@ -135,6 +135,55 @@ simulation such that particles on the same streamline do not pass each other lon
 nor do they cross adjacent streamlines. Because the simulated ringlet stays highly organized,
 there is no radial or longitudinal mixing of the ring particles, and simulated particles preserve
 their streamline membership over time.
+
+The epi\_int\_lite N-body integrator uses the same drift-kick
+scheme utilized by the MERCURY Nbody algorithm \citep{C99}, except that the
+epi\_int\_lite particles that do not interact with each other directly.
+Rather, the epi\_int\_lite particles
+are only perturbed by the accelerations exerted by the ringlet's streamlines. 
+Those accelerations are sensitive to the streamline's relative motions and
+orientations, with those being inferred from the particles' positions
+and velocities. Epi\_int\_lite particles are thus trace particles
+that indicate where the ringlet's streamlines' reside, with the epi\_int\_lite
+N-body integrator used to compute the orbital evolution of those trace particles
+due to ringlet perturbations. The streamline approach used here allows one to
+compute the global evolution of the ringlet using a very modest numbers of trace particles, 
+typically $\sim500$.
+
+The simulations described below account for streamline gravity
+and ringlet viscosity. Because a ringlet is narrow, all particles
+are in close proximity to the nearby portions of all streamlines,
+which allows to approximate a streamline as an infinitely
+long wire of matter having linear density $\lambda$.
+Thus a particle experiences gravitational acceleration $A_g$
+towards the perturbing streamline, where
+\begin{equation}
+\label{eqn:gravity}
+    A_g=\frac{2G\lambda}{\Delta }
+\end{equation}
+and $\Delta$ is the particle's distance from the perturbing streamline.
+A hydrodynamic approximation is used to account
+for the dissipative influences exerted by adjacent particle streamlines
+as they shear past the perturbed particle, and that dissipation is
+parameterized by the ringlet's kinematic
+shear viscosity $\nu_s$ and its kinematic bulk visocity $\nu_b$. 
+The acceleration due to the ringlet's shear viscosity viscosity is
+\begin{equation}
+\label{eqn:shear_viscosity}
+    A_{\nu_s}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r}
+\end{equation}
+where $r$ is the particle's radial coordinate and ${\cal F}_L$ is the ringlet's viscous flux of angular momentum,
+\begin{equation}
+    \label{eqn:F_nu_theta}
+    {\cal F}_{L,\nu} = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
+\end{equation}
+where $\nu_s$ is the ringlet's kinematic shear viscosity, $\sigma$ is the surface density of ringlet matter,
+and $\omega$ is the perturbed particle's angular velocity,
+and {\it iii.}) acceleration due to ringlet pressure $p$ is
+\begin{equation}
+\label{eqn:pressure}
+    A_p=-\frac{1}{\sigma }\frac{\partial p}{\partial r}.
+\end{equation}
 
 
 \section{N-body simulations of viscous gravitating ringlets}
@@ -342,7 +391,7 @@ and $\delta\ell$ is the segment's length, the ringlet's radial flux of angular m
 \end{equation}
 where $A^1_\theta$ is the tangential component of the one-sided acceleration.
 A simulated ringlet total mass $m_r$ distributed across $N_s$ streamlines will have a
-linear mass density $\lambda=m_r/Ns/2\pi a$.
+linear mass density $\lambda=m_r/N_s/2\pi a$.
 
 The work that the interior streamlines exert on $\delta m$ as that segment travels a small distance
 $\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
@@ -399,11 +448,11 @@ the above simplifies to
     {\cal F}_{L,\nu}(a, \varphi) = {\cal F}_{L,\nu,c}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
 where $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse
-(see \citealt{BGT82} and Appendix \ref{sec:Appendix E})
 and ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$,
 with Eqn.\ (\ref{eqn:F_nu_varphi}) assuming  that
-$|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$. Integrating the above
+$|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$
+(see \citealt{BGT82} and Appendix \ref{sec:Appendix E}). Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
     \label{eqn:L_nu}
