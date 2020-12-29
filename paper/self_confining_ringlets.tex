@@ -117,9 +117,12 @@ sensitive to the $J_2$ portion of the primary's non-spherical gravity component
 adopt Saturn-like values of $J_2=0.01$ and $R_p=r_0/2$ where $R_p$ is the planet's
 mean radius.
 
+\subsection{streamlines}
+\label{subsec:streamlines}
+
 Initially all particles are assigned to various streamlines across the simulated ringlet. A streamline
-is a closed eccentric path around the primary, and the $N_p$ particles in a given
-streamline are initially assigned a common semimajor axis $a$ and eccentricity $e$ and are
+is a closed eccentric path around the primary, and each streamline is populated by $N_p$ particles that are
+initially assigned a common semimajor axis $a$ and eccentricity $e$ while
 distributed uniformly in longitude. Most of the simulations described below
 employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
 theoretical treatments that also treat the ringlet as two gravitating rings
@@ -136,49 +139,71 @@ nor do they cross adjacent streamlines. Because the simulated ringlet stays high
 there is no radial or longitudinal mixing of the ring particles, and simulated particles preserve
 their streamline membership over time.
 
+\subsection{N-body method}
+\label{subsec:N-body method}
+
 The epi\_int\_lite N-body integrator uses the same drift-kick
 scheme utilized by the MERCURY Nbody algorithm \citep{C99}, except that the
 epi\_int\_lite particles that do not interact with each other directly.
 Rather, the epi\_int\_lite particles
-are only perturbed by the accelerations exerted by the ringlet's streamlines. 
-Those accelerations are sensitive to the streamline's relative motions and
-orientations, with those being inferred from the particles' positions
+are only perturbed by the accelerations exerted by the ringlet's individual streamlines. 
+Those accelerations are sensitive to the streamline's relative separations and velocities, 
+which are inferred from the particles' positions
 and velocities. Epi\_int\_lite particles are thus trace particles
-that indicate where the ringlet's streamlines' reside, with the epi\_int\_lite
-N-body integrator used to compute the orbital evolution of those trace particles
-due to ringlet perturbations. The streamline approach used here allows one to
-compute the global evolution of the ringlet using a very modest numbers of trace particles, 
-typically $\sim500$.
+that indicate the ringlet's streamlines' locations and orientations, with the N-body
+integrator used to compute the orbital evolution of those trace particles
+due to perturbations from those streamlines. The streamline approach used here allows one to
+track the global evolution of the ringlet's streamlines
+using only a modest numbers of trace particles, typically $N_sN_p\sim500$.
 
-The simulations described below account for streamline gravity
+The simulations reported on here account for streamline gravity
 and ringlet viscosity. Because a ringlet is narrow, all particles
 are in close proximity to the nearby portions of all streamlines,
-which allows to approximate a streamline as an infinitely
+which allows us to approximate a streamline as an infinitely
 long wire of matter having linear density $\lambda$.
-Thus a particle experiences gravitational acceleration $A_g$
-towards the perturbing streamline, where
+Consequently the gravity of each perturbing streamline draws a particle
+towards that streamline with acceleration
 \begin{equation}
 \label{eqn:gravity}
-    A_g=\frac{2G\lambda}{\Delta }
+    A_g=\frac{2G\lambda}{\Delta },
 \end{equation}
-and $\Delta$ is the particle's distance from the perturbing streamline.
-A hydrodynamic approximation is used to account
-for the dissipative influences exerted by adjacent particle streamlines
-as they shear past the perturbed particle, and that dissipation is
-parameterized by the ringlet's kinematic
-shear viscosity $\nu_s$ and its kinematic bulk visocity $\nu_b$. 
-The acceleration due to the ringlet's shear viscosity viscosity is
+where $\Delta$ is the particle's distance from the streamline.
+
+The hydrodynamic approximation is used to handle
+the dissipation that occurs as particles in adjacent particle streamlines
+shear past and collide with the perturbed particle;
+this approximation accounts for collisional effects
+without monitoring individual particle-particle interactions.
+The particle's tangential acceleration due to the ringlet's viscosity is
 \begin{equation}
 \label{eqn:shear_viscosity}
-    A_{\nu_s}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r}
+    A_{\nu, \theta}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
 \end{equation}
-where $r$ is the particle's radial coordinate and ${\cal F}_L$ is the ringlet's viscous flux of angular momentum,
+where $r$ is the particle's radial coordinate, $\sigma$ is the surface density of ringlet matter,
+and ${\cal F}_{L,\nu}$ is the flux of angular momentum
+that is transported radially across the particle's streamline
+due to its collisions with particles in adjacent streamlines:
 \begin{equation}
     \label{eqn:F_nu_theta}
     {\cal F}_{L,\nu} = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
-where $\nu_s$ is the ringlet's kinematic shear viscosity, $\sigma$ is the surface density of ringlet matter,
-and $\omega$ is the perturbed particle's angular velocity,
+where $\nu_s$ is the ringlet's kinematic shear viscosity
+and $\omega$ is the particle's angular velocity \citep{HS13}.
+
+Collisions among ring particles also transmits linear momentum in the radial direction,
+resulting in a radial acceleration
+\begin{equation}
+\label{eqn:bulk_viscosity}
+    A_{\nu, r}=-\frac{1}{\sigma}\frac{\partial {\cal G}}{\partial r} 
+\end{equation}
+where the radial flux of linear momentum due to ringlet viscosity is
+\begin{equation}
+    \label{eqn:G}
+    {\cal G} = -\left(\frac{4}{3}\nu_s + \nu_b\right)\sigma\frac{\partial v_r}{\partial r}
+        -\left(\nu_b - \frac{2}{3}\nu_s\right)\frac{\sigma v_r}{r}
+\end{equation}
+$\nu_b$ is the ringlet's kinematic bulk viscosity and $v_r$ is the paricle's radial velocity.
+
 and {\it iii.}) acceleration due to ringlet pressure $p$ is
 \begin{equation}
 \label{eqn:pressure}
