@@ -348,8 +348,8 @@ occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref
     \plotone{figs/nominal_sigma_vs_longitude.pdf}
     \caption{
         \label{fig:nominal_sigma_vs_longitude}
-        Nominal ringlet's surface density $\sigma(\varphi)$ is plotted versus relative
-        longitude $\varphi$ at selected times $t$ and in units of ringlet's initial
+        Nominal ringlet's surface density $\sigma(\varphi)$ versus relative
+        longitude $\varphi$ at selected times $t$ and plotted in units of ringlet's initial
         mean surface density $\sigma_0$. Note that the ringlet's surface
         density maxima occurs just before peripase,  and is due to the ringlet's
         negative periapse twist 
@@ -413,7 +413,8 @@ the outer ringlet's periapse trails the inner ringlet's, consistent with the fin
 \section{angular momentum and energy fluxes, and luminosities}
 \label{sec:fluxes}
 
-The above evolution is readily understood when the ringlet's flux of angular momentum and energy are considered. 
+The above evolution is readily understood when the ringlet's 
+radial flux of angular momentum and energy are considered. 
 
 \subsection{angular momentum and energy fluxes}
 \label{subsec:fluxes}
@@ -424,14 +425,18 @@ due to the streamlines orbiting interior to it is $\delta T=\delta m\mathbf{r}\t
 $\mathbf{A}^1=A^1_r\hat{\mathbf{r}} + A^1_\theta\hat{\boldsymbol\theta}$
 is the so-called one-sided acceleration that is exerted on $\delta m$ by the interior streamlines. 
 Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear mass density,
-and $\delta\ell$ is the segment's length, the ringlet's radial flux of angular momentum is then
+and $\delta\ell$ is the segment's length, then the radial flux of angular momentum flowing into
+that segment due to the accelerations that are exerted by streamlines orbiting interior to that
+segment is
 \begin{equation}
     \label{eqn:F_L}
     {\cal F}_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
 \end{equation}
 where $A^1_\theta$ is the tangential component of the one-sided acceleration.
-A simulated ringlet total mass $m_r$ distributed across $N_s$ streamlines will have a
-linear mass density $\lambda=m_r/N_s/2\pi a$.
+A streamline of semimajor axis $a$ in a ringlet having total mass $m_r$ 
+distributed across $N_s$ streamlines will have a linear mass density $\lambda=m_r/N_s/2\pi a$.
+The radial angular momentum flux, Eqn.\ (\ref{eqn:F_L}), is due to the ringlet's viscosity and self-gravity,
+so ${\cal F}_L = {\cal F}_{L,\nu} + {\cal F}_{L,g}$. 
 
 The work that the interior streamlines exert on $\delta m$ as that segment travels a small distance
 $\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
@@ -439,20 +444,21 @@ is $\delta W=\delta m\mathbf{A}^1\cdot\delta\mathbf{r}$ where
 $\mathbf{v}=v_r\hat{\mathbf{r}} + v_\theta\hat{\boldsymbol\theta}$ is the segment's velocity, and
 that work accrues at $\delta m$ at the rate 
 $\delta W/\delta t=\lambda\mathbf{A}^1\cdot\mathbf{v}\delta\ell$,
-so the radial flux of energy through that ringlet segment is 
+so the radial flux of energy entering that ringlet segment due to accelerations
+exerted by the interior streamlines is 
 \begin{equation}
     \label{eqn:F_E}
     {\cal F}_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda\mathbf{A}^1\cdot\mathbf{v},
 \end{equation}
-and is due to the ringlet's viscosity and self-gravity
-{\it i.e.}\ ${\cal F}_E = {\cal F}_{E,\nu} + {\cal F}_{E,g}$. 
+and this radial energy flux is due to the ringlet's viscosity and self-gravity,
+${\cal F}_E = {\cal F}_{E,\nu} + {\cal F}_{E,g}$. 
 
 \subsection{luminosities}
 \label{subsec:luminosities}
 
 The streamline containing segment $\delta m$ has semimajor axis $a$, and 
-integrating the radial angular momentum flux ${\cal F}_L$ about the entire streamline $a$
-then yields the ringlet's radial angular momentum luminosity,
+integrating the radial angular momentum flux ${\cal F}_L$ about the entire streamline
+then yields the radial luminosity of angular momentum entering streamline $a$,
 \begin{equation}
     \label{eqn:L_L}
     {\cal L}_L(a) = \oint {\cal F}_Ld\ell , 
@@ -463,9 +469,9 @@ integrating the radial energy flux ${\cal F}_E$ about streamline $a$ also yields
     \label{eqn:L_E}
     {\cal L}_E(a) = \oint {\cal F}_Ed\ell,
 \end{equation}
-and this is the rate that streamlines interior to $a$ communicate energy to the streamline just beyond.
+and this is the rate that interior streamlines communicate energy to streamline $a$.
 
-\subsection{viscous angular momentum transport}
+\subsection{viscous transport of angular momentum}
 \label{subsec:viscous_flux}
 
 Angular momentum is transported radially through the ring via viscosity and self-gravity, 
@@ -475,10 +481,11 @@ where the ringlet's viscous flux of angular momentum is
     \label{eqn:F_nu_theta}
     {\cal F}_{L,\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
-\citep{HS13} when written as a function of spatial coordinates and
-angular velocity $\omega=\dot{\theta}$ (Eqn.\ XX). If we consider a small arc of 
-ring material of transverse length $d\ell$, 
-then ${\cal F}_{L,\nu}d\ell$ would be the torque that arc exert exerts on
+when written as a function of spatial coordinates and
+angular velocity $\omega=\dot{\theta}$ (Eqn.\ \ref{eqn:F_nu_theta}). 
+If we consider a small arc of 
+ring material oflength $d\ell$, 
+then ${\cal F}_{L,\nu}d\ell$ is the torque that arc exert exerts on
 ring matter just exterior, due to viscous friction,
 so that is the rate that friction transmits angular momentum radially across that arc.
 And when ${\cal F}_{L,\nu}$ is evaluated along a single eccentric streamline of semimajor axis $a$, 
@@ -500,7 +507,8 @@ around the streamline's circumference then yields its angular momentumum luminos
 \end{equation}
 which is the torque that one streamline exerts on its exterior neighbor due to viscous friction
 (\citealt{BGT82} and Appendix \ref{sec:Appendix E}),
-where ${\cal L}_{L,\nu,c}=3\pi\nu_s\sigma_0a^2\Omega$ is the viscous angular momentum luminosity of a circular streamline.
+with ${\cal L}_{L,\nu,c}=3\pi\nu_s\sigma_0a^2\Omega$
+being the viscous angular momentum luminosity of a circular streamline.
 
 \citet{BGT82} examine angular momentum transport through a viscous eccentric but non-gravitating ringlet, 
 and use Eqns.\ (\ref{eqn:F_nu_varphi}--\ref{eqn:L_nu}) to show that this transport has three 
@@ -508,7 +516,7 @@ regimes distinguished by the ringlet's $e'$:
 
 \begin{enumerate}
 
-\item $e'<3/4$, so the ringlet's viscous angular momentum flux ${\cal F}_{L,\nu}(\varphi)>0$
+\item $e'<3/4$. The ringlet's viscous angular momentum flux ${\cal F}_{L,\nu}(\varphi)>0$
 at all ringlet longitudes $\theta$. The ringlet's viscous
 angular momentum luminosity ${\cal L}_{L,\nu}>0$, so viscous friction transports angular momentum radially outwards,
 and the inner ring matter evolves to smaller orbits while exterior ring matter evolves outwards, and
