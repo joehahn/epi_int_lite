@@ -153,9 +153,10 @@ and velocities. Epi\_int\_lite particles are thus trace particles
 that indicate the streamlines' locations and orientations, which the N-body
 integrator uses to compute the orbital evolution of those trace particles
 due to the perturbations exerted by those streamlines. This streamline approach 
-is widely used in theoretical studies of planetary rings c.f.\ \citep{GT79, BGT83, BGT85}
-and more recently in N-body studies of rings \citep{HS13, RHH16}. The streamline concept
-also allows one to swiftly track the global evolution of the ringlet's streamlines numerically
+is widely used in theoretical studies of planetary rings (c.f.\ \citealt{GT79, BGT83, BGT85})
+as well as in N-body studies of rings \citep{HS13, RHH16}. The great benefit of the streamline concept
+in numerical work is that it allows one to swiftly track the 
+global evolution of the ringlet's streamlines numerically
 using only a modest numbers of trace particles, typically $N_sN_p\sim500$.
 
 The simulations reported on here account for streamline gravity
@@ -171,34 +172,36 @@ towards that streamline with acceleration
 \end{equation}
 where $\Delta$ is the particle's distance from the streamline.
 
-The hydrodynamic approximation is used to handle
+The hydrodynamic approximation is used here to account for
 the dissipation that occurs as particles in adjacent particle streamlines
-shear past and collide with the perturbed particle;
-this approximation accounts for collisional effects
-without monitoring individual particle-particle interactions.
-The particle's acceleration due to the ringlet's viscosity is
+shear past and collide with the perturbed particle,
+without having to monitor individual particle-particle collisions.
+The particle's acceleration due to the ring particles' shear viscosity is
 \begin{equation}
 \label{eqn:shear_viscosity}
-    A_{\nu}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
+    A_{\nu,\parallel}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
 \end{equation}
-where $r$ is the particle's radial coordinate, $\sigma$ is the surface density of ringlet matter,
-with acceleration $A_{\nu}$ parallel to the perturbed particle's velocity vector
-$\mathbf{v}=\dot{\mathbf{r}}$ where $\mathbf{r} = r\hat{\mathbf{r}}$ is the particle's position vector.
-and ${\cal F}_{L,\nu}$ is the flux of angular momentum
+where $r$ is the particle's radial coordinate, 
+$\sigma$ is the surface density of ringlet matter, and 
+${\cal F}_{L,\nu}$ is the flux of angular momentum
 that is transported radially across the particle's streamline
-due to its collisions with particles in adjacent streamlines:
+due to its collisions with particles in adjacent streamlines, {\it i.e.}\
 \begin{equation}
     \label{eqn:F_nu_theta}
     {\cal F}_{L,\nu} = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 where $\nu_s$ is the ringlet's kinematic shear viscosity
-and $\omega$ is the particle's angular velocity \citep{HS13}.
+and $\omega=v_\theta/r$ is the particle's angular velocity \citep{HS13}.
+The acceleration $A_{\nu,\parallel }$ is parallel to the perturbed particle's streamline
+{\it i.e.}\ parallel to particle's velocity vector
+$\mathbf{v}=\dot{\mathbf{r}}=v_r\hat{r} + v_\theta\hat{\theta}$ 
+where $\mathbf{r} = r\hat{\mathbf{r}}$ is the particle's position vector.
 
-Collisions among ring particles also transmits linear momentum in the radial direction,
-resulting in a radial acceleration
+Dissipative collisions also transmits linear momentum in the perpendicular direction,
+which results in the additional acceleration
 \begin{equation}
 \label{eqn:bulk_viscosity}
-    A_{\nu, r}=-\frac{1}{\sigma}\frac{\partial {\cal G}}{\partial r} 
+    A_{\nu, \perp}=-\frac{1}{\sigma}\frac{\partial {\cal G}}{\partial r} 
 \end{equation}
 where the radial flux of linear momentum due to ringlet viscosity is
 \begin{equation}
@@ -206,14 +209,21 @@ where the radial flux of linear momentum due to ringlet viscosity is
     {\cal G} = -\left(\frac{4}{3}\nu_s + \nu_b\right)\sigma\frac{\partial v_r}{\partial r}
         -\left(\nu_b - \frac{2}{3}\nu_s\right)\frac{\sigma v_r}{r}
 \end{equation}
-$\nu_b$ is the ringlet's kinematic bulk viscosity and $v_r$ is the paricle's radial velocity.
+$\nu_b$ is the ringlet's kinematic bulk viscosity and $v_r$ is the paricle's radial velocity
+\citep{HS13}.
 
-and {\it iii.}) acceleration due to ringlet pressure $p$ is
+In the hydrodynamic approximation there is also the acceleration due to ringlet pressure $p$
+that is due to particle-particle collisions:
 \begin{equation}
 \label{eqn:pressure}
     A_p=-\frac{1}{\sigma }\frac{\partial p}{\partial r}.
 \end{equation}
-
+Epi\_int\_lite treats the particle ring as a dilute gas of
+colliding particles for which the 1D pressure is $p=c^2\sigma$ where
+c is the particles dispersion velocity. However \cite{HS13} found ring pressure
+to be inconsequential in N-body simulations of Saturn's A ring, and the ringlet simulation
+described in Section (???) also shows no sensitivity to pressure effects, so all other
+simulations reported on here have $c=0$.
 
 \section{N-body simulations of viscous gravitating ringlets}
 \label{sec:nbody}
