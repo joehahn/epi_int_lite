@@ -143,17 +143,19 @@ their streamline membership over time.
 \label{subsec:N-body method}
 
 The epi\_int\_lite N-body integrator uses the same drift-kick
-scheme utilized by the MERCURY Nbody algorithm \citep{C99}, except that the
+scheme used by the MERCURY Nbody algorithm \citep{C99} except that
 epi\_int\_lite particles that do not interact with each other directly.
-Rather, the epi\_int\_lite particles
+Rather, epi\_int\_lite particles
 are only perturbed by the accelerations exerted by the ringlet's individual streamlines. 
 Those accelerations are sensitive to the streamline's relative separations and velocities, 
 which are inferred from the particles' positions
 and velocities. Epi\_int\_lite particles are thus trace particles
-that indicate the ringlet's streamlines' locations and orientations, with the N-body
-integrator used to compute the orbital evolution of those trace particles
-due to perturbations from those streamlines. The streamline approach used here allows one to
-track the global evolution of the ringlet's streamlines
+that indicate the streamlines' locations and orientations, which the N-body
+integrator uses to compute the orbital evolution of those trace particles
+due to the perturbations exerted by those streamlines. This streamline approach 
+is widely used in theoretical studies of planetary rings [c.f.\ \cite{GT79, BGT83, BGT85}]
+and more recently in N-body studies of rings \citep{HS13, RHH16}. The streamline concept
+also allows one to swiftly track the global evolution of the ringlet's streamlines numerically
 using only a modest numbers of trace particles, typically $N_sN_p\sim500$.
 
 The simulations reported on here account for streamline gravity
@@ -174,12 +176,14 @@ the dissipation that occurs as particles in adjacent particle streamlines
 shear past and collide with the perturbed particle;
 this approximation accounts for collisional effects
 without monitoring individual particle-particle interactions.
-The particle's tangential acceleration due to the ringlet's viscosity is
+The particle's acceleration due to the ringlet's viscosity is
 \begin{equation}
 \label{eqn:shear_viscosity}
-    A_{\nu, \theta}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
+    A_{\nu}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
 \end{equation}
 where $r$ is the particle's radial coordinate, $\sigma$ is the surface density of ringlet matter,
+with acceleration $A_{\nu}$ parallel to the perturbed particle's velocity vector
+$\mathbf{v}=\dot{\mathbf{r}}$ where $\mathbf{r} = r\hat{\mathbf{r}}$ is the particle's position vector.
 and ${\cal F}_{L,\nu}$ is the flux of angular momentum
 that is transported radially across the particle's streamline
 due to its collisions with particles in adjacent streamlines:
