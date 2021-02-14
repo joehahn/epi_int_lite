@@ -56,7 +56,7 @@ keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-#adjust timesteps_per_output to scale as total_ring_mass^0.8, shear_viscosity^(-0.75), and radial_width^(-0.5),
+#adjust timesteps_per_output to scale as total_ring_mass^1.0, shear_viscosity^(-1.0), and radial_width^(0.0),
 #such that execution_time > 10*viscous_timescale. Also set bulk_viscosity=shear_viscosity
 for sim_id, p in enumerate(permutations):
     total_ring_mass = p['total_ring_mass']
