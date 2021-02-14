@@ -727,7 +727,7 @@ between $3.2\times10^{-13}\le \nu_s\le3.2\times10^{-10}$,
 and initial radial widths linearly distributed between  
 $0.0003\le \Delta a\le0.0016$. Survey results are summarized in Fig.\ \ref{fig:sim_grid_da}
 where colored squares indicate those ringlets did evolve into a self-confining state,
-and crosses and stars for those ringlets that did not.
+and crosses and stars show those ringlets that did not.
 
 \begin{figure}
     \gridline{\fig{figs/sim_grid_da_0p0003.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0005.pdf}{0.5\textwidth}{}}
@@ -735,15 +735,15 @@ and crosses and stars for those ringlets that did not.
     \gridline{\fig{figs/sim_grid_da_0p0016.pdf}{0.7\textwidth}{}}
     \caption{
         \label{fig:sim_grid_da}
-        1155 ringlet simulations having a variety of ringlet
-        masses $m_r$, shear viscosities $\nu_s$, with each panel showing outcomes
+        Outcomes for 1155 ringlet simulations having a variety of ringlet
+        masses $m_r$, shear viscosities $\nu_s$, with each panel showing results
         for ringlets having the same initial radial width,
         $\Delta a=0.0003, 0.0005, 0.0008, 0.0012$, or  $0.0016$. Colored squares indicate
         those ringlets that evolve into the self-confining state with the indicated libration
         amplitudes $\Delta q$, red stars for ringlets that fail to settle into self-confinement, 
-        and $\times$ for ringlets that terminate early when an epi\_int\_lite particle crossed a 
-        neighboring streamline. Numbers indicate the IDs of selected simulations whose time-evolution
-        are shown in Fig.\ (\ref{fig:low_libration_sims}), and the nominal ringlet
+        and $\times$ for ringlets that terminate early when an epi\_int\_lite particle crossed an 
+        adjacent streamline. Numbers indicate the IDs of selected simulations whose time-evolution
+        are shown in Fig.\ \ref{fig:low_libration_sims}, and the nominal ringlet
         simulation has ID=240.
     }
 \end{figure}
@@ -803,18 +803,40 @@ low-libration endstates.
         Each row of plots shows ringlets' nonlinear parameter $q$, semimajor axis width
         $\Delta a$, and streamline eccentricities $e$ over time $t$
         for ringlets having the same or similar mass $m_r$ and viscosity $\nu_s$, for each
-        simulation ID'ed by number in Fig.\ \ref{fig:sim_grid_da}.
+        simulation ID is indicted in Fig.\ \ref{fig:sim_grid_da}. All quantities are plotted 
+        versus $t/\tau_{dyn}$ where each ringlet's dynamical timescale $\tau_{dyn}$
+        is Eqn.\ (\ref{eqn:tau-dyn}).
     }
 \end{figure}
 
-The quantities shown in Fig.\ (\ref{fig:low_libration_sims}) are plotted versus $t/\tau_{dyn}$
-where the simulated ringlet's dynamical time $\tau_{dyn}$ is
-
+The quantities shown in Fig.\ \ref{fig:low_libration_sims} are plotted versus 
+$t/\tau_{dyn}$ where $\tau_{dyn}$ is the simulated ringlet's
+so-called dynamical timescale
 \begin{equation}
-    \label{eqn:tau_dyn}
+    \label{eqn:tau-dyn}
     \tau_{dyn} = \tau_{\nu, n}\left(\frac{m_r}{m_{r,n}}\right)^\alpha
+        \left(\frac{\nu_s}{\nu_{s,n}}\right)^\beta 
+        \left(\frac{\Delta a}{\Delta a_{n}}\right)^\gamma,
 \end{equation}
-where $\Delta a$, $m_r$, $\nu_s$ are the properties of the simulated ringlet
+where $m_r$, $\nu_s$, $\Delta a$ are the simulated ringlet's physical properties, 
+$m_{r,n}=5\times10^{-10}$ is the nominal ringlet's mass, 
+$\nu_{s,n}=2.5\times10^{-12}$ is the nominal ringlet's shear viscosity, 
+$\Delta a_{n}=3\times10^{-4}$ is the nominal ringlet's initial semimajor axis width,
+and $\tau_{\nu, n} = 3\times10^3$ is the nominal ringlet's viscous timescale, 
+Eqn.\ (\ref{eqn:viscous-timesscale}).
+The exponents in Eqn.\ (\ref{eqn:tau-dyn}) are $\alpha=1.0$, $\beta=-1.0$, $\gamma=0.0$,
+and are chosen so that the $q$ versus $t/\tau_{dyn}$ curve for each simulation
+in Fig.\ \ref{fig:low_libration_sims} overlaps as much as possible, as
+seen in Fig.\ (\ref{fig:q_vs_ID}). All simulations shown in 
+Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID}
+are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
+\begin{figure}
+    \plotone{figs/q_vs_ID.pdf}
+    \caption{
+        \label{fig:q_vs_ID}
+        caption...
+    }
+\end{figure}
 
 \subsection{variations with eccentricity $e$}
 \label{subsec:eccentricity}
