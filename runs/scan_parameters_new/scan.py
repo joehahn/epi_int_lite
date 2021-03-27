@@ -11,8 +11,8 @@ N_processes = 7
 
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
-mass_min = 2.0e-10
-mass_max = 2.0e-8
+mass_min = 1.256e-10
+mass_max = 1.256e-8
 N_masses = 11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
@@ -22,8 +22,8 @@ radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012, 0.0016])
 print 'radial_width = ', radial_width.tolist()
 
 #generate range of logarithmically-spaced values for shear_viscosity
-viscosity_min = 6.28e-13
-viscosity_max = 6.28e-10
+viscosity_min = 3.147e-13
+viscosity_max = 3.147e-10
 N_viscosities = 21
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
@@ -36,8 +36,8 @@ params = {
 }
 
 #set power laws employed below
-mass_power_law = 1.0
-viscosity_power_law = -1.0
+mass_power_law = 0.5
+viscosity_power_law = -0.5
 width_power_law = 0.0
 
 #execution start time
