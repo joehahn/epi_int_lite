@@ -797,7 +797,7 @@ that do exceed the theoretical $q=\sqrt{3}/2$ limit expected for self-confinemen
 those ringlets' $\Delta a$ still slowly spread and thus are designed 
 ``partially'' confined.  Close inspection
 of the $\Delta a$ curves in the row above show that those ringlets' semimajor axes
-also spread albeit more slowly. So it is probably safe to say that the
+also spread albeit more slowly. So it is probably safer to say that the
 simulations in the upper rows of Fig.\ \ref{fig:low_libration_sims}
 are more self-confining that those in the lower rows.
 
@@ -838,23 +838,31 @@ dynamical timescale
         \left(\frac{\Delta a}{\Delta a_{n}}\right)^\gamma,
 \end{equation}
 which is assumed to be a power-law in the ringlet's physical properties
-$m_r$, $\nu_s$, $\Delta a$, and  
+$m_r$, $\nu_s$, $\Delta a$, where 
 $m_{r,n}=5\times10^{-10}$ is the nominal ringlet's mass, 
 $\nu_{s,n}=2.5\times10^{-12}$ is the nominal ringlet's shear viscosity, 
 $\Delta a_{n}=3\times10^{-4}$ is the nominal ringlet's initial semimajor axis width,
 and $\tau_{\nu, n} = 3\times10^3$ is the nominal ringlet's viscous timescale, 
 Eqn.\ (\ref{eqn:viscous-timesscale}).
-The exponents in Eqn.\ (\ref{eqn:tau-dyn}) are $\alpha=1.0$, $\beta=-1.0$, $\gamma=0.0$,
-and are chosen so that the $q$ versus $t/\tau_{dyn}$ curve for each simulation
+The exponents in Eqn.\ (\ref{eqn:tau-dyn}) are $\alpha=0.5$, $\beta=-0.5$, $\gamma=0.0$,
+and are chosen so that the $q$ versus $t/\tau_{dyn}$ curve for all simulations
 in Fig.\ \ref{fig:low_libration_sims} overlaps as much as possible, as
-seen in Fig.\ (\ref{fig:q_vs_ID}). All simulations shown in 
-Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID}
-are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
+seen in Fig.\ \ref{fig:q_vs_ID}. Equation (\ref{eqn:tau-dyn}) is used here to anticipate
+execution times for the various simulations shown in Fig.\ \ref{fig:sim_grid_da}, 
+which varies by a factor of $\sim500$, and all simulations shown in 
+Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
 \begin{figure}
     \plotone{figs/q_vs_ID.pdf}
     \caption{
         \label{fig:q_vs_ID}
-        caption...
+        Nonlinear parameter $q$ is plotted versus time for each of the ID'ed
+        simulations shown in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:low_libration_sims},
+        with time $t$ scaled by each ringlet's empirical dynamical timescale $\tau_{dyn}$,
+        Eqn.\ (\ref{eqn:tau-dyn}). Thick red curve shows the evolution of the
+        nominal ringlet whose ID=345. All other ringlet trajectories are distributed
+        about the nominal ringlet's trajectory, which indicates that Eqn.\ \ref{eqn:tau-dyn} 
+        is an adequate estimator of a ringlet's dynamical evolution timescale
+        when $\alpha=0.5$, $\beta=-0.5$, $\gamma=0.0$.
     }
 \end{figure}
 
