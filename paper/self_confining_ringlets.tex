@@ -866,8 +866,93 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $
     }
 \end{figure}
 
-\subsection{variations with eccentricity $e$}
+\subsection{eccentricity damping}
 \label{subsec:eccentricity}
+
+Viscous friction within the ringlet is a result of dissipative collisions among ringlet particles.
+Particle collisions generate heat that is radiated into space, and the source of that radiated energy
+is the ringlet's orbital energy $E_r=-m_rGM/2a + E_{sg}$ where $m_r$ is the ringlet's total
+mass, $a$ its semimajor axis, and $E_{sg}$ is the ringlet's energy due to its self gravity. 
+Collisions conserve angular momentum, so the ringlet's total angular momentum
+$L_r=m_r\sqrt{GMa(1-e^2)}$ is constant so $dL_r/dt=0$ implies
+\begin{equation}
+    \frac{de^2}{dt} \simeq \frac{1}{a}\frac{da}{dt}
+\end{equation}
+to lowest order in the ringlet's small eccentricity $e$, noting that $E_{sg}$ is contant when the
+ringlet is self-confining.
+
+The ringlet's energy dissipation rate is $\dot{E}_r = dE_r/dt=m_rGM\dot{a}/2a^2$ so
+$\dot{a}\simeq2\dot{E_r}/m_ra\Omega^2$ and 
+\begin{equation}
+    \label{eqn:de2/dt}
+    \frac{de^2}{dt} \simeq \frac{2\dot{E_r}}{m_r a^2\Omega^2}
+\end{equation}
+where $GM\simeq a^3\Omega^2$ to lowest order in $J_2$.
+
+The surface area of energy dissipation within a viscous disk is
+\begin{equation}
+    \delta = -\nu_s\sigma(r\omega')^2
+\end{equation}
+(\citealt{P81} I think) where $\omega=v_\theta/r$ is the angular velocity and 
+$\omega'=\partial\omega/\partial r$ its radial gradient.
+
+Now consider a small tangential segment within the ringlet whose length is $d\ell=rd\varphi$ where 
+$\varphi$ is the segment's longitude measured from the ringlet's periapse and
+$d\varphi$ is the small segment's angular extent. The segment's area is 
+$dA=\Delta rd\ell=r\Delta r d\varphi$
+where $\Delta r$ is the ringlet's radial width.
+The rate at which that patch dissipates orbital energy is $d\dot{E_r}=\delta dA$, so
+the ringlet's total energy dissipation rate is 
+$\dot{E}_r = \oint d\dot{E_r}$ when integrated about the ringlet's circumference, and so
+$\dot{E}_r = -2\nu_s\lambda\int_0^\pi r^3\omega'^2d\varphi$
+since the ringlet's linear density $\lambda=\sigma\Delta r\simeq m_r/2\pi a$. So the
+total energy loss rate due to ringlet viscosity becomes
+\begin{equation}
+    \label{eqn:dE_r/dt}
+    \dot{E}_r \simeq -\frac{9}{4}I(e')m_r\nu_s\Omega^2
+\end{equation}
+when Eqn.\ (\ref{eqn:domega-dr}) is used to replace $\omega'$, and the integral 
+\begin{equation}
+    I(e') =  \frac{1}{\pi}\int_0^\pi\left(\frac{1-\frac{4}{3}e'\cos\varphi}{1-e'\cos\varphi}\right)^2d\varphi .
+\end{equation}
+Note that  $I(e')$ is of order
+unity except when $e'$ is close to 1, and numerical evaluation shows that $I(e')\simeq0.88$
+when $e'=\sqrt{3}/2$.
+
+Inserting Eqn.\ (\ref{eqn:dE_r/dt}) into (\ref{eqn:de2/dt}) then yields the rate at which $e^2$
+is damped,
+\begin{equation}
+    \label{eqn:de2/dt_v2}
+    \frac{de^2}{dt} = -\frac{9I\nu_s}{2a^2}
+\end{equation}
+which is easily integrated to obtain
+\begin{equation}
+    e(t) = e_0\sqrt{1-\frac{t}{\tau_e}}
+\end{equation}
+where $e_0$ is the ringlet's initial eccentricity and
+\begin{equation}
+    \label{eqn:tau_e}
+    \tau_e = \frac{2a^2e_0^2}{9I\nu_st}
+\end{equation}
+is the ringlet's eccentricity damping timescale.
+
+Viscosity circularizes the ringlet in time $\tau_e$, during which time the ringlet's
+semimajor axis will have shrunk by $\Delta a=\dot{a}\tau_e=-e_0^2a$ by Eqns. (\ref{eqn:de2/dt})
+and (\ref{eqn:de2/dt_v2}), so the ringlet's
+fractional drift inwards due to viscous damping is
+\begin{equation}
+    \label{eqn:delta-a}
+    \frac{\Delta a}{a} = -e_0^2,
+\end{equation}
+which is small. And after the ringlet's inner edge damps to zero, its eccentricity gradient $e'$
+will then shrink over time, angular momentum flux reversal will diminish, and the ringlet's 
+viscous spreading will proceed.
+
+If however a ringlet forms just exterior to an $m=1$ secular resonance, then it is conceivable
+that that ringlet might drift into that resonance and become resonantly trapped there, with the resonance
+resupplying the ringlet with the orbital energy and eccentricity that would be
+needed for long term orbital stability. Or maybe $m=1$ resonance slowly sweep outward and trap...
+stability. Or maybe resonance sweep outwards and ...
 
 
 \subsection{number of streamlines $N_s$}
@@ -891,6 +976,15 @@ This research was supported by the National Science Foundation via Grant No.\ AS
 \label{sec:Appendix A}
 
 Derive the more accurate drift step used by epi\_int\_lite...
+
+Show that angular velocity $\omega=v_\theta/r\simeq\Omega(1+2e\cos M)$ to
+first order in $e$. Then show that
+\begin{equation}
+    \label{eqn:domega-dr}
+    \omega' = \frac{d\omega}{dr} \simeq -\left(\frac{3\Omega}{2a}\right)
+        \frac{1-\frac{4}{3}e'\cos M}{1-e'\cos M}
+\end{equation}
+to lowest order in $e$ where mean anomaly $M\simeq\theta-\tilde{\omega}$.
 
 \section{Appendix B}
 \label{sec:Appendix B}
