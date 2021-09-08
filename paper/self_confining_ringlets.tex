@@ -872,24 +872,23 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $
 Viscous friction within the ringlet is a result of dissipative collisions among ringlet particles.
 Particle collisions generate heat that is radiated into space, and the source of that radiated energy
 is the ringlet's orbital energy $E_r=-m_rGM/2a + E_{sg}$ where $m_r$ is the ringlet's total
-mass, $a$ its semimajor axis, and $E_{sg}$ is the ringlet's energy due to its self gravity. 
+mass, $a$ its semimajor axis, and $E_{sg}$ is the ringlet's energy due to its self gravity
+which is contant when the ringlet is self-confining. 
 Collisions conserve angular momentum, so the ringlet's total angular momentum
 $L_r=m_r\sqrt{GMa(1-e^2)}$ is constant so $dL_r/dt=0$ implies
 \begin{equation}
+    \label{eqn:e2-dot}
     \frac{de^2}{dt} \simeq \frac{1}{a}\frac{da}{dt}
 \end{equation}
-to lowest order in the ringlet's small eccentricity $e$, noting that $E_{sg}$ is contant when the
-ringlet is self-confining.
-
+to lowest order in the ringlet's small eccentricity $e$.
 The ringlet's energy dissipation rate is $\dot{E}_r = dE_r/dt=m_rGM\dot{a}/2a^2$ so
 $\dot{a}\simeq2\dot{E_r}/m_ra\Omega^2$ and 
 \begin{equation}
     \label{eqn:de2/dt}
     \frac{de^2}{dt} \simeq \frac{2\dot{E_r}}{m_r a^2\Omega^2}
 \end{equation}
-where $GM\simeq a^3\Omega^2$ to lowest order in $J_2$.
-
-The surface area of energy dissipation within a viscous disk is
+where $GM\simeq a^3\Omega^2$ to lowest order in $J_2$. Also note that
+the surface area of energy dissipation within a viscous disk is
 \begin{equation}
     \delta = -\nu_s\sigma(r\omega')^2
 \end{equation}
@@ -901,7 +900,7 @@ $\varphi$ is the segment's longitude measured from the ringlet's periapse and
 $d\varphi$ is the small segment's angular extent. The segment's area is 
 $dA=\Delta rd\ell=r\Delta r d\varphi$
 where $\Delta r$ is the ringlet's radial width.
-The rate at which that patch dissipates orbital energy is $d\dot{E_r}=\delta dA$, so
+The rate at which that patch's viscosity dissipates orbital energy is $d\dot{E_r}=\delta dA$, so
 the ringlet's total energy dissipation rate is 
 $\dot{E}_r = \oint d\dot{E_r}$ when integrated about the ringlet's circumference, and so
 $\dot{E}_r = -2\nu_s\lambda\int_0^\pi r^3\omega'^2d\varphi$
@@ -916,7 +915,7 @@ when Eqn.\ (\ref{eqn:domega-dr}) is used to replace $\omega'$, and the integral
     I(e') =  \frac{1}{\pi}\int_0^\pi\left(\frac{1-\frac{4}{3}e'\cos\varphi}{1-e'\cos\varphi}\right)^2d\varphi .
 \end{equation}
 Note that  $I(e')$ is of order
-unity except when $e'$ is close to 1, and numerical evaluation shows that $I(e')\simeq0.88$
+unity except when $e'$ is very close to 1, and numerical evaluation shows that $I(e')\simeq0.889$
 when $e'=\sqrt{3}/2$.
 
 Inserting Eqn.\ (\ref{eqn:dE_r/dt}) into (\ref{eqn:de2/dt}) then yields the rate at which $e^2$
@@ -927,17 +926,33 @@ is damped,
 \end{equation}
 which is easily integrated to obtain
 \begin{equation}
+    \label{eqn:e(t)}
     e(t) = e_0\sqrt{1-\frac{t}{\tau_e}}
 \end{equation}
 where $e_0$ is the ringlet's initial eccentricity and
 \begin{equation}
     \label{eqn:tau_e}
-    \tau_e = \frac{2a^2e_0^2}{9I\nu_st}
+    \tau_e = \frac{2a^2e_0^2}{9I\nu_s}
 \end{equation}
 is the ringlet's eccentricity damping timescale.
+These expectations are also confirmed in Fig.\ \ref{fig:e_vs_tau_e}, which plots
+$e(t)/e_0$ versus time $t/\tau_e$ using Eqns.\ (\ref{eqn:e(t)}--\ref{eqn:tau_e}),
+for each of the numbered simulations seen in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID},
+with good agreement seen between theory and numerical simulation.
+\begin{figure}
+    \plotone{figs/e_vs_tau_e.pdf}
+    \caption{
+        \label{fig:e_vs_tau_e}
+        Plot of $e(t)/e_0$ versus time $t/\tau_e$ for each of the 
+        numbered simulations seen in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID},
+        while the dashed curve is the expected behavior, Eqn.\ (\ref{eqn:e(t)}).
+        These simulations have values of $\tau_e$ ranging over...,
+        and thick red curve is the nominal ringlet whose ID=345.
+    }
+\end{figure}
 
-Viscosity circularizes the ringlet in time $\tau_e$, during which time the ringlet's
-semimajor axis will have shrunk by $\Delta a=\dot{a}\tau_e=-e_0^2a$ by Eqns. (\ref{eqn:de2/dt})
+So viscosity circularizes the ringlet in time $\tau_e$, during which time the ringlet's
+semimajor axis will have shrunk by $\Delta a=\dot{a}\tau_e=-e_0^2a$ by Eqns (\ref{eqn:e2-dot})
 and (\ref{eqn:de2/dt_v2}), so the ringlet's
 fractional drift inwards due to viscous damping is
 \begin{equation}
@@ -946,13 +961,20 @@ fractional drift inwards due to viscous damping is
 \end{equation}
 which is small. And after the ringlet's inner edge damps to zero, its eccentricity gradient $e'$
 will then shrink over time, angular momentum flux reversal will diminish, and the ringlet's 
-viscous spreading will proceed.
+viscous spreading will resume. So self-confinement of narrow eccentric ringlets is only temporary
+after all, until time $\tau_e$ has elapsed, which is $\tau_e/2\pi\sim1.6\times10^6$ orbits for 
+the nominal model considered here, which is only $\sim10^3$ years for a ringlet orbiting at 
+$a\sim10^{10}$ cm about Saturn. Recall from Section \ref{subsec:nominal}
+that the viscous lifetime of a non-self-confining
+nominal ringlet is only $\tau_\nu/2\pi\sim500$ orbits, so self-confinement evidently
+extends the lifetime of a narrow eccentric ringlet by factor of $\sim3000$. But self-confinement
+does not solve the ringlet's lifetime problem, because self-confinement is ultimately
+defeated by viscous damping of the ringlet's eccentricity.
 
 If however a ringlet forms just exterior to an $m=1$ secular resonance, then it is conceivable
-that that ringlet might drift into that resonance and become resonantly trapped there, with the resonance
-resupplying the ringlet with the orbital energy and eccentricity that would be
-needed for long term orbital stability. Or maybe $m=1$ resonance slowly sweep outward and trap...
-stability. Or maybe resonance sweep outwards and ...
+that that ringlet might drift into that resonance, with the resonance
+exciting the ringlet's eccentricity sufficient for
+for long term orbital stability...
 
 
 \subsection{number of streamlines $N_s$}
