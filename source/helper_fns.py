@@ -410,11 +410,9 @@ def monitor_streamlines(monitor, r, t, timestep):
     if ((np.isnan(r).any() == True) and (nan_timestep == None)):
         print 'nan coordinate at timestep = ', timestep
         monitor['nan_timestep'] = timestep
-    #check for streamline crossing
-    shft = 1
-    dr = interpolate_fn(t, r, -shft, interpolate=False) - r
-    number_of_streamlines = dr.shape[0]
-    dr = dr[:number_of_streamlines - 1]
+    #check for streamline crossing where dr[1] = streamline 1's radial distance relative to streamline 0
+    dr = r - interpolate_fn(t, r, -1, interpolate=False)
+    dr[0] = dr[1]
     idx = (dr < 0)
     streamline_crossing_timestep = monitor['streamline_crossing_timestep']
     if ((idx.sum() > 0) and (streamline_crossing_timestep == None)):
