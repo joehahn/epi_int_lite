@@ -16,7 +16,7 @@ import numpy as np
 #restore output
 from helper_fns import *
 execfile('inputs.py')
-r, t, vr, vt, times, lambda0 = restore_output(output_folder)
+r, t, vr, vt, times, lambda0, monitor = restore_output(output_folder)
 a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #recompute r,t in coordinate system that co-rotates with inner streamline's peri
@@ -72,7 +72,7 @@ def draw(xyt):
 #show animation
 rm1 = r - 1.0
 y_rng = (1.1*rm1.min() - 1.0e-4, 1.1*rm1.max())
-y_rng = (-0.030, 0.035)
+y_rng = (-0.011, 0.012)
 fig = plt.figure()
 ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.0, 1.0), ylim=y_rng,
     xlabel='longitude   $\\theta/\pi$', ylabel='radius   $(r - r_o)/r_o$', title='t = 0.0')

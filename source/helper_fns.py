@@ -411,7 +411,7 @@ def monitor_streamlines(monitor, r, t, timestep):
         print 'nan coordinate at timestep = ', timestep
         monitor['nan_timestep'] = timestep
     #check for streamline crossing where dr[1] = streamline 1's radial distance relative to streamline 0
-    dr = r - interpolate_fn(t, r, -1, interpolate=False)
+    dr = r - interpolate_fn(t, r, -1, interpolate=True)
     dr[0] = dr[1]
     idx = (dr < 0)
     streamline_crossing_timestep = monitor['streamline_crossing_timestep']
