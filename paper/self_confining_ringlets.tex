@@ -982,28 +982,31 @@ for long term orbital stability...
 When the simulated ringlet is composed of $N_s=2$ streamlines, the ringlet's
 evolution is largely analytic ({\it c.f.}\ \citealt{BGT82, BGT83}), and those analytic
 predictions also provide excellent benchmark tests for the epi\_int\_lite integrator. This subsection 
-assesses whether the results obtained for a simpler $N_s=2$ ringlet also applies to
+assesses whether the results obtained for the simpler $N_s=2$ ringlet also applies to
 more realistic ringlets having $N_s>2$.
 
-Figures \ref{fig:a_versus_t_streamlines}--\ref{fig:wt_vs_da_streamlines} recomputes the nominal
-ringlet's evolution but for ringlets having the same or more streamlines, $2\le N_s\le31$. 
+Figures \ref{fig:a_versus_t_streamlines}--\ref{fig:wt_vs_da_streamlines} recompute the nominal
+ringlet's evolution but for ringlets having a range of streamlines, $2\le N_s\le31$. 
 Figure \ref{fig:a_versus_t_streamlines} shows that ringlets having larger $N_s$
-also achieve larger semimajor axis widths $\Delta a = a_{outer} - a_{inner}$, while Fig.\  
+also achieve larger semimajor axis widths $\Delta a = a_{outer} - a_{inner}$. Figure  
 \ref{fig:e_vs_da_streamlines} plots each streamlines' final eccentricities $e$
-versus their final $\Delta a$; that plot shows
+versus their final $\Delta a$, and this plot shows
 that all curves have the same $e$ versus $\Delta a$ slope
-{\it i.e.}\ all simulated ringlets have then same eccentricity gradient regardless of 
-number of streamlines $N_s$. Ditto for $\tilde{\omega}$ versus $\Delta a$
-(Fig.\ \ref{fig:wt_vs_da_streamlines}).
+{\it i.e.}\ all simulated ringlets have the same eccentricity gradient regardless of 
+number of streamlines $N_s$. Ditto for $\tilde{\omega}$ versus $\Delta a$, 
+Fig.\ \ref{fig:wt_vs_da_streamlines}.
 Consequently, the evolution of the simulated ringlets
-nonlinearity parameter $q$, which depends on those gradients via Eqn.\ (\ref{eqn:q}),
+nonlinearity parameter $q$, which depends on those gradients via Eqn.\ (\ref{eqn:q}), and also
 controls how viscosity communicate angular momentum between
-the streamlines [e.g.\ Eqn.\ (\ref{eqn:L_nu}) noting that $q\simeq e'$ in all simulations considered here], 
+the streamlines [e.g.\ Eqn.\ (\ref{eqn:L_nu}) 
+and note that $q\simeq e'$ in all simulations considered here], 
 is very similar over time for various $N_s$, see Fig.\ \ref{fig:q_versus_t_streamlines}.
 The only noteworthy difference between the $N_s=2$ ringlet and the higher $N_s$
 ringlets is seen in Fig.\ \ref{fig:wt_vs_da_streamlines}, which 
 which shows that the $N_s>2$ ringlets have an outer longitude of peripase that trails
-the inner longitude of periapse by a factor of $\sim2$.
+the inner streamline by a factor of $\sim2$. Except for this one distinction,
+the evolution of the $N_s>2$ ringlets is very similar to that exhibited by nominal
+ringlet composed of $N_s=2$ streamlines 
 \begin{figure}
     \plotone{figs/a_versus_t_streamlines.pdf}
     \caption{
