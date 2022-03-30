@@ -865,6 +865,40 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $
     }
 \end{figure}
 
+
+\subsection{variations with initial eccentricity}
+\label{subsec:e-variations}
+
+Additional simulations are used to assess how outcomes depend upon the ringlet's initial eccentricity $e_0$.
+Figure \ref{fig:e0} shows seven simulations of the nominal ringlet that all have identical
+physical properties (mass, initial width $\Delta a$) but differing initial $e_0$ ranging
+over $0\le e_0\le 0.025$, and two types of outcomes are observed. Higher $e_0$ simulations having $e_0\gtrsim0.005$ 
+evolve into the self-confining state with $q\simeq\sqrt{3}/2$ and constant width $\Delta a$
+(e.g.\ the lower purple, brown and dark-blue curves). However 
+lower $e_0\lesssim0.005$ (red, green, orange) simulations are only 
+are partially self--confining in that self-gravity does not pump up the ringlet's $q$
+sufficient for self-confinement, so these simulated ringlet's $\Delta a$ spreads radially
+albeit slower than the circular ringlet (uppermost blue curve).
+These bifurcated outcomes suggest that the nominal ringlet has a
+separatrix that divides true self-confinement (which requires $e_0\gtrsim0.005$) from partial or no
+confinement. Thus in turn suggests that the partially confined ringlet's (pink diamonds) seen in
+Fig.\ \ref{fig:sim_grid_da} might instead have achieved 
+true confinement had they started with sufficiently high initial $e_0$.
+
+\begin{figure}
+    \plotone{figs/e0.pdf}
+    \caption{
+        \label{fig:e0}
+        Simulations of seven nominal ringlets having a variety of initial eccentricities $0\le e_0\le 0.025$.
+        Plot shows each ringlet's semimajor axis width $\Delta a$ in units of its initial $\Delta a_0$
+        versus time $t/\tau_\nu$, and simulations having higher initial $e_0\gtrsim0.005$ 
+        (lower purple, brown and dark-blue curves) evolve into the self-confining state
+        with nonlinearity parameter $q\simeq\sqrt{3}/2$. Ringlets having lower initial $e_0\lesssim0.005$
+        (red, green, and orange curves) are partially self-confining, while the $e_0=0$ ringlet (upper blue curve)
+        is always unconfined and experiences fastest radial spreading.
+    }
+\end{figure}
+
 \subsection{eccentricity damping}
 \label{subsec:eccentricity}
 
