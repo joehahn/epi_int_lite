@@ -741,9 +741,10 @@ with pink diamonds to indicate those simulations described below as ``partially 
         those ringlets that evolve into the self-confining state with the indicated libration
         amplitudes $\Delta q$, pink diamonds for those simulations that are partially confined, 
         and $\times$ for ringlets that terminate early when an epi\_int\_lite particle crossed an 
-        adjacent streamline. Numbers indicate the IDs of selected simulations whose time-evolution
+        adjacent streamline. Black numbers indicate the IDs of selected simulations whose time-evolution
         are shown in Fig.\ \ref{fig:low_libration_sims}, and the nominal ringlet
-        simulation has ID=345.
+        simulation has ID=345. Pink numbers indicate selected partially confined ringlet simulations
+        whose evolutions are also plotted in Fig.\ \ref{fig:e_prime_q_vs_time}.
     }
 \end{figure}
 
@@ -778,7 +779,7 @@ the streamlines in these ringlets would evolve so close to each other that a mor
 and possibly nonlinear treatment of pressure effects is needed 
 to accurately assess these ringlets' fates.
 
-Numbers in Fig.\ \ref{fig:sim_grid_da} are the IDs of a selection of 
+The black numbers in Fig.\ \ref{fig:sim_grid_da} are the IDs of a selection of 
 ringlet simulations that settle into full or partial self-confinement, 
 and the time-histories of those ringlets are
 shown in Fig.\ \ref{fig:low_libration_sims}. Each row of plots there shows
@@ -821,7 +822,7 @@ are more self-confining that those in the lower rows.
         $\Delta a$ (middle plot), and streamline's outer, mean, and inner eccentricities $e$ (right plot)
         versus time $t$
         for ringlets having the same or similar mass $m_r$ and viscosity $\nu_s$, for each
-        simulation whose IDs are indicted in Fig.\ \ref{fig:sim_grid_da}. All quantities are plotted 
+        simulation whose black IDs are indicted in Fig.\ \ref{fig:sim_grid_da}. All quantities are plotted 
         versus $t/\tau_{dyn}$ where each ringlet's dynamical timescale $\tau_{dyn}$
         is Eqn.\ (\ref{eqn:tau-dyn}).
     }
@@ -855,7 +856,7 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $
     \caption{
         \label{fig:q_vs_ID}
         Nonlinear parameter $q$ is plotted versus time for each of the ID'ed
-        simulations shown in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:low_libration_sims},
+        simulations shown in Figs.\ \ref{fig:sim_grid_da} and \ref{fig:low_libration_sims},
         with time $t$ scaled by each ringlet's empirical dynamical timescale $\tau_{dyn}$,
         Eqn.\ (\ref{eqn:tau-dyn}). Thick red curve shows the evolution of the
         nominal ringlet whose ID=345. All other ringlet trajectories are distributed
@@ -865,6 +866,36 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $
     }
 \end{figure}
 
+\subsection{partial self--confinement}
+\label{subsec:partial}
+
+The evolution of
+a selection of partially self confined ringlet simulations, as well as the nominal ringlet whose ID=345, 
+are also shown in Fig.\ \ref{fig:e_prime_q_vs_time},
+which plots ringlet's eccentricity gradient $e'$ versus time $t/\tau_{dyn}$. All of these ringlets
+achieve nonlinearity parameters $q\simeq\sqrt{3}/2\simeq0.866$ after time $t\gtrsim$ a few $\tau_{dyn}$, 
+but these ringlet's eccentricity gradients are significantly less than $0.866$, nominal ringlet excluded.
+In fact the range of simulated ringlet's $e'$ almost spans the entire 
+range of eccentricity gradients observed among Saturn's most well-studied narrow eccentric
+ringlets, namely, the Maxwell, Titan, Laplace, and Huygens ringlets, whose $e'$ are
+indicated by the black horizontal line in Fig.\ \ref{fig:e_prime_q_vs_time}. Also keep in mind that
+Fig.\ \ref{fig:e_prime_q_vs_time} is not an apples-to-apples comparison of simulated ringlets to 
+observed ringlets, since the simulations reported in Fig.\ \ref{fig:e_prime_q_vs_time} all have a common 
+semimajor axis width $\Delta a$, eccentricity $e_0$,  and very similar viscosities $\nu_s$,
+whereas the observed ringlets have a spectrum of physical properties ($e_0$, $\Delta a$, $m_r$, $\nu_s$).
+The main point of Fig.\ \ref{fig:e_prime_q_vs_time} is that, if the known narrow eccentric
+ringlets are in fact self-confining, then they are of the partially self confined variety,
+which means that they have a nonlinearity parameter $q\simeq\sqrt{3}/2\simeq0.866$, an eccentricity gradient
+$e'$ that is significantly less than $0.866$, but also a periapse twist $|\tilde{\omega}'|$ that is not
+negligable per Eqn.\ (\ref{eqn:q})
+\begin{figure}
+    \plotone{figs/e_prime_q_vs_time.pdf}
+    \caption{
+        \label{fig:e_prime_q_vs_time}
+        Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for selected partially self-confining
+        ringlets
+    }
+\end{figure}
 
 \subsection{variations with initial eccentricity}
 \label{subsec:e-variations}
@@ -1003,11 +1034,6 @@ nominal ringlet is only $\tau_\nu/2\pi\sim500$ orbits, so self-confinement evide
 extends the lifetime of a narrow eccentric ringlet by factor of $\sim3000$. But self-confinement
 does not solve the ringlet's lifetime problem, because self-confinement is ultimately
 defeated by viscous damping of the ringlet's eccentricity.
-
-If however a ringlet forms just exterior to an $m=1$ secular resonance, then it is conceivable
-that that ringlet might drift into that resonance, with the resonance
-exciting the ringlet's eccentricity sufficient for
-for long term orbital stability...
 
 
 \subsection{number of streamlines $N_s$}
