@@ -480,9 +480,8 @@ and this is the rate that interior streamlines communicate energy to streamline 
 
 Angular momentum is transported radially through the ring via viscosity and self-gravity, 
 so ${\cal F}_L={\cal F}_{L,\nu} + {\cal F}_{L,g}$,
-where the ringlet's viscous flux of angular momentum is
+where the ringlet's viscous flux of angular momentum is Eqn.\ \ref{eqn:F_nu_theta},
 \begin{equation}
-    \label{eqn:F_nu_theta}
     {\cal F}_{L,\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 when written as a function of spatial coordinates and
@@ -874,7 +873,7 @@ a selection of partially self confined ringlet simulations, as well as the nomin
 are also shown in Fig.\ \ref{fig:e_prime_q_vs_time},
 which plots ringlet's eccentricity gradient $e'$ versus time $t/\tau_{dyn}$. All of these ringlets
 achieve nonlinearity parameters $q\simeq\sqrt{3}/2\simeq0.866$ after time $t\gtrsim$ a few $\tau_{dyn}$, 
-but these ringlet's eccentricity gradients are significantly less than $0.866$, nominal ringlet excluded.
+but these ringlet's eccentricity gradients are significantly less than $0.866$, nominal ringlet excepted.
 In fact the range of simulated ringlet's $e'$ almost spans the entire 
 range of eccentricity gradients observed among Saturn's most well-studied narrow eccentric
 ringlets, namely, the Maxwell, Titan, Laplace, and Huygens ringlets, whose $e'$ are
@@ -887,13 +886,22 @@ The main point of Fig.\ \ref{fig:e_prime_q_vs_time} is that, if the known narrow
 ringlets are in fact self-confining, then they are of the partially self confined variety,
 which means that they have a nonlinearity parameter $q\simeq\sqrt{3}/2\simeq0.866$, an eccentricity gradient
 $e'$ that is significantly less than $0.866$, but also a periapse twist $|\tilde{\omega}'|$ that is not
-negligable per Eqn.\ (\ref{eqn:q})
+negligable per Eqn.\ (\ref{eqn:q}). 
+
+Section \ref{subsec:eccentricity} will derive the rate at which
+a self-confining ringlet's eccentricity $e$ decays over time due to viscosity, Eqns.\ (\ref{eqn:de2/dt_v2}--\ref{eqn:e(t)}),
+and all ringlets shows in Figs.\ \ref{fig:low_libration_sims}--\ref{fig:e_prime_q_vs_time},
+which includes fully as well as partially self-confining ringlets, all have eccentricities $e$
+that decay at the expected rates.
 \begin{figure}
     \plotone{figs/e_prime_q_vs_time.pdf}
     \caption{
         \label{fig:e_prime_q_vs_time}
         Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for selected partially self-confining
-        ringlets
+        ringlets whose simulation IDs are indicated on the right of this Figure and
+        as pink text in Fig.\ \ref{fig:sim_grid_da}.
+        Black horizontal lines show $e'$ for Saturn's Maxwell, Titan, Laplace, and Huygens ringlets,
+        and the dotted line indicates the $e'=\sqrt{3}/2$ threshold.
     }
 \end{figure}
 
@@ -1037,7 +1045,7 @@ defeated by viscous damping of the ringlet's eccentricity.
 
 
 \subsection{number of streamlines $N_s$}
-\label{subsec:streamlines}
+\label{subsec:num_streamlines}
 
 When the simulated ringlet is composed of $N_s=2$ streamlines, the ringlet's
 evolution is largely analytic ({\it c.f.}\ \citealt{BGT82, BGT83}), and those analytic
@@ -1100,11 +1108,6 @@ ringlet composed of $N_s=2$ streamlines
         Caption...
     }
 \end{figure}
-
-
-\section{Eccentricity Damping, and the lifetime of a self-confining ringlet}
-\label{sec:e-damping}
-
 
 \acknowledgments
 \section{Acknowledgments}
