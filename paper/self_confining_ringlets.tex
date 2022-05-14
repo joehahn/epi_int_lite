@@ -713,7 +713,7 @@ as another test of the  epi\_int\_lite integrator.
 \label{subsec:variations}
 
 To assess whether the nominal ringlet's evolution is typical of other ringlets
-having alternate values of initial width $\Delta a$, total masses $m_r$, and shear viscosity $\nu_s$,
+having alternate values of initial width $\Delta a$, total mass $m_r$, and shear viscosity $\nu_s$,
 a survey of 1154 additional ringlet simulations are executed. 
 The survey ringlets are similar to the nominal ringlet 
 with $N_s=2$ streamlines having $N_p=241$ particles per streamline, initial 
@@ -739,7 +739,7 @@ with pink diamonds to indicate those simulations described below as ``partially 
         $\Delta a=0.0003, 0.0005, 0.0008, 0.0012$, or  $0.0016$. Colored squares indicate
         those ringlets that evolve into the self-confining state with the indicated libration
         amplitudes $\Delta q$, pink diamonds for those simulations that are partially confined, 
-        and $\times$ for ringlets that terminate early when an epi\_int\_lite particle crossed an 
+        and $\times$ for simulations that terminate early when an epi\_int\_lite particle crossed an 
         adjacent streamline. Black numbers indicate the IDs of selected simulations whose time-evolution
         are shown in Fig.\ \ref{fig:low_libration_sims}, and the nominal ringlet
         simulation has ID=345. Pink IDs indicate selected partially confined ringlet simulations
@@ -793,7 +793,7 @@ show the evolutions of the partially-confined ringlet simulations that are
 indicated  by pink squares in Fig.\ \ref{fig:sim_grid_da}, that row
 shows that though these simulations have nonlinearity parameters
 that do exceed the theoretical $q=\sqrt{3}/2$ limit expected for self-confinement,
-those ringlets' $\Delta a$ still slowly spread and thus are designed 
+those ringlets' $\Delta a$ still slowly spread and thus are designated
 ``partially'' confined.  Close inspection
 of the $\Delta a$ curves in the row above show that those ringlets' semimajor axes
 also spread albeit more slowly. So it is probably safer to say that the
@@ -849,7 +849,7 @@ in Fig.\ \ref{fig:low_libration_sims} overlaps as much as possible, as
 seen in Fig.\ \ref{fig:q_vs_ID}. Equation (\ref{eqn:tau-dyn}) is used here to anticipate
 execution times for the various simulations shown in Fig.\ \ref{fig:sim_grid_da}, 
 which varies by a factor of $\sim500$, and all simulations shown in 
-Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID} are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
+Figs.\ \ref{fig:sim_grid_da}--\ref{fig:wt_prime_vs_time} are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
 \begin{figure}
     \plotone{figs/q_vs_ID.pdf}
     \caption{
@@ -873,11 +873,11 @@ a selection of partially self confined ringlet simulations, as well as the nomin
 are also shown in Fig.\ \ref{fig:e_prime_q_vs_time},
 which plots ringlet's eccentricity gradient $e'$ versus time $t/\tau_{dyn}$. All of these ringlets
 achieve nonlinearity parameters $q\simeq\sqrt{3}/2\simeq0.866$ after time $t\gtrsim$ a few $\tau_{dyn}$, 
-but these ringlet's eccentricity gradients are significantly less than $0.866$, nominal ringlet excepted.
-In fact the range of simulated ringlet's $e'$ almost spans the entire 
+but these ringlets' eccentricity gradients are significantly less than the theoretical 
+$e'\simeq0.866$ limit (dotted red curve). In fact the range of simulated ringlet's $e'$ almost spans the entire 
 range of eccentricity gradients observed among Saturn's most well-studied narrow eccentric
-ringlets, namely, the Maxwell, Titan, Laplace, and Huygens ringlets, whose $e'$ are
-indicated by the black horizontal line in Fig.\ \ref{fig:e_prime_q_vs_time}. Also keep in mind that
+ringlets, the Maxwell, Titan, Laplace, and Huygens ringlets, whose $e'$ are
+indicated by the black horizontal lines in Fig.\ \ref{fig:e_prime_q_vs_time}. Also keep in mind that
 Fig.\ \ref{fig:e_prime_q_vs_time} is not an apples-to-apples comparison of simulated ringlets to 
 observed ringlets, since the simulations reported in Fig.\ \ref{fig:e_prime_q_vs_time} all have a common 
 semimajor axis width $\Delta a$, eccentricity $e_0$,  and very similar viscosities $\nu_s$,
@@ -911,10 +911,10 @@ that decay at the expected rates.
 
 Figure \ref{fig:wt_prime_vs_time} shows the periapse twist $\tilde{\omega}' \simeq ea\Delta\tilde{\omega}/\Delta a$ 
 versus time for five ringlets
-having the same initial $e_0$, $\Delta a$, and $m_r$ as the nominal ringlet but differing viscosities $\nu_s$;
-that plot shows that twist $|\tilde{\omega}'|$ varies with $\nu_s$, which indicates that if 
-the twist $|\tilde{\omega}'|$ can be observed in a self-confining ringlet, then 
-the ringlet's viscosity could be inferred. 
+having the same initial $e_0$, $\Delta a$, and $m_r$ as the nominal ringlet but differing viscosities $\nu_s$, and
+that plot shows that twist $|\tilde{\omega}'|$ varies with $\nu_s$. Which indicates that if 
+the twist $|\tilde{\omega}'|$ could be observed in a self-confining ringlet, then 
+the ringlet's viscosity could then be inferred. 
 
 \begin{figure}
     \plotone{figs/wt_prime_vs_time.pdf}
@@ -940,9 +940,9 @@ lower $e_0\lesssim0.005$ (red, green, orange) simulations are only
 are partially self--confining in that self-gravity does not pump up the ringlet's $q$
 sufficient for self-confinement, so these simulated ringlet's $\Delta a$ spreads radially
 albeit slower than the circular ringlet (uppermost blue curve).
-These bifurcated outcomes suggest that the nominal ringlet has a
+This bifurcated outcome suggest that the nominal ringlet has a
 separatrix that divides true self-confinement (which requires $e_0\gtrsim0.005$) from partial or no
-confinement. Thus in turn suggests that the partially confined ringlet's (pink diamonds) seen in
+confinement. This in turn suggests that the partially confined ringlet's (pink diamonds) seen in
 Fig.\ \ref{fig:sim_grid_da} might instead have achieved 
 true confinement had they started with sufficiently high initial $e_0$.
 
