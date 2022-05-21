@@ -56,7 +56,7 @@ Viscous Self--Gravitating Narrow Eccentric Planetary Ringlets}
 \begin{abstract}
 
 N-body simulations are used
-to illustrate how narrow eccentric planetary ringlets can evolve into a 
+to illustrate how a viscous self-gravitating narrow eccentric planetary ringlet can evolve into a 
 self--confining state.
 
 \end{abstract}
@@ -74,8 +74,8 @@ not well understood: sharp edges,
 sizable eccentricity gradients, and a confinement mechanism that
 opposes radial spreading due to ring viscosity. To date, nearly all of the
 prevailing ringlet confinement mechanisms assume that there also exists a pair of 
-unseen shepherd satellites that straddle the ringlet, with those shepherd gravities
-also torquing the ringlet in a way that keeps it radially confined 
+unseen shepherd satellites that straddle the ringlet, with those shepherds' gravities
+also torquing the ringlet's edges' in a way that keeps it radially confined 
 (\citealt{GT79, GT79c, GT81, CG00, ME02}). However the Cassini spacecraft failed to detect
 any such shepherds near Saturn's narrow ringlets, which casts doubt upon that confinement mechanism
 \citep{L18}. Note though that \cite{BGT82} showed that a viscous ringlet that has
@@ -90,14 +90,14 @@ investigate whether a viscous and self--gravitating ringlet might evolve into a 
 Epi\_int\_lite is a child of the epi\_int N-body integrator that was used to
 simulate the outer edge of Saturn's B ring while it is sculpted by satellite perturbations
 \citep{HS13}. The new code is very similar to its parent but differs in two significant ways:
-({\it i}.) epi\_int\_lite is written in python and recoded for more efficient execution, and
+({\it i}.) epi\_int\_lite is written in python and is recoded for more efficient execution, and
 ({\it ii}.) epi\_int\_lite uses a more reliable drift step to handle
 unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Appendix A}).
 
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
-to that used by the parent code; see \cite{HS13} for additional details. The epi\_int\_lite 
+to that used by the parent code, see \cite{HS13} for additional details. The epi\_int\_lite 
 source code is available at https://github.com/joehahn/epi\_int\_lite, and the
-code's numerical quality is assessed in Appendix \ref{sec:Appendix B}
+code's numerical quality is benchmarked in Appendix \ref{sec:Appendix B}
 where the output of several numerical experiments are compared against theoretical expectations.
 
 Calculations by epi\_int\_lite use natural units with gravitation constant $G=1$, 
@@ -123,10 +123,10 @@ Initially all particles are assigned to various streamlines across the simulated
 is a closed eccentric path around the primary, and each streamline is populated by $N_p$ particles that are
 initially assigned a common semimajor axis $a$ and eccentricity $e$ while
 distributed uniformly in longitude. Most of the simulations described below
-employ only $N_s=2$ streamlines, so that the model output can be benchmarked against
-theoretical treatments that also treat the ringlet as two gravitating rings
+employ only $N_s=2$ streamlines, so that the model output can be compared against
+theoretical treatments that also treat the ringlet as two gravitating streamlines
 (e.g.\ \citealt{BGT83}). But the following also performs a few higher-resolution simulations
-using $N_s=11$ streamlines, to demonstrate that the $N_s=2$ treatment is perfectly
+using $N_s=5-31$ streamlines, to demonstrate that the $N_s=2$ treatment is perfectly
 adequate and reproduces all the relevant dynamics. All simulations use $N_p=241$ particles 
 per streamline, and the total number of particles is $N_sN_p$.
 Note that the assignment of particles to a given streamline is merely
@@ -150,11 +150,11 @@ scheme used by the MERCURY Nbody algorithm \citep{C99} except that
 epi\_int\_lite particles that do not interact with each other directly.
 Rather, epi\_int\_lite particles
 are only perturbed by the accelerations exerted by the ringlet's individual streamlines. 
-Those accelerations are sensitive to the streamline's relative separations and velocities, 
+Those accelerations are sensitive to the streamline's relative separations and orientations, 
 which are inferred from the particles' positions
-and velocities. Epi\_int\_lite particles are thus trace particles
+and velocities. Epi\_int\_lite particles are thus tracer particles
 that indicate the streamlines' locations and orientations, which the N-body
-integrator uses to compute the orbital evolution of those trace particles
+integrator uses to compute the orbital evolution of those tracer particles
 due to the perturbations exerted by those streamlines. This streamline approach 
 is widely used in theoretical studies of planetary rings (c.f.\ \citealt{GT79, BGT83, BGT85})
 as well as in N-body studies of rings \citep{HS13, RHH16}. The great benefit of the streamline concept
@@ -233,7 +233,7 @@ simulations reported on here have $c=0$.
 \label{sec:nbody}
 
 The folowing describes a suite of N-body simulations of narrow viscous gravitating planetary
-ringlets, to highlight the range of initial ringlet conditions the do evolve into
+ringlets, to highlight the range of initial ringlet conditions that do evolve into
 a self-confining state, and those that do not.
 
 \subsection{nominal model}
@@ -245,7 +245,7 @@ The simulated ringlet is composed of $N_s=2$ streamlines having $N_p=241$ partic
 per streamline, and the integrator timestep is $\Delta t=0.5$ in natural units, so
 the integrator samples the particles' orbits $2\pi/\Delta t\simeq13$ times per orbit, and this
 ringlet is evolved for $4.7\times10^3$ orbits, which requires 15 minutes execution time
-on a 5 year old laptop. The ringlet's mass is
+on an eight year old laptop. The ringlet's mass is
 $m_r=5\times10^{-10}$, its shear viscosity is $\nu_s=2.5\times10^{-12}$, and its
 bulk viscosity is $\nu_b=\nu_s$. The ringet's initial radial width is
 $\Delta a_0 = 3\times10^{-4}$, its initial eccentricity is $e=0.01$, and its
@@ -273,8 +273,8 @@ the self-confining state at time $t\sim20\tau_\nu$.
 This so-called nominal ringlet is probably overdense and overly viscous compared to known 
 planetary ringlets,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
-Section XX also shows how outcomes scale when a wide variety of alternate initial masses, orbits,
-and viscosities are also considered.
+Section \ref{subsec:variations} also shows how outcomes vary 
+when a wide variety of alternate initial masses, widths, and viscosities are also considered.
 
 \begin{figure}
 \plotone{figs/a_nominal.pdf}
@@ -299,7 +299,7 @@ and in units of its initial radial width $\Delta a_0$.}
 \end{figure}
 
 Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity initially grows at the
-expense of the inner streamline's, and this is a consequence the self-gravitating ringlet's
+expense of the inner streamline's, and that is a consequence the self-gravitating ringlet's
 secular perturbations of itself, which is also demonstrated in Appendix \ref{sec:Appendix D}. 
 Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
@@ -395,8 +395,9 @@ as these are the terms that contribute to the nonlinearity parameter of \cite{BG
 \end{equation}
 See also Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
 ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$,
-and nonlinearity parameter $q$ versus time. All simulations examined here have
-$|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$, and all simulated self-confining ringlets
+and nonlinearity parameter $q$ versus time. Most of the simulations examined here have
+$|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$ (excepting those
+described in Section \ref{subsec:partial}), and all simulated self-confining ringlets
 have a positive eccenticity gradient and a negative periapse twist such that
 the outer ringlet's periapse trails the inner ringlet's, consistent with the findings of
 \cite{BGT83}.\vfil
@@ -427,7 +428,7 @@ The torque that is exerted on a small streamline segment of mass $\delta m$
 at location $\mathbf{r}=r\hat{\mathbf{r}}$
 due to the streamlines orbiting interior to it is $\delta T=\delta m\mathbf{r}\times\mathbf{A}^1$ where 
 $\mathbf{A}^1=A^1_r\hat{\mathbf{r}} + A^1_\theta\hat{\boldsymbol\theta}$
-is the so-called one-sided acceleration that is exerted on $\delta m$ by the interior streamlines. 
+is the so-called one-sided acceleration that is exerted on $\delta m$ by the interior streamline. 
 Since $\delta m=\lambda\delta\ell$ where $\lambda$ is the streamline's linear mass density,
 and $\delta\ell$ is the segment's length, then the radial flux of angular momentum flowing into
 that segment due to the accelerations that are exerted by streamlines orbiting interior to that
@@ -473,21 +474,20 @@ integrating the radial energy flux ${\cal F}_E$ about streamline $a$ also yields
     \label{eqn:L_E}
     {\cal L}_E(a) = \oint {\cal F}_Ed\ell,
 \end{equation}
-and this is the rate that interior streamlines communicate energy to streamline $a$.
+and this is the rate that the streamline just interior to $a$ communicates energy to streamline $a$.
 
 \subsection{viscous transport of angular momentum}
 \label{subsec:viscous_flux}
 
 Angular momentum is transported radially through the ring via viscosity and self-gravity, 
 so ${\cal F}_L={\cal F}_{L,\nu} + {\cal F}_{L,g}$,
-where the ringlet's viscous flux of angular momentum is Eqn.\ \ref{eqn:F_nu_theta},
+where the ringlet's viscous flux of angular momentum is
 \begin{equation}
     {\cal F}_{L,\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
-when written as a function of spatial coordinates and
-angular velocity $\omega=\dot{\theta}$ (Eqn.\ \ref{eqn:F_nu_theta}). 
-If we consider a small arc of 
-ring material oflength $d\ell$, 
+when Eqn.\ (\ref{eqn:F_nu_theta}) is written as a function of spatial coordinates and
+angular velocity $\omega=\dot{\theta}$. 
+If we consider a small arc of  ring material of length $d\ell$, 
 then ${\cal F}_{L,\nu}d\ell$ is the torque that arc exert exerts on
 ring matter just exterior, due to viscous friction,
 so that is the rate that friction transmits angular momentum radially across that arc.
@@ -854,12 +854,12 @@ Figs.\ \ref{fig:sim_grid_da}--\ref{fig:wt_prime_vs_time} are evolved for the gre
     \plotone{figs/q_vs_ID.pdf}
     \caption{
         \label{fig:q_vs_ID}
-        Nonlinear parameter $q$ is plotted versus time for each of the ID'ed
-        simulations shown in Figs.\ \ref{fig:sim_grid_da} and \ref{fig:low_libration_sims},
+        Nonlinear parameter $q$ is plotted versus time for each of the
+        simulations indicated by black IDs in Figs.\ \ref{fig:sim_grid_da} and \ref{fig:low_libration_sims},
         with time $t$ scaled by each ringlet's empirical dynamical timescale $\tau_{dyn}$,
         Eqn.\ (\ref{eqn:tau-dyn}). Thick red curve shows the evolution of the
         nominal ringlet whose ID=345. All other ringlet trajectories are distributed
-        about the nominal ringlet's trajectory, which indicates that Eqn.\ \ref{eqn:tau-dyn} 
+        about the nominal ringlet's trajectory, which indicates that Eqn.\ (\ref{eqn:tau-dyn})
         is an adequate estimator of a ringlet's dynamical evolution timescale
         when $\alpha=0.5$, $\beta=-0.5$, $\gamma=0.0$.
     }
@@ -900,8 +900,8 @@ that decay at the expected rates.
         Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for selected partially self-confining
         ringlets whose simulation IDs are indicated on the right of this Figure and
         as pink text in Fig.\ \ref{fig:sim_grid_da}.
-        Black horizontal lines show $e'$ for Saturn's Maxwell, Titan, Laplace, and Huygens ringlets,
-        and the dotted line indicates the $e'=\sqrt{3}/2$ threshold.
+        Black horizontal lines show $e'$ for Saturn's Maxwell, Titan, Laplace, and Huygens ringlets
+        (references?), and the dotted line indicates the $e'=\sqrt{3}/2$ threshold.
     }
 \end{figure}
 
@@ -1147,7 +1147,18 @@ text...
 
 Summary of results...
 
-text...
+1 ringlets having a wide variety of initial physical properties (mass, initial width, viscosity) do evolve
+into the self-confining state, provided that ringlet's initial eccentricity is sufficiently high
+
+2 Self confining ringlets have $L_E=0$
+
+3 partial self confinement
+
+
+\section{followup studies}
+\label{sec:followup}
+
+Possible followup studies...
 
 \acknowledgments
 \section{Acknowledgments}
