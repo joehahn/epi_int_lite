@@ -243,15 +243,15 @@ def edge_torques(r, At):
         At[idx] -= specific_torque/r[idx]
     return At
 
-#calculate radial and tangential accelerations due to ring gravity, pressure, visocisty
-def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges):
+#calculate radial and tangential accelerations due to ring gravity, pressure, viscosity
+def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
     vrw = wrap_ring(vr, longitude=False)
     vtw = wrap_ring(vt, longitude=False)
     vw = np.sqrt(vrw*vrw + vtw*vtw)
-    lw = wrap_ring(lambda0, longitude=False)
+    lw = wrap_ring(lambda_, longitude=False)
     Ar = 0
     At = 0
     #acceleration due to streamline gravity
@@ -281,14 +281,24 @@ def accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
         At = At[:, 1:-1]
     return Ar, At
 
+#compute streamline's linear density
+def get_lambda(lambda0, J2, Rp, r, t, vr, vt):
+    a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
+    Omg = Omega(J2, Rp, a)
+    v = np.sqrt(vr*vr +vt*vt)
+    lambda_ = lambda0*(a*Omg/v)
+    return lambda_
+
 #velocity kicks due to ring gravity, viscosity, pressure
 def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt, fast_gravity, confine_edges):
     #convert mixed-center coordinates to planetocentric
     r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
     #order particles by longitude
     r, t, vr, vt = sort_particles(r, t, vr, vt)
-    #radial acceleration due to ring gravity and pressure
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
+    #compute streamlines' linear density 
+    lambda_ = get_lambda(lambda0, J2, Rp, r, t, vr, vt)
+    #radial acceleration due to ring gravity, viscosity, pressure
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -512,7 +522,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     Kap = Kappa(J2, Rp, a)
     wt = wt - (Omg/Kap - 1)*M
     
-    #lambda0=streamline mass-per-lenth
+    #lambda0=mass-per-length of circular streamlines
     mass_per_streamline = total_ring_mass/number_of_streamlines
     twopi = 2.0*np.pi
     lambda0 = mass_per_streamline/(twopi*a)
@@ -521,16 +531,19 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     r, t, vr, vt = sort_particles(r, t, vr, vt)
     
+    #compute noncircular streamlines' linear density 
+    lambda_ = get_lambda(lambda0, J2, Rp, r, t, vr, vt)
+    
     #ring sound speed c
     c = 0.0
     if (Q_ring > 0.0):
         delta_r = delta_f(r, t)
-        sd = surface_density(lambda0, delta_r)
+        sd = surface_density(lambda_, delta_r)
         G = 1.0
         c = (Q_ring*np.pi*G*sd/Omg).mean()
     
     #adjust vt to compensate for ring's radial accelerations
-    Ar, At = accelerations(lambda0, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     rAr = r*Ar
     for idx in range(number_of_streamlines):
         rAr[idx] = rAr[idx].mean()
