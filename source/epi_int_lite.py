@@ -31,7 +31,7 @@ print 'output_folder =', output_folder
 
 #initialize orbits
 from helper_fns import *
-r, t, vr, vt, lambda0, c, monitor = initialize_streamline(number_of_streamlines, particles_per_streamline,
+r, t, vr, vt, c, monitor = initialize_streamline(number_of_streamlines, particles_per_streamline,
     radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, confine_edges,
     Q_ring, J2, Rp, initial_orbits)
 
@@ -39,14 +39,13 @@ r, t, vr, vt, lambda0, c, monitor = initialize_streamline(number_of_streamlines,
 timestep = 0
 number_of_outputs = 0
 (rz, tz, vrz, vtz, timestepz) = ([r], [t], [vr], [vt], [timestep])
-#import time as tm
-#clock_start = tm.time()
 
 #evolve system using Chamber's (1993) 2nd order kick-drift-kick scheme 
 print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
-    r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt/2.0, fast_gravity, confine_edges)
+    r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
+        r, t, vr, vt, dt/2.0, fast_gravity, confine_edges)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #kick coordinates to account for central body's motion about center of mass
@@ -60,14 +59,16 @@ while (number_of_outputs < total_number_of_outputs):
         #kick coordinates to account for central body's motion about center of mass
         r, t, vr, vt = coordinate_kick(dt/2, total_ring_mass, r, t, vr, vt)    
         #kick velocities
-        r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt, fast_gravity, confine_edges)
+        r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
+            r, t, vr, vt, dt, fast_gravity, confine_edges)
         #updates
         timestep += 1
         timesteps_since_output += 1
         #update streamline monitor
         monitor = monitor_streamlines(monitor, r, t, timestep)
     #kick velocities backwards by timestep -dt/2
-    r, t, vr, vt = velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
+    r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
+        r, t, vr, vt, -dt/2.0, fast_gravity, confine_edges)
     #save output
     rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, timestep)
     number_of_outputs += 1
@@ -79,5 +80,5 @@ while (number_of_outputs < total_number_of_outputs):
 
 #save results
 timez = np.array(timestepz)*dt
-save_output(rz, tz, vrz, vtz, timez, lambda0, modified_params, monitor, output_folder)
+save_output(rz, tz, vrz, vtz, timez, modified_params, monitor, output_folder)
 print 'execution time (minutes) = ', (monitor['current_time'] - monitor['start_time'])/60.0

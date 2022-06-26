@@ -282,21 +282,23 @@ def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
     return Ar, At
 
 #compute streamline's linear density
-def get_lambda(lambda0, J2, Rp, r, t, vr, vt):
+def get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt):
     a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
     Omg = Omega(J2, Rp, a)
     v = np.sqrt(vr*vr +vt*vt)
-    lambda_ = lambda0*(a*Omg/v)
+    factor = total_ring_mass/(number_of_streamlines*2*np.pi)
+    lambda_ = factor*(Omg/v)
     return lambda_
 
 #velocity kicks due to ring gravity, viscosity, pressure
-def velocity_kick(J2, Rp, lambda0, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, r, t, vr, vt, dt, fast_gravity, confine_edges):
+def velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
+        r, t, vr, vt, dt, fast_gravity, confine_edges):
     #convert mixed-center coordinates to planetocentric
     r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
     #order particles by longitude
     r, t, vr, vt = sort_particles(r, t, vr, vt)
     #compute streamlines' linear density 
-    lambda_ = get_lambda(lambda0, J2, Rp, r, t, vr, vt)
+    lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     #radial acceleration due to ring gravity, viscosity, pressure
     Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_edges)
     #kick velocity
@@ -433,7 +435,7 @@ def monitor_streamlines(monitor, r, t, timestep):
 #save orbit element arrays in files
 import pickle
 import os
-def save_output(r, t, vr, vt, times, lambda0, modified_params, monitor, output_folder):
+def save_output(r, t, vr, vt, times, modified_params, monitor, output_folder):
     cmd = 'mkdir -p ' + output_folder
     q = os.system(cmd)
     np.save(output_folder + '/r.npy', r)
@@ -441,7 +443,6 @@ def save_output(r, t, vr, vt, times, lambda0, modified_params, monitor, output_f
     np.save(output_folder + '/vr.npy', vr)
     np.save(output_folder + '/vt.npy', vt)
     np.save(output_folder + '/times.npy', times)
-    np.save(output_folder + '/lambda0.npy', lambda0)
     monitor['modified_params'] = modified_params
     with open(output_folder + '/monitor.pkl', 'wb') as fp:
         pickle.dump(monitor, fp, protocol=pickle.HIGHEST_PROTOCOL)
@@ -453,10 +454,9 @@ def restore_output(output_folder):
     vr = np.load(output_folder + '/vr.npy')
     vt = np.load(output_folder + '/vt.npy')
     times = np.load(output_folder + '/times.npy')
-    lambda0 = np.load(output_folder + '/lambda0.npy')
     with open(output_folder + '/monitor.pkl', 'rb') as fp:
         monitor = pickle.load(fp)
-    return r, t, vr, vt, times, lambda0, monitor
+    return r, t, vr, vt, times, monitor
 
 #print eta as needed, and end simulation if monitor says something bad happened
 import time as tm
@@ -522,17 +522,12 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     Kap = Kappa(J2, Rp, a)
     wt = wt - (Omg/Kap - 1)*M
     
-    #lambda0=mass-per-length of circular streamlines
-    mass_per_streamline = total_ring_mass/number_of_streamlines
-    twopi = 2.0*np.pi
-    lambda0 = mass_per_streamline/(twopi*a)
-    
     #ring coordinates
     r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
     r, t, vr, vt = sort_particles(r, t, vr, vt)
     
-    #compute noncircular streamlines' linear density 
-    lambda_ = get_lambda(lambda0, J2, Rp, r, t, vr, vt)
+    #compute streamlines' linear density 
+    lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     
     #ring sound speed c
     c = 0.0
@@ -556,7 +551,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     start_time = int(tm.time())
     monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 'nan_timestep':None}
 
-    return r, t, vr, vt, lambda0, c, monitor
+    return r, t, vr, vt, c, monitor
 
 #recompute coordinates in coordinate system that co-rotates with ringlet's middle streamline's peri
 def peri_corotate(r, t, vr, vt, wt):
