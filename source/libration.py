@@ -59,9 +59,9 @@ def orbit_deltas(times, r, t, vr, vt, a, e, wt, J2, Rp):
     dwt[idx] = dwt[idx] + 2*np.pi
     return a_inner, a_outer, a_mean, da, e_inner, e_outer, e_mean, de, wt_inner, wt_outer, dwt
 
-#compute e_prime, wt_prime, q to lowest order, and H(q)
+#compute e_prime, wt_prime, q, and H(q)
 def calculate_Hq(a_mean, e_mean, da, de, dwt):
-    e_prime = e_mean + a_mean*de/da
+    e_prime = a_mean*de/da
     wt_prime = e_mean*a_mean*dwt/da
     q2 = e_prime**2 + wt_prime**2
     q = np.sqrt(q2)
