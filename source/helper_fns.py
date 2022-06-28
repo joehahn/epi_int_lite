@@ -367,7 +367,6 @@ def planeto2bary(total_ring_mass, r, t, vr, vt):
     vx_bc = vx + vx_0
     vy_bc = vy + vy_0
     r_bc, t_bc, vr_bc, vt_bc = xy2rt(x_bc, y_bc, vx_bc, vy_bc)
-    #r_bc, t_bc, vr_bc, vt_bc = sort_particles(r_bc, t_bc, vr_bc, vt_bc)
     return r_bc, t_bc, vr_bc, vt_bc
 
 #convert barycentric coordinates and velocities to planetocentric
@@ -385,7 +384,6 @@ def bary2planeto(total_ring_mass, r_bc, t_bc, vr_bc, vt_bc):
     vx = vx_bc - vx_0_bc
     vy = vy_bc - vy_0_bc
     r, t, vr, vt = xy2rt(x, y, vx, vy)
-    #r, t, vr, vt = sort_particles(r, t, vr, vt)
     return r, t, vr, vt
 
 #convert planetocentric r,v to planetocentic r and barycentric v
