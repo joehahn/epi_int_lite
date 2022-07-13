@@ -190,8 +190,9 @@ def A_P(lambda_, sd, P, t, delta_P, delta_r):
     A = -dPdr/sd
     #at inner streamline
     A[0] = -P[0]/lambda_[0]
-    #at outer streamline, interpolated from neighbor streamline
-    P_outer = interpolate_fn(t[-2:], P[-2:], 1)[-1]
+    #at outer streamline, interpolated from neighbor streamline delta_L = 4.56e-7
+    P_outer = interpolate_fn(t, P, 1)
+    P_outer = P_outer[-2]
     A[-1] = P_outer/lambda_[-1]
     return A
 
