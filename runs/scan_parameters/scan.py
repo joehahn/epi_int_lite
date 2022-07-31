@@ -4,27 +4,27 @@
 #
 #by Joe Hahn, jmh.datasciences@gmail.com, 31 July 2020.
 #
-#this launches multiple concurrent epi_int simulations having varied input parameters
+#this launches multiple concurrent epi_int simulations having varied input parameters, executes in 36 hours 
 
 #set number of concurrent processes
 N_processes = 7
 
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
-mass_min = 1.256e-10
-mass_max = 1.256e-8
-N_masses = 11
+mass_min = 3.33e-13
+mass_max = 1.0e-10
+N_masses = 6#11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
 #values for radial_width
-radial_width = np.array([0.0003, 0.0005, 0.0008, 0.0012, 0.0016])
+radial_width = np.array([0.000025, 0.00005, 0.0001, 0.0002])
 print 'radial_width = ', radial_width.tolist()
 
 #generate range of logarithmically-spaced values for shear_viscosity
-viscosity_min = 3.147e-13
-viscosity_max = 3.147e-10
-N_viscosities = 21
+viscosity_min = 3.3e-15
+viscosity_max = 3.3e-12
+N_viscosities = 7#19
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
 
@@ -36,8 +36,8 @@ params = {
 }
 
 #set power laws employed below
-mass_power_law = 0.5
-viscosity_power_law = -0.5
+mass_power_law = 1.0
+viscosity_power_law = -1.0
 width_power_law = 0.0
 
 #execution start time
@@ -47,9 +47,9 @@ clock_start = tm.time()
 #get nominal input parameters
 execfile('inputs.py')
 nominal_timesteps_per_output = timesteps_per_output
-nominal_total_ring_mass = total_ring_mass
-nominal_radial_width = radial_width
-nominal_shear_viscosity = shear_viscosity
+nominal_total_ring_mass = 3.3e-11
+nominal_radial_width = 0.00005
+nominal_shear_viscosity = 1.0e-13
 
 #generate all possible permutations of the values in params
 keys, values = zip(*params.items())
