@@ -70,7 +70,7 @@ def calculate_Hq(a_mean, e_mean, da, de, dwt):
     H = (1 - q_factor)/q2/q_factor
     return H, q, e_prime, wt_prime
 
-#convert planetocentric coords to barycentric, for all times
+#convert planetocentric coords to barycentric, at all times
 def planeto2bary_all_times(times, r, t, vr, vt, total_ring_mass):
     r_bcs = []
     t_bcs = []
@@ -104,7 +104,7 @@ def planeto2bary_all_times(times, r, t, vr, vt, total_ring_mass):
     vt_0 = np.array(vt_0s)
     return r_bc, t_bc, vr_bc, vt_bc, r_0, t_0, vr_0, vt_0
 
-#
+#compute total angular momentum, this works for 2-streamline...
 def system_angular_momentum(times, r_bc, t_bc, vr_bc, vt_bc, r_0, t_0, vr_0, vt_0, total_ring_mass, number_of_streamlines, particles_per_streamline):
     mass_0 = 1.0
     particle_mass = total_ring_mass/(number_of_streamlines*particles_per_streamline)
