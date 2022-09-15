@@ -35,21 +35,21 @@ params = {
     'shear_viscosity':shear_viscosity
 }
 
-#set power laws employed below
-mass_power_law = 1.0
-viscosity_power_law = -1.0
-width_power_law = 0.0
-
 #execution start time
 import time as tm
 clock_start = tm.time()
 
+#set power laws employed below
+nominal_dynamical_timescale = 2.85e4
+mass_power_law = 1.05
+viscosity_power_law = -0.95
+width_power_law = -0.25
+
 #get nominal input parameters
 execfile('inputs.py')
-nominal_timesteps_per_output = timesteps_per_output
-nominal_total_ring_mass = 3.3e-11
-nominal_radial_width = 0.00005
+nominal_total_ring_mass = 3.33e-11
 nominal_shear_viscosity = 1.0e-13
+nominal_radial_width = 0.00005
 
 #generate all possible permutations of the values in params
 keys, values = zip(*params.items())
@@ -65,15 +65,16 @@ for sim_id, p in enumerate(permutations):
     factor = (total_ring_mass/nominal_total_ring_mass)**mass_power_law
     factor *= (shear_viscosity/nominal_shear_viscosity)**viscosity_power_law
     factor *= (radial_width/nominal_radial_width)**width_power_law
-    timesteps_per_output = int(nominal_timesteps_per_output*factor)
+    dynamical_timescale = factor*nominal_dynamical_timescale
+    execution_time = 6*dynamical_timescale                       #20>10
+    viscous_timescale = (radial_width**2)/(12*shear_viscosity)
+    if (execution_time < 10*viscous_timescale):
+        print 'resetting execution_time from ', execution_time, 
+        execution_time = 10*viscous_timescale
+        print 'to ', execution_time
+    timesteps_per_output = int(execution_time/(dt*total_number_of_outputs))
     if (timesteps_per_output < 1):
         timesteps_per_output = 1
-    execution_time = dt*timesteps_per_output*total_number_of_outputs
-    ten_viscous_timescales = 10*(radial_width**2)/(12*shear_viscosity)
-    if (execution_time < ten_viscous_timescales):
-        print 'resetting timesteps_per_output from ', timesteps_per_output, 
-        timesteps_per_output = int(timesteps_per_output*ten_viscous_timescales/execution_time)
-        print 'to ', timesteps_per_output
     p['timesteps_per_output'] = timesteps_per_output
     p['sim_id'] = sim_id
     p['bulk_viscosity'] = shear_viscosity
@@ -110,4 +111,4 @@ from multiprocessing import Pool
 pool = Pool(processes=N_processes)
 results = pool.map(os.system, commands)
 print 'number of simulations executed = ', len(results)
-print 'execution time (minutes) = ', (tm.time() - clock_start)/60.0
+print 'execution time (hours) = ', (tm.time() - clock_start)/3600.0
