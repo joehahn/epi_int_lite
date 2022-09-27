@@ -39,68 +39,84 @@ params = {
 import time as tm
 clock_start = tm.time()
 
-#set power laws employed below
-nominal_dynamical_timescale = 2.85e4
-mass_power_law = 1.05
-viscosity_power_law = -0.95
-width_power_law = -0.25
-
-#get nominal input parameters
+#get nominal simulation's input parameters
 execfile('inputs.py')
-nominal_total_ring_mass = 3.33e-11
-nominal_shear_viscosity = 1.0e-13
-nominal_radial_width = 0.00005
 
-#generate all possible permutations of the values in params
+#generate all possible permutations of the values, initially assume all sims' dynamical_timescale=max(times)/20
 keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
+import pandas as pd
+df = pd.DataFrame(data=permutations)
+df['sim_id'] = df.index
+times_max = dt*timesteps_per_output*total_number_of_outputs
+dynamical_timescale = times_max/20.0
+df['dynamical_timescale'] = dynamical_timescale
+df_permutations = df
 
-#adjust timesteps_per_output to scale as total_ring_mass^0.5, shear_viscosity^(-0.5), and radial_width^(0.0),
-#such that execution_time > 10*viscous_timescale. Also set bulk_viscosity=shear_viscosity
-for sim_id, p in enumerate(permutations):
-    total_ring_mass = p['total_ring_mass']
-    radial_width = p['radial_width']
-    shear_viscosity = p['shear_viscosity']
-    factor = (total_ring_mass/nominal_total_ring_mass)**mass_power_law
-    factor *= (shear_viscosity/nominal_shear_viscosity)**viscosity_power_law
-    factor *= (radial_width/nominal_radial_width)**width_power_law
-    dynamical_timescale = factor*nominal_dynamical_timescale
-    execution_time = 6*dynamical_timescale                       #20>10
-    viscous_timescale = (radial_width**2)/(12*shear_viscosity)
-    if (execution_time < 10*viscous_timescale):
-        print 'resetting execution_time from ', execution_time, 
-        execution_time = 10*viscous_timescale
-        print 'to ', execution_time
-    timesteps_per_output = int(execution_time/(dt*total_number_of_outputs))
-    if (timesteps_per_output < 1):
-        timesteps_per_output = 1
-    p['timesteps_per_output'] = timesteps_per_output
-    p['sim_id'] = sim_id
-    p['bulk_viscosity'] = shear_viscosity
-    print sim_id, total_ring_mass, radial_width, shear_viscosity, timesteps_per_output
+#get dynamical_timescale from file df_results.parquet if it exists
+import os
+file = 'df_results.parquet'
+if (os.path.exists(file)):
+    df = pd.read_parquet(file)
+    df = df[['sim_id', 'dynamical_timescale']]
+    idx = (df.dynamical_timescale > 0)
+    df = df[idx]
+    df = df.rename({'dynamical_timescale':'dynamical_timescale_obs'}, axis=1)
+    df_dynamical = df
+else:
+    df_dynamical = None
 
-#add output_folders to each permutation
-for p in permutations:
-    output_folder = 'permutations/'
-    for k,v in p.iteritems():
-        output_folder += k + '=' + str(v) + '!'
-    p['output_folder'] = output_folder
+#update dynamical_timescale as needed
+df = df_permutations
+if (df_dynamical is not None): 
+    df = df.merge(df_dynamical, on='sim_id', how='left')
+    idx = (df.dynamical_timescale_obs > 0)
+    df.loc[idx, 'dynamical_timescale'] = df.loc[idx, 'dynamical_timescale_obs']
+    df = df.drop('dynamical_timescale_obs', axis=1)
+df_update = df
 
-#generate list of commands to be executed in parallel
+#set timesteps_per_output
+df = df_update
+#execution_time = 20*df.dynamical_timescale
+execution_time = 6*df.dynamical_timescale
+df['timesteps_per_output'] = (execution_time/(dt*total_number_of_outputs)).astype(int)
+print 'min timesteps_per_output = ', df.timesteps_per_output.min()
+df_timesteps = df
+
+#set output_folder, note that bulk_viscosity=shear_viscosity
+df = df_timesteps
+df['output_folder'] = 'permutations/'
+df.output_folder += 'sim_id=' + df.sim_id.astype(str) + '!'
+df.output_folder += 'total_ring_mass=' + df.total_ring_mass.astype(str) + '!'
+df.output_folder += 'shear_viscosity=' + df.shear_viscosity.astype(str) + '!'
+df.output_folder += 'bulk_viscosity=' + df.shear_viscosity.astype(str) + '!'
+df.output_folder += 'radial_width=' + df.radial_width.astype(str) + '!'
+df.output_folder += 'timesteps_per_output=' + df.timesteps_per_output.astype(str) + '!'
+df_output = df
+
+#create the commands that will execute each epi_int job, with bulk_viscosity=shear_viscosity
+df = df_output
+df['command'] = ''
 import json
-commands = []
-for p in permutations:
-    p_json = json.dumps(p)
-    cmd = "./epi_int_lite.py -m '" + p_json + "'"
-    commands += [cmd]
+for idx, row in df.iterrows():
+    d = {'sim_id':row.sim_id, 'total_ring_mass':row.total_ring_mass, 'shear_viscosity':row.shear_viscosity,
+        'bulk_viscosity':row.shear_viscosity, 'radial_width':row.radial_width, 'timesteps_per_output':row.timesteps_per_output,
+        'output_folder':row.output_folder}
+    d_json = json.dumps(d)
+    command = "./epi_int_lite.py -m '" + d_json + "'"
+    df.loc[idx, 'command'] = command
+df_command = df
 
 #remove previous scans
-import os
 cmd = 'rm -rf permutations/*'
 r = os.system(cmd)
 cmd = 'touch permutations/nothing'
 r = os.system(cmd)
+
+#make list of commands that will be executed in parallel
+df = df_command
+commands = df.command.values.tolist()
 
 #execute simulations in parallel
 print '********'
