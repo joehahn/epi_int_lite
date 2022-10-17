@@ -55,10 +55,14 @@ df['dynamical_timescale'] = dynamical_timescale
 df_permutations = df
 
 #get dynamical_timescale from file df_results.parquet if it exists
+#unconfined sims with dynamical_timescale<viscous_timescale get dynamical_timescale=viscous_timescale
 import os
 file = 'df_results.parquet'
 if (os.path.exists(file)):
     df = pd.read_parquet(file)
+    df = df[['sim_id', 'viscous_timescale', 'dynamical_timescale', 'outcome']]
+    idx = (df.outcome == 'unconfined?') & (df.dynamical_timescale < df.viscous_timescale)
+    df.loc[idx, 'dynamical_timescale'] = df.loc[idx, 'viscous_timescale']
     df = df[['sim_id', 'dynamical_timescale']]
     idx = (df.dynamical_timescale > 0)
     df = df[idx]
@@ -79,7 +83,7 @@ df_update = df
 #set timesteps_per_output
 df = df_update
 #execution_time = 20*df.dynamical_timescale
-execution_time = 6*df.dynamical_timescale
+execution_time = 10*df.dynamical_timescale
 df['timesteps_per_output'] = (execution_time/(dt*total_number_of_outputs)).astype(int)
 print 'min timesteps_per_output = ', df.timesteps_per_output.min()
 df_timesteps = df
