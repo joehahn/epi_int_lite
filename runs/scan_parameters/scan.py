@@ -11,9 +11,9 @@ N_processes = 7
 
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
-mass_min = 3.33e-13
-mass_max = 1.0e-10
-N_masses = 6#11
+mass_min = 1.0e-13
+mass_max = 1.0e-9
+N_masses = 9#11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
@@ -22,9 +22,9 @@ radial_width = np.array([0.000025, 0.00005, 0.0001, 0.0002])
 print 'radial_width = ', radial_width.tolist()
 
 #generate range of logarithmically-spaced values for shear_viscosity
-viscosity_min = 3.3e-15
-viscosity_max = 3.3e-12
-N_viscosities = 7#19
+viscosity_min = 1.0e-15
+viscosity_max = 1.0e-11
+N_viscosities = 9#19
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
 
@@ -42,7 +42,7 @@ clock_start = tm.time()
 #get nominal simulation's input parameters
 execfile('inputs.py')
 
-#generate all possible permutations of the values, initially assume all sims' dynamical_timescale=max(times)/20
+#generate all possible permutations of the values, initially assume all sims' dynamical_timescale=max(times)/10
 keys, values = zip(*params.items())
 import itertools
 permutations = [dict(zip(keys, v)) for v in itertools.product(*values)]
@@ -50,7 +50,7 @@ import pandas as pd
 df = pd.DataFrame(data=permutations)
 df['sim_id'] = df.index
 times_max = dt*timesteps_per_output*total_number_of_outputs
-dynamical_timescale = times_max/20.0
+dynamical_timescale = times_max/10.0
 df['dynamical_timescale'] = dynamical_timescale
 df_permutations = df
 
