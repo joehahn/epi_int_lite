@@ -13,7 +13,7 @@ N_processes = 7
 import numpy as np
 mass_min = 1.0e-13
 mass_max = 1.0e-9
-N_masses = 9#11
+N_masses = 9
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
@@ -24,7 +24,7 @@ print 'radial_width = ', radial_width.tolist()
 #generate range of logarithmically-spaced values for shear_viscosity
 viscosity_min = 1.0e-15
 viscosity_max = 1.0e-11
-N_viscosities = 9#19
+N_viscosities = 13
 shear_viscosity = np.exp(np.linspace(np.log(viscosity_min), np.log(viscosity_max), num=N_viscosities))
 print 'shear_viscosity = ', shear_viscosity.tolist()
 
@@ -55,18 +55,23 @@ df['dynamical_timescale'] = dynamical_timescale
 df_permutations = df
 
 #get dynamical_timescale from file df_results.parquet if it exists
-#unconfined sims with dynamical_timescale<viscous_timescale get dynamical_timescale=viscous_timescale
+#sims with dynamical_timescale<viscous_timescale get dynamical_timescale=viscous_timescale and are then evolved to 10*dynamical_timescale
+#ALSO, unconfined sims with current_timestep<10*viscous_timescale get dynamical_timescale=1.5*viscous_timescale
 import os
 file = 'df_results.parquet'
 if (os.path.exists(file)):
     df = pd.read_parquet(file)
-    df = df[['sim_id', 'viscous_timescale', 'dynamical_timescale', 'outcome']]
-    idx = (df.outcome == 'unconfined?') & (df.dynamical_timescale < df.viscous_timescale)
+    df = df[['sim_id', 'current_timestep', 'viscous_timescale', 'dynamical_timescale', 'outcome']]
+    df['current_time'] = df.current_timestep*dt
+    idx = (df.dynamical_timescale < df.viscous_timescale)
     df.loc[idx, 'dynamical_timescale'] = df.loc[idx, 'viscous_timescale']
-    df = df[['sim_id', 'dynamical_timescale']]
+    idx = (df.outcome == 'unconfined') & (df.current_time < 10*df.viscous_timescale)
+    df.loc[idx, 'dynamical_timescale'] = 1.5*df.loc[idx, 'viscous_timescale']
+    df = df[['sim_id', 'current_timestep', 'dynamical_timescale', 'viscous_timescale']]
     idx = (df.dynamical_timescale > 0)
     df = df[idx]
     df = df.rename({'dynamical_timescale':'dynamical_timescale_obs'}, axis=1)
+    df = df.drop('current_timestep', axis=1)
     df_dynamical = df
 else:
     df_dynamical = None
@@ -82,7 +87,6 @@ df_update = df
 
 #set timesteps_per_output
 df = df_update
-#execution_time = 20*df.dynamical_timescale
 execution_time = 10*df.dynamical_timescale
 df['timesteps_per_output'] = (execution_time/(dt*total_number_of_outputs)).astype(int)
 print 'min timesteps_per_output = ', df.timesteps_per_output.min()
