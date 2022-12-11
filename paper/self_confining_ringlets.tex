@@ -244,11 +244,11 @@ as the nominal model since this ringlet readily evolves into a self-confining st
 The simulated ringlet is composed of $N_s=2$ streamlines having $N_p=241$ particles
 per streamline, and the integrator timestep is $\Delta t=0.5$ in natural units, so
 the integrator samples the particles' orbits $2\pi/\Delta t\simeq13$ times per orbit, and this
-ringlet is evolved for $4.7\times10^3$ orbits, which requires 15 minutes execution time
-on an eight year old laptop. The ringlet's mass is
-$m_r=5\times10^{-10}$, its shear viscosity is $\nu_s=2.5\times10^{-12}$, and its
+ringlet is evolved for $1.4\times10^5$ orbits, which requires 50 minutes execution time
+on a ten year old laptop. The ringlet's mass is
+$m_r=10^{-10}$, its shear viscosity is $\nu_s=10^{-13}$, and its
 bulk viscosity is $\nu_b=\nu_s$. The ringet's initial radial width is
-$\Delta a_0 = 3\times10^{-4}$, its initial eccentricity is $e=0.01$, and its
+$\Delta a_0 = 10^{-4}$, its initial eccentricity is $e=0.01$, and its
 eccentricity gradient is initially zero. A convenient measure of time is the ringlet's
 viscous radial spreading timescale
 \begin{equation}
@@ -256,42 +256,42 @@ viscous radial spreading timescale
     \tau_\nu=\frac{\Delta a_0^2}{12\nu_s}, 
 \end{equation}
 which can be inferred from Eqn.\ (2.13) of \cite{P81}. 
-This simulation's viscous timescale is $\tau_\nu=3.0\times10^3$ in natural units
-or $\tau_\nu/2\pi=4.8\times10^2$ orbital periods. If this ringlet were orbiting Saturn
+This simulation's viscous timescale is $\tau_\nu=8.3\times10^3$ in natural units
+or $\tau_\nu/2\pi=1.3\times10^3$ orbital periods. If this ringlet were orbiting Saturn
 at $r_0=1.0\times10^{10}$ cm then the simulated ringlet's physical mass
-would be $m_r=2.8\times10^{20}$ gm which is equivalent to the mass of a $41$ km radius iceball assuming
-a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial radial width would be
-$\Delta a_0 = 3\times10^{-4}r_0=30$ km. This ringlet's
+would be $m_r=5.7\times10^{19}$ gm which is equivalent to the mass of a $24$ km radius iceball assuming
+a volume density $\rho=1$ gm/cm$^3$, and the ringlet's initial physical radial width would be
+$\Delta a_0 = 10^{-4}r_0=10$ km. This ringlet's
 orbit period would be $T_{orb}=2\pi\sqrt{r_0^3/GM}=9.0$ hours in physical units, so 
-the ringlet's viscous timescale is $\tau_\nu=12$ years, and
-so its shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 4.8\times10^4$ cm$^2$/sec
+the ringlet's viscous timescale is $\tau_\nu=1.4$ years, and
+so its shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^3$ cm$^2$/sec
 when evaluated in physical units. 
-This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=1500$ gm/cm$^2$, but
-Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 4 as the 
+This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=900$ gm/cm$^2$, but
+Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 5 as the 
 ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
-the self-confining state at time $t\sim20\tau_\nu$.
-This so-called nominal ringlet is probably overdense and overly viscous compared to known 
+the self-confining state at time $t\sim40\tau_\nu$.
+This so-called nominal ringlet is probably somewhat overdense and overly viscous compared to known 
 planetary ringlets,
 but that is by design so that the simulated ringlet quickly settles into the self-confining state.
 Section \ref{subsec:variations} also shows how outcomes vary 
 when a wide variety of alternate initial masses, widths, and viscosities are also considered.
 
 \begin{figure}
-\plotone{figs/a_nominal.pdf}
+\plotone{figs/da_nominal.pdf}
 \caption{Evolution of the nominal ringlet's semimajor axes $a$
 versus time $t$ in units of the ringlet's viscous time $\tau_\nu$.
 This ringlet is composed of $N_s=2$ streamlines,
 and the outer (blue) and inner (green) streamlines' semimajor axes are plotted relative
 to their mean $a_{\text{mean}}$, and displayed in units of the ringlet's
-initial width $\Delta a_0 = 3\times10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
-The simulated ringlet has total mass $m_r=5\times10^{-10}$, shear viscosity $\nu_s=2.5\times10^{-12}$,
+initial width $\Delta a_0 = 10^{-4}$ in natural units ({\it i.e.}\ $G=M=r_0=1$).
+The simulated ringlet has total mass $m_r=10^{-10}$, shear viscosity $\nu_s=10^{-13}$,
 and initial eccentricity $e=0.01$. See Section \ref{subsec:nominal} to convert
 $m_r$, $a$ and $\nu_s$ from natural units to physical units.
 \label{fig:a_nominal}}
 \end{figure}
 
 \begin{figure}
-\plotone{figs/da_nominal.pdf}
+\plotone{figs/width_nominal.pdf}
 \caption{
 \label{fig:da_nominal}
 The nominal ringlet's semimajor axis width $\Delta a = a_{\text{outer}} - a_{\text{inner}}$ over time
