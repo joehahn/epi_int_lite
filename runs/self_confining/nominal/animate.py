@@ -16,7 +16,8 @@ import numpy as np
 #restore output
 from helper_fns import *
 execfile('inputs.py')
-r, t, vr, vt, times, lambda0, monitor = restore_output(output_folder)
+#r, t, vr, vt, times, lambda0, monitor = restore_output(output_folder)
+r, t, vr, vt, times, monitor = restore_output(output_folder)
 a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
 
 #recompute r,t in coordinate system that co-rotates with inner streamline's peri
