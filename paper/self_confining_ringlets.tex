@@ -253,7 +253,7 @@ eccentricity gradient is initially zero. A convenient measure of time is the rin
 viscous radial spreading timescale
 \begin{equation}
 \label{eqn:viscous-timesscale}
-    \tau_\nu=\frac{\Delta a_0^2}{12\nu_s}, 
+    \tau_\nu=\frac{\Delta a_0^2}{12\nu_s} 
 \end{equation}
 which can be inferred from Eqn.\ (2.13) of \cite{P81}. 
 This simulation's viscous timescale is $\tau_\nu=8.3\times10^3$ in natural units
@@ -267,7 +267,7 @@ the ringlet's viscous timescale is $\tau_\nu=1.4$ years, and
 so its shear viscosity is $\nu_s=\Delta a_0^2/12\tau_\nu = 1.9\times10^3$ cm$^2$/sec
 when evaluated in physical units. 
 This ringlet's initial surface density would be $\sigma=m_r/2\pi r_0\Delta a_0=900$ gm/cm$^2$, but
-Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of 5 as the 
+Figs.\ \ref{fig:a_nominal}--\ref{fig:da_nominal} show that shrinks by a factor of about 5 as the 
 ringlet's sememajor axis width $\Delta a$ grows via viscous spreading until it settles into
 the self-confining state at time $t\sim40\tau_\nu$.
 This so-called nominal ringlet is probably somewhat overdense and overly viscous compared to known 
@@ -332,9 +332,8 @@ when the simulation ends. In all simulations examined here, the ringlet's periap
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$ is negative,
 so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
 the inner streamline's, which in turn causes the streamlines' separations along
-the ringlet's pre-periapse side (where $\varphi < 0$) to be smaller than at post-periapse ($\varphi>0$).
-Which makes the ringlet's surface density asymmetric, with maximum surface density
-occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref{fig:radial_sigma_nominal}.
+the ringlet's pre-periapse side (where $\varphi < 0$) to differ slightly from that int the post-periapse ($\varphi>0$) zone.
+Which in turn makes the ringlet's surface density asymmetric, see Figs.\ \ref{fig:nominal_streamlines}--\ref{fig:radial_sigma_nominal}.
 
 \begin{figure}
     \plotone{figs/nominal_streamlines.pdf}
@@ -376,8 +375,8 @@ occurring just prior to periapse, see Figs.\ \ref{fig:nominal_streamlines}--\ref
         quadrature ($\varphi=-\pi/2$, red curve), post-periapse
         quadrature ($\varphi=\pi/2$, green curve)
         and at apoapse ($|\varphi|=\pi$, orange curve) where streamlines have their greatest separation
-        and ringlet surface density is lowest. This ringlet's surface density contrast, between periapse and
-        apoapse, is 14.
+        and ringlet surface density is lowest. This ringlet's surface density contrast between periapse and
+        apoapse is 8.
     }
 \end{figure}
 
@@ -418,7 +417,7 @@ the outer ringlet's periapse trails the inner ringlet's, consistent with the fin
 \section{angular momentum and energy fluxes, and luminosities}
 \label{sec:fluxes}
 
-The above evolution is readily understood when the ringlet's 
+The nominal ringlet's evolution is readily understood when the ringlet's 
 radial flux of angular momentum and energy are considered. 
 
 \subsection{angular momentum and energy fluxes}
@@ -455,7 +454,7 @@ exerted by the interior streamlines is
     \label{eqn:F_E}
     {\cal F}_E(r, \theta) = \frac{\delta W}{\delta\ell\delta t} = \lambda\mathbf{A}^1\cdot\mathbf{v},
 \end{equation}
-and this radial energy flux is due to the ringlet's viscosity and self-gravity,
+and this radial energy flux is due to the ringlet's viscosity and self-gravity so
 ${\cal F}_E = {\cal F}_{E,\nu} + {\cal F}_{E,g}$. 
 
 \subsection{luminosities}
