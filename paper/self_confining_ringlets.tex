@@ -306,7 +306,12 @@ the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{in
 and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
 which both settle into equilibrium values after the ringlet arrives at the self-confining
-state.
+state. In all simulations examined here, the ringlet's periapse twist 
+$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$ is negative,
+so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
+the inner streamline's, which in turn causes the streamlines' separations along
+the ringlet's pre-periapse side (where $\varphi < 0$) to differ slightly from that int the post-periapse ($\varphi>0$) zone.
+Which in turn makes the ringlet's surface density asymmetric, see Fig.\ \ref{fig:radial_sigma_nominal}.
 
 \begin{figure}
 \plotone{figs/e_nominal.pdf}
@@ -323,28 +328,6 @@ The nominal ringlet's eccentricity evolution.}
         and longitude of periapse difference
         $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$
         in radians divided by 10.
-    }
-\end{figure}
-
-Figure \ref{fig:nominal_streamlines} shows the radii of the ringlet's two streamlines plotted
-versus their relative longitude $\varphi=\theta-\tilde{\omega}_{\text{inner}}$ at time $t=100\tau_\nu$
-when the simulation ends. In all simulations examined here, the ringlet's periapse twist 
-$\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$ is negative,
-so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
-the inner streamline's, which in turn causes the streamlines' separations along
-the ringlet's pre-periapse side (where $\varphi < 0$) to differ slightly from that int the post-periapse ($\varphi>0$) zone.
-Which in turn makes the ringlet's surface density asymmetric, see Figs.\ \ref{fig:nominal_streamlines}--\ref{fig:radial_sigma_nominal}.
-
-\begin{figure}
-    \plotone{figs/nominal_streamlines.pdf}
-    \caption{
-        \label{fig:nominal_streamlines}
-        The radial excursions of the nominal ringlet's two streamlines are shown relative to the ringlet's mean semimajor axis
-        $a_{mean}$ and in units of the streamlines'
-        semimajor axis difference $\Delta a$ at time $t=100\tau_\nu$, with that relative radial excursion
-        being ploted versus its relative longitude $\varphi=\theta-\tilde{\omega}$. Inset plot
-        shows that the outer streamline's longitude of periapse $\tilde{\omega}$ trailing the inner streamline's.
-        {\em\bf double-check this!!!}
     }
 \end{figure}
 
@@ -377,7 +360,7 @@ Which in turn makes the ringlet's surface density asymmetric, see Figs.\ \ref{fi
         quadrature ($\varphi=\pi/2$, green curve)
         and at apoapse ($|\varphi|=\pi$, orange curve) where streamlines have their greatest separation
         and ringlet surface density is lowest. This ringlet's surface density contrast between periapse and
-        apoapse is 8.
+        apoapse is about 14.
     }
 \end{figure}
 
@@ -437,9 +420,8 @@ segment is
     \label{eqn:F_L}
     {\cal F}_L(r, \theta) = \frac{\delta T}{\delta\ell} = \lambda r A^1_\theta,
 \end{equation}
-where $A^1_\theta$ is the tangential component of the one-sided acceleration.
-A streamline of semimajor axis $a$ in a ringlet having total mass $m_r$ 
-distributed across $N_s$ streamlines will have a linear mass density $\lambda=m_r/N_s/2\pi a$.
+where $A^1_\theta$ is the tangential component of the one-sided acceleration,
+and the streamline's linear mass density $\lambda$ is computed using Eqn.\ (\ref{eqn:lambda}).
 The radial angular momentum flux, Eqn.\ (\ref{eqn:F_L}), is due to the ringlet's viscosity and self-gravity,
 so ${\cal F}_L = {\cal F}_{L,\nu} + {\cal F}_{L,g}$. 
 
@@ -703,29 +685,27 @@ as another test of the epi\_int\_lite integrator's numerical quality.
 
 To assess whether the nominal ringlet's evolution is typical of other ringlets
 having alternate values of initial width $\Delta a$, total mass $m_r$, and shear viscosity $\nu_s$,
-a survey of 1154 additional ringlet simulations are executed. 
+a survey of 467 additional ringlet simulations are executed. 
 The survey ringlets are similar to the nominal ringlet 
 with $N_s=2$ streamlines having $N_p=241$ particles per streamline, initial 
 eccentricity $e=0.01$, initial eccentricity gradient $e'=0$, and viscosities $\nu_b=\nu_s$. 
 But the survey ringlets instead have
-total masses that are geometrically distributed between $1.3\times10^{-10}\le m_r\le1.3\times10^{-8}$,
-shear viscosities geometrically distributed 
-between $3.1\times10^{-13}\le \nu_s\le3.1\times10^{-10}$,
-and initial radial widths linearly distributed between  
-$0.0003\le \Delta a\le0.0016$. Survey results are summarized in Fig.\ \ref{fig:sim_grid_da}
+total masses that are geometrically distributed between $10^{-13}\le m_r\le10^{-9}$,
+shear viscosities distributed between $10^{-15}\le \nu_s\le 10^{-11}$,
+and initial radial widths distributed between  
+$2.5\times10^{-5}\le \Delta a\le2.0\times10^{-4}$. Survey results are summarized in Fig.\ \ref{fig:sim_grid_da}
 where blue, green and orange squares indicate those ringlets did evolve into a self-confining state,
 with pink diamonds to indicate those simulations described below as ``partially confined''.
 
 \begin{figure}
-    \gridline{\fig{figs/sim_grid_da_0p0003.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0005.pdf}{0.5\textwidth}{}}
-    \gridline{\fig{figs/sim_grid_da_0p0008.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0012.pdf}{0.5\textwidth}{}}
-    \gridline{\fig{figs/sim_grid_da_0p0016.pdf}{0.7\textwidth}{}}
+    \gridline{\fig{figs/sim_grid_da_2p5e-05.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_5e-05.pdf}{0.5\textwidth}{}}
+    \gridline{\fig{figs/sim_grid_da_0p0001.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0002.pdf}{0.5\textwidth}{}}
     \caption{
         \label{fig:sim_grid_da}
-        Outcomes for 1155 ringlet simulations having a variety of ringlet
+        Outcomes for 468 ringlet simulations having a variety of ringlet
         masses $m_r$, shear viscosities $\nu_s$, with each panel showing results
         for ringlets having the same initial radial width,
-        $\Delta a=0.0003, 0.0005, 0.0008, 0.0012$, or  $0.0016$. Colored squares indicate
+        $\Delta a=2.5\times10^{-5}$, $5\times10^{-5}$, $\times10^{-4}$, or $2\times10^{-4}$. Colored squares indicate
         those ringlets that evolve into the self-confining state with the indicated libration
         amplitudes $\Delta q$, pink diamonds for those simulations that are partially confined, 
         and $\times$ for simulations that terminate early when an epi\_int\_lite particle crossed an 
@@ -1186,6 +1166,13 @@ first order in $e$. Then show that
         \frac{1-\frac{4}{3}e'\cos M}{1-e'\cos M}
 \end{equation}
 to lowest order in $e$ where mean anomaly $M\simeq\theta-\tilde{\omega}$.
+
+Show that the streamline's linear density is
+\begin{equation}
+    \label{eqn:lambda}
+    \lambda = \frac{m_1\Omega}{2\pi v}
+\end{equation}
+where $m_1 = m_r/N_r$ is the mass of a single streamline.
 
 \section{Appendix B}
 \label{sec:Appendix B}
