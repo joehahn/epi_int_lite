@@ -698,21 +698,22 @@ where blue, green and orange squares indicate those ringlets did evolve into a s
 with pink diamonds to indicate those simulations described below as ``partially confined''.
 
 \begin{figure}
-    \gridline{\fig{figs/sim_grid_da_2p5e-05.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_5e-05.pdf}{0.5\textwidth}{}}
-    \gridline{\fig{figs/sim_grid_da_0p0001.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0002.pdf}{0.5\textwidth}{}}
+    \gridline{\fig{figs/sim_grid_da_0p000025.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p00005.pdf}{0.5\textwidth}{}}
+    \gridline{\fig{figs/sim_grid_da_0p0001.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p0001.pdf}{0.5\textwidth}{}}
+    \gridline{\fig{figs/sim_grid_da_0p0002.pdf}{0.7\textwidth}{}}
     \caption{
         \label{fig:sim_grid_da}
         Outcomes for 468 ringlet simulations having a variety of ringlet
-        masses $m_r$, shear viscosities $\nu_s$, with each panel showing results
-        for ringlets having the same initial radial width,
-        $\Delta a=2.5\times10^{-5}$, $5\times10^{-5}$, $\times10^{-4}$, or $2\times10^{-4}$. Colored squares indicate
-        those ringlets that evolve into the self-confining state with the indicated libration
-        amplitudes $\Delta q$, pink diamonds for those simulations that are partially confined, 
-        and $\times$ for simulations that terminate early when an epi\_int\_lite particle crossed an 
-        adjacent streamline. Black numbers indicate the IDs of selected simulations whose time-evolution
-        are shown in Fig.\ \ref{fig:low_libration_sims}, and the nominal ringlet
-        simulation has ID=345. Pink IDs indicate selected partially confined ringlet simulations
-        whose evolutions are also plotted in Fig.\ \ref{fig:e_prime_q_vs_time}.
+        masses $m_r$ and shear viscosities $\nu_s$, with each panel showing results
+        for those ringlets having the same initial radial width
+        $\Delta a=2.5\times10^{-5}$, $5\times10^{-5}$, $1\times10^{-4}$, or $2\times10^{-4}$. Circles 
+        indicate those ringlets that evolve into the self-confining state, with an x
+        for those simulations that terminate early when an epi\_int\_lite particle crossed an adjacent streamline,
+        and N to indicate the nominal ringlet. The color of each self-confining ringlet indicates
+        whether the ringlet settled into a high--eccentricity gradient state with $e'> 0.86$ (dark blue),
+        or smaller eccentricity gradients $0.4>e'>0.86$ (cyan), $0.06>e'>0.4$ (green), or $e<0.06$ (yellow)
+        with these intervals chosen so that there are approximately 50 simulations in each color-bin.
+        The right-middle plot is redundant, please ignore.
     }
 \end{figure}
 
