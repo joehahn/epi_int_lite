@@ -686,7 +686,7 @@ as another test of the epi\_int\_lite integrator's numerical quality.
 To assess whether the nominal ringlet's evolution is typical of other ringlets
 having alternate values of initial width $\Delta a$, total mass $m_r$, and shear viscosity $\nu_s$,
 a survey of 467 additional ringlet simulations are executed. 
-The survey ringlets are similar to the nominal ringlet 
+These survey ringlets are similar to the nominal ringlet 
 with $N_s=2$ streamlines having $N_p=241$ particles per streamline, initial 
 eccentricity $e=0.01$, initial eccentricity gradient $e'=0$, and viscosities $\nu_b=\nu_s$. 
 But the survey ringlets instead have
@@ -694,8 +694,12 @@ total masses that are geometrically distributed between $10^{-13}\le m_r\le10^{-
 shear viscosities distributed between $10^{-15}\le \nu_s\le 10^{-11}$,
 and initial radial widths distributed between  
 $2.5\times10^{-5}\le \Delta a\le2.0\times10^{-4}$. Survey results are summarized in Fig.\ \ref{fig:sim_grid_da}
-where blue, green and orange squares indicate those ringlets did evolve into a self-confining state,
-with pink diamonds to indicate those simulations described below as ``partially confined''.
+where circles indicate those ringlets that do evolve into a self-confining state.
+All simulations of self-confining ringlets are evolved in time until 
+$10\tau_{dyn}$ where the so-called dynamical time $\tau_{dyn}$ is the moment when
+the ringlet's nonlinearity parameter $q$ first exceeds $0.6$, since Fig.\ \ref{fig:de_prime_nominal}
+suggests that $10\tau_{dyn}$ is sufficient time to assess whether the ringlet
+has truly arrived at the self-confining state. 
 
 \begin{figure}
     \gridline{\fig{figs/sim_grid_da_0p000025.pdf}{0.5\textwidth}{}\fig{figs/sim_grid_da_0p00005.pdf}{0.5\textwidth}{}}
@@ -707,32 +711,15 @@ with pink diamonds to indicate those simulations described below as ``partially 
         masses $m_r$ and shear viscosities $\nu_s$, with each panel showing results
         for those ringlets having the same initial radial width
         $\Delta a=2.5\times10^{-5}$, $5\times10^{-5}$, $1\times10^{-4}$, or $2\times10^{-4}$. Circles 
-        indicate those ringlets that evolve into the self-confining state, with an x
+        indicate those ringlets that evolve into the self-confining state, while an $\times$ is
         for those simulations that terminate early when an epi\_int\_lite particle crossed an adjacent streamline,
-        and N to indicate the nominal ringlet. The color of each self-confining ringlet indicates
-        whether the ringlet settled into a high--eccentricity gradient state with $e'> 0.86$ (dark blue),
+        and N indicates the nominal ringlet simulation. The color of each self-confining ringlet shows
+        whether the ringlet settled into a high--eccentricity gradient state with $e'> 0.86$ (blue),
         or smaller eccentricity gradients $0.4>e'>0.86$ (cyan), $0.06>e'>0.4$ (green), or $e<0.06$ (yellow)
         with these intervals chosen so that there are approximately 50 simulations in each color-bin.
-        The right-middle plot is redundant, please ignore.
+        The middle-right plot is redundant, is here to trick latex into rendering all plots on same page, please ignore.
     }
 \end{figure}
-
-Five panels are shown in Fig.\ \ref{fig:sim_grid_da},  one for each value of initial $\Delta a$,
-and the colored squares in these panels show that there is a single 
-island in the three-dimensional ($\Delta a, m_r, \nu_s$) parameter space where survey
-simulations do evolve into the self-confining state. Blue squares represent those ringlets
-that settle into self-confinement with low libration amplitudes, and these ringlets
-have a nonlinear parameter $q$ that varies by no more than $\Delta q \le 6\times10^{-4}$ 
-as the ringlet librates about equilibrium during the simulation's final 20\%.
-Green squares indicated those ringlets that are librating with higher amplitudes, 
-$6\times10^{-4} < \Delta q \le 4\times10^{-3}$, after settled into self-confinement, 
-while orange squares indicate those self-confining ringlets that are most disturbed,
-with $\Delta q > 4\times10^{-3}$.
-
-Pink diamonds indicate simulations that are ``partially'' confined, these ringlets
-do achieve a high $q\sim0.9$, but angular momentum flux reversal is not complete
-and so their viscous spreading is only slowed not stalled, which 
-is also detailed in the lowest row of plots in Fig.\ \ref{fig:low_libration_sims}.
 
 The $\times$ simulations in Fig.\ \ref{fig:sim_grid_da}
 terminated early when an epi\_int\_lite particle crossed a 
@@ -744,102 +731,12 @@ none of which is accounted for with this version of epi\_int\_lite.
 So this survey simply terminates all such simulations and flags that occurrence with an 
 $\times$ in Fig.\ \ref{fig:sim_grid_da}. Keep in mind though that this does not mean
 that these particular ringlets would not evolve into a self-confining state. Instead,
-the streamlines in these ringlets would evolve so close to each other that a more sophisticated
+the streamlines in these ringlets have evolved so close to each other that a more sophisticated
 and possibly nonlinear treatment of pressure effects is needed 
 to accurately assess these ringlets' fates.
 
-The black numbers in Fig.\ \ref{fig:sim_grid_da} are the IDs of a selection of 
-ringlet simulations that settle into full or partial self-confinement, 
-and the time-histories of those ringlets are
-shown in Fig.\ \ref{fig:low_libration_sims}. Each row of plots there shows
-the time-evolution of the ringlets' nonlinear parameter $q$, semimajor axis width
-$\Delta a$, and eccentricity $e$ for ringlets having the same or similar
-mass $m_r$ and viscosity $\nu_s$. The libration amplitudes $\Delta q$
-that are indicated in Fig.\ \ref{fig:sim_grid_da} via color-coded squares are simply
-the $q$ variations observed in the final $20\%$ of the evolutions
-seen in Fig.\ \ref{fig:low_libration_sims}.
-The lowest row of plots in Fig.\ \ref{fig:low_libration_sims}
-show the evolutions of the partially-confined ringlet simulations that are
-indicated  by pink squares in Fig.\ \ref{fig:sim_grid_da}, that row
-shows that though these simulations have nonlinearity parameters
-that do exceed the theoretical $q=\sqrt{3}/2$ limit expected for self-confinement,
-those ringlets' $\Delta a$ still slowly spread and thus are designated
-``partially'' confined.  Close inspection
-of the $\Delta a$ curves in the row above show that those ringlets' semimajor axes
-also spread albeit more slowly. So it is probably safer to say that the
-simulations in the upper rows of Fig.\ \ref{fig:low_libration_sims}
-are more self-confining that those in the lower rows.
-
-\begin{figure}
-    \gridline{\fig{figs/low_libration_sims_0.pdf}{1.0\textwidth}{}}
-    \gridline{\fig{figs/low_libration_sims_1.pdf}{1.0\textwidth}{}}
-    \gridline{\fig{figs/low_libration_sims_2.pdf}{1.0\textwidth}{}}
-    \vspace{5ex}\ \\
-\end{figure}
-\begin{figure}
-    \gridline{\fig{figs/low_libration_sims_3.pdf}{1.0\textwidth}{}}
-    \gridline{\fig{figs/low_libration_sims_4.pdf}{1.0\textwidth}{}}
-    \gridline{\fig{figs/low_libration_sims_5.pdf}{1.0\textwidth}{}}
-    \vspace{5ex}\ \\
-\end{figure}
-\begin{figure}
-    \gridline{\fig{figs/low_libration_sims_6.pdf}{1.0\textwidth}{}}
-    \caption{
-        \label{fig:low_libration_sims}
-        Each row of plots shows
-        ringlets' nonlinear parameter $q$ (left plot), semimajor axis width
-        $\Delta a$ (middle plot), and streamline's outer, mean, and inner eccentricities $e$ (right plot)
-        versus time $t$
-        for ringlets having the same or similar mass $m_r$ and viscosity $\nu_s$, for each
-        simulation whose black IDs are indicted in Fig.\ \ref{fig:sim_grid_da}. All quantities are plotted 
-        versus $t/\tau_{dyn}$ where each ringlet's dynamical timescale $\tau_{dyn}$
-        is Eqn.\ (\ref{eqn:tau-dyn}).
-    }
-\end{figure}
-
-The quantities shown in Fig.\ \ref{fig:low_libration_sims} are plotted versus 
-$t/\tau_{dyn}$ where $\tau_{dyn}$ is the simulated ringlet's
-dynamical timescale
-\begin{equation}
-    \label{eqn:tau-dyn}
-    \tau_{dyn} = \tau_{\nu, n}\left(\frac{m_r}{m_{r,n}}\right)^\alpha
-        \left(\frac{\nu_s}{\nu_{s,n}}\right)^\beta 
-        \left(\frac{\Delta a}{\Delta a_{n}}\right)^\gamma,
-\end{equation}
-which is assumed to be a power-law in the ringlet's physical properties
-$m_r$, $\nu_s$, $\Delta a$, where 
-$m_{r,n}=5\times10^{-10}$ is the nominal ringlet's mass, 
-$\nu_{s,n}=2.5\times10^{-12}$ is the nominal ringlet's shear viscosity, 
-$\Delta a_{n}=3\times10^{-4}$ is the nominal ringlet's initial semimajor axis width,
-and $\tau_{\nu, n} = 3\times10^3$ is the nominal ringlet's viscous timescale, 
-Eqn.\ (\ref{eqn:viscous-timesscale}).
-The exponents in Eqn.\ (\ref{eqn:tau-dyn}) are $\alpha=0.5$, $\beta=-0.5$, $\gamma=0.0$,
-and are chosen so that the $q$ versus $t/\tau_{dyn}$ curve for all simulations
-in Fig.\ \ref{fig:low_libration_sims} overlaps as much as possible, as
-seen in Fig.\ \ref{fig:q_vs_ID}. Equation (\ref{eqn:tau-dyn}) is used here to anticipate
-execution times for the various simulations shown in Fig.\ \ref{fig:sim_grid_da}, 
-which varies by a factor of $\sim500$, and all simulations shown in 
-Figs.\ \ref{fig:sim_grid_da}--\ref{fig:wt_prime_vs_time} are evolved for the greater of $10\tau_{dyn}$ or $10\tau_\nu$.
-\begin{figure}
-    \plotone{figs/q_vs_ID.pdf}
-    \caption{
-        \label{fig:q_vs_ID}
-        Nonlinear parameter $q$ is plotted versus time for each of the
-        simulations indicated by black IDs in Figs.\ \ref{fig:sim_grid_da} and \ref{fig:low_libration_sims},
-        with time $t$ scaled by each ringlet's empirical dynamical timescale $\tau_{dyn}$,
-        Eqn.\ (\ref{eqn:tau-dyn}). Thick red curve shows the evolution of the
-        nominal ringlet whose ID=345. All other ringlet trajectories are distributed
-        about the nominal ringlet's trajectory, which indicates that Eqn.\ (\ref{eqn:tau-dyn})
-        is an adequate estimator of a ringlet's dynamical evolution timescale
-        when $\alpha=0.5$, $\beta=-0.5$, $\gamma=0.0$.
-    }
-\end{figure}
-
-\subsubsection{partial self--confinement}
-\label{subsec:partial}
-
-The evolution of
-a selection of partially self confined ringlet simulations, as well as the nominal ringlet whose ID=345, 
+UPDATE: The evolution of
+a selection of partially self confined ringlet simulations, as well as the nominal ringlet whose ID=338, 
 are also shown in Fig.\ \ref{fig:e_prime_q_vs_time},
 which plots ringlet's eccentricity gradient $e'$ versus time $t/\tau_{dyn}$. All of these ringlets
 achieve nonlinearity parameters $q\simeq\sqrt{3}/2\simeq0.866$ after time $t\gtrsim$ a few $\tau_{dyn}$, 
@@ -864,7 +761,7 @@ and all ringlets shows in Figs.\ \ref{fig:low_libration_sims}--\ref{fig:e_prime_
 which includes fully as well as partially self-confining ringlets, all have eccentricities $e$
 that decay at the expected rates.
 \begin{figure}
-    \plotone{figs/e_prime_q_vs_time.pdf}
+    \plotone{figs/e_prime_selected.pdf}
     \caption{
         \label{fig:e_prime_q_vs_time}
         Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for selected partially self-confining
