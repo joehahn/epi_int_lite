@@ -717,7 +717,9 @@ has truly arrived at the self-confining state.
         whether the ringlet settled into a high--eccentricity gradient state with $e'> 0.86$ (blue),
         or smaller eccentricity gradients $0.4>e'>0.86$ (cyan), $0.06>e'>0.4$ (green), or $e<0.06$ (yellow)
         with these intervals chosen so that there are approximately 50 simulations in each color-bin.
-        The middle-right plot is redundant, is here to trick latex into rendering all plots on same page, please ignore.
+        All simulations are evolved for the greater of ten dynamical timescales $\tau_{dyn}$, 
+        or ten viscous timescales $10\tau_{\nu}$.
+        The middle-right plot is redundant and is here to trick latex into rendering all plots on same page, please ignore.
     }
 \end{figure}
 
@@ -735,40 +737,44 @@ the streamlines in these ringlets have evolved so close to each other that a mor
 and possibly nonlinear treatment of pressure effects is needed 
 to accurately assess these ringlets' fates.
 
-UPDATE: The evolution of
-a selection of partially self confined ringlet simulations, as well as the nominal ringlet whose ID=338, 
-are also shown in Fig.\ \ref{fig:e_prime_q_vs_time},
-which plots ringlet's eccentricity gradient $e'$ versus time $t/\tau_{dyn}$. All of these ringlets
-achieve nonlinearity parameters $q\simeq\sqrt{3}/2\simeq0.866$ after time $t\gtrsim$ a few $\tau_{dyn}$, 
-but these ringlets' eccentricity gradients are significantly less than the theoretical 
-$e'\simeq0.866$ limit (dotted red curve). In fact the range of simulated ringlet's $e'$ almost spans the entire 
+Each circle in Fig.\ \ref{fig:sim_grid_da} represents a self-confining ringlet whose
+nonlinearity parameter settles into a value that is close to the anticipated value, $q\simeq0.9$.
+But these self-confining ringlets' final eccentricity gradients $e'$ also settle 
+into a spectrum of values, $0\le e' \le 0.9$, with
+outcomes indicated by circle color in Fig.\ \ref{fig:sim_grid_da}:
+blue for a high--eccentricity gradient ringlets having 
+$e'> 0.86$, cyan for smaller eccentricity gradients $0.4>e'>0.86$, green for $0.06>e'>0.4$ (green),
+and yellow for very low eccentricity gradients $e<0.06$,
+with these intervals chosen so that there are approximately 50 simulations in each color-bin.
+Fig.\ \ref{fig:e_prime_q_vs_time} how eccentricity gradient varies over time $t/\tau_{dyn}$
+for a sample of  self-confining ringlet simulations. That Figure also shows 
+that the range of simulation $e'$ outcomes also agrees with the 
 range of eccentricity gradients observed among Saturn's most well-studied narrow eccentric
 ringlets, the Maxwell, Titan, Laplace, and Huygens ringlets, whose $e'$ are
-indicated by the black horizontal lines in Fig.\ \ref{fig:e_prime_q_vs_time}. Also keep in mind that
-Fig.\ \ref{fig:e_prime_q_vs_time} is not an apples-to-apples comparison of simulated ringlets to 
-observed ringlets, since the simulations reported in Fig.\ \ref{fig:e_prime_q_vs_time} all have a common 
-semimajor axis width $\Delta a$, eccentricity $e_0$,  and very similar viscosities $\nu_s$,
-whereas the observed ringlets have a spectrum of physical properties ($e_0$, $\Delta a$, $m_r$, $\nu_s$).
-The main point of Fig.\ \ref{fig:e_prime_q_vs_time} is that, if the known narrow eccentric
-ringlets are in fact self-confining, then they are of the partially self confined variety,
-which means that they have a nonlinearity parameter $q\simeq\sqrt{3}/2\simeq0.866$, an eccentricity gradient
-$e'$ that is significantly less than $0.866$, as well as a periapse twist $|\tilde{\omega}'|$ that is not
-negligable per Eqn.\ (\ref{eqn:q}). 
+indicated by the black horizontal lines in Fig.\ \ref{fig:e_prime_q_vs_time}.
 
-Section \ref{subsec:eccentricity} will derive the rate at which
-a self-confining ringlet's eccentricity $e$ decays over time due to viscosity, Eqns.\ (\ref{eqn:de2/dt_v2}--\ref{eqn:e(t)}),
-and all ringlets shows in Figs.\ \ref{fig:low_libration_sims}--\ref{fig:e_prime_q_vs_time},
-which includes fully as well as partially self-confining ringlets, all have eccentricities $e$
-that decay at the expected rates.
+Also keep in mind that Fig.\ \ref{fig:e_prime_q_vs_time} is not an apples-to-apples comparison 
+of simulated ringlets to observed ringlets, since no attempt is made here to match
+the observed ringlet's semimajor-axis width $\Delta a$ to the simulated ringlet's final $\Delta a$.
+Rather,  Fig.\ \ref{fig:e_prime_q_vs_time}'s main point is that the observed range of ringlet
+eccentricity gradient can be accounted for by this model of a viscous self-gravitating ringlet
+that is also self-confining.
+And lastly, recall that $q=\sqrt{e'^2 + \tilde{\omega}'^2}$ which tells us that lower eccentricity gradient
+ringlets have a larger periapse twist $|\tilde{\omega}'|$.
+
 \begin{figure}
     \plotone{figs/e_prime_selected.pdf}
     \caption{
         \label{fig:e_prime_q_vs_time}
-        Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for selected partially self-confining
-        ringlets whose simulation IDs are indicated on the right of this Figure and
-        as pink text in Fig.\ \ref{fig:sim_grid_da}.
-        Black horizontal lines show $e'$ for Saturn's Maxwell, Titan, Laplace, and Huygens ringlets
-        (references?), and the dotted line indicates the $e'=\sqrt{3}/2$ threshold.
+        Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for a sample of self-confining
+        ringlets selected from those seen Fig.\ \ref{fig:sim_grid_da} such
+        that their eccentricity gradients $e'$ span the range of values observed among the
+        Maxwell, Titan, Laplace, and Huygens ringlets at Saturn whose $e'$ values
+        are indicated by horizontal black lines (references). Each curve ends with that
+        simulation's ID, and that ID is also indicated in Fig.\ \ref{fig:sim_grid_da}.
+        Dotted line is the $e'=\sqrt{3}/2$ threshold.
+        Todo: show Epsilon ringlet, add IDs to Fig 15, and do additional simulations to populate down
+        to the Huygens' $e'$.  
     }
 \end{figure}
 
@@ -793,6 +799,12 @@ the ringlet's viscosity could then be inferred.
         where $\nu_n=2.5\times10^{-12}$ is the nominal ringlet's shear visocity.
     }
 \end{figure}
+
+
+\subsubsection{variations with initial radial width}
+\label{subsec:width-variations}
+
+blah
 
 \subsubsection{variations with initial eccentricity}
 \label{subsec:e-variations}
@@ -826,6 +838,13 @@ true confinement had they started with sufficiently high initial $e_0$.
         is always unconfined and experiences fastest radial spreading.
     }
 \end{figure}
+
+Section \ref{subsec:eccentricity} will derive the rate at which
+a self-confining ringlet's eccentricity $e$ decays over time due to viscosity, Eqns.\ (\ref{eqn:de2/dt_v2}--\ref{eqn:e(t)}),
+and all ringlets shows in Figs.\ \ref{fig:low_libration_sims}--\ref{fig:e_prime_q_vs_time},
+which includes fully as well as partially self-confining ringlets, all have eccentricities $e$
+that decay at the expected rates.
+
 
 \subsection{eccentricity damping}
 \label{subsec:eccentricity}
