@@ -11,9 +11,9 @@ N_processes = 7
 
 #generate range of logarithmically-spaced values for total_ring_mass
 import numpy as np
-mass_min = 1.0e-13
+mass_min = 1.0e-14
 mass_max = 1.0e-9
-N_masses = 9
+N_masses = 11
 total_ring_mass = np.exp(np.linspace(np.log(mass_min), np.log(mass_max), num=N_masses))
 print 'total_ring_mass = ', total_ring_mass.tolist()
 
@@ -119,8 +119,8 @@ df_command = df
 #remove previous scans
 cmd = 'rm -rf permutations/*'
 r = os.system(cmd)
-cmd = 'touch permutations/nothing'
-r = os.system(cmd)
+#cmd = 'touch permutations/nothing'
+#r = os.system(cmd)
 
 #make list of commands that will be executed in parallel
 df = df_command
