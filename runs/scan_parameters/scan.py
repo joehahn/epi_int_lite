@@ -54,23 +54,30 @@ dynamical_timescale = times_max/10.0
 df['dynamical_timescale'] = dynamical_timescale
 df_permutations = df
 
+#check whether output of scan.ipynb exists
+file = 'df_results.parquet'
+df_results_exists = False
+import os
+if (os.path.exists(file)):
+    df_results_exists = True
+print 'df_results_exists = ', df_results_exists
+
 #get dynamical_timescale from file df_results.parquet if it exists
 #sims with dynamical_timescale<viscous_timescale get dynamical_timescale=viscous_timescale and are then evolved to 10*dynamical_timescale
 #ALSO, unconfined sims with current_timestep<10*viscous_timescale get dynamical_timescale=1.5*viscous_timescale
-import os
-file = 'df_results.parquet'
-if (os.path.exists(file)):
+if (df_results_exists):
     df = pd.read_parquet(file)
-    df = df[['sim_id', 'current_timestep', 'viscous_timescale', 'dynamical_timescale', 'outcome']]
+    df = df[['sim_id', 'current_timestep', 'viscous_timescale', 'dynamical_timescale', 'timesteps_per_output', 'outcome']]
     df['current_time'] = df.current_timestep*dt
     idx = (df.dynamical_timescale < df.viscous_timescale)
     df.loc[idx, 'dynamical_timescale'] = df.loc[idx, 'viscous_timescale']
     idx = (df.outcome == 'unconfined') & (df.current_time < 10*df.viscous_timescale)
     df.loc[idx, 'dynamical_timescale'] = 1.5*df.loc[idx, 'viscous_timescale']
-    df = df[['sim_id', 'current_timestep', 'dynamical_timescale', 'viscous_timescale']]
+    df = df[['sim_id', 'current_timestep', 'timesteps_per_output', 'dynamical_timescale', 'viscous_timescale', 'outcome']]
     idx = (df.dynamical_timescale > 0)
     df = df[idx]
-    df = df.rename({'dynamical_timescale':'dynamical_timescale_obs'}, axis=1)
+    df = df.rename({'dynamical_timescale':'dynamical_timescale_obs', 'timesteps_per_output':'previous_timesteps_per_output'}, axis=1)
+    df = df.rename({'outcome':'previous_outcome'}, axis=1)
     df = df.drop('current_timestep', axis=1)
     df_dynamical = df
 else:
@@ -95,16 +102,26 @@ df_timesteps = df
 #set output_folder, note that bulk_viscosity=shear_viscosity
 df = df_timesteps
 df['output_folder'] = 'permutations/'
-df.output_folder += 'sim_id=' + df.sim_id.astype(str) + '!'
-df.output_folder += 'total_ring_mass=' + df.total_ring_mass.astype(str) + '!'
-df.output_folder += 'shear_viscosity=' + df.shear_viscosity.astype(str) + '!'
-df.output_folder += 'bulk_viscosity=' + df.shear_viscosity.astype(str) + '!'
-df.output_folder += 'radial_width=' + df.radial_width.astype(str) + '!'
-df.output_folder += 'timesteps_per_output=' + df.timesteps_per_output.astype(str) + '!'
+df.output_folder += 'sim_id_' + df.sim_id.astype(str) #+ '!'
+#df.output_folder += 'total_ring_mass=' + df.total_ring_mass.astype(str) + '!'
+#df.output_folder += 'shear_viscosity=' + df.shear_viscosity.astype(str) + '!'
+#df.output_folder += 'bulk_viscosity=' + df.shear_viscosity.astype(str) + '!'
+#df.output_folder += 'radial_width=' + df.radial_width.astype(str) + '!'
+#df.output_folder += 'timesteps_per_output=' + df.timesteps_per_output.astype(str) + '!'
 df_output = df
 
-#create the commands that will execute each epi_int job, with bulk_viscosity=shear_viscosity
+#only re-run sims having previous_outcome=unconfined
+unconfined_only = True
 df = df_output
+print ('df.shape = ', df.shape)
+if (unconfined_only):
+    idx = (df.previous_outcome == 'unconfined')
+    df = df[idx]
+print ('df.shape = ', df.shape)
+df_run = df
+
+#create the commands that will execute each epi_int job, with bulk_viscosity=shear_viscosity
+df = df_run.copy()
 df['command'] = ''
 import json
 for idx, row in df.iterrows():
@@ -116,15 +133,14 @@ for idx, row in df.iterrows():
     df.loc[idx, 'command'] = command
 df_command = df
 
-#remove previous scans
-cmd = 'rm -rf permutations/*'
-r = os.system(cmd)
-#cmd = 'touch permutations/nothing'
-#r = os.system(cmd)
-
 #make list of commands that will be executed in parallel
 df = df_command
 commands = df.command.values.tolist()
+
+#create permutations folder as needed
+folder = 'permutations'
+if (os.path.exists(folder) == False):
+   os.makedirs(folder)
 
 #execute simulations in parallel
 print '********'
