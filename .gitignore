@@ -1,5 +1,6 @@
 private
 *.npy
+*.pkl
 */*/*.pyc
 */*.ipynb*
 */*/.ipynb_checkpoints
