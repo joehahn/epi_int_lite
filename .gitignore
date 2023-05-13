@@ -7,7 +7,6 @@ private
 *.aux
 *.dvi
 *.log
-monitor.pkl
 .DS_Store
 paper/.DS_Store
 source/helper_fns.pyc
