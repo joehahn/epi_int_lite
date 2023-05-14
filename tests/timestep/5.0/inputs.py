@@ -12,8 +12,8 @@ particles_per_streamline = 241
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.5/5.0
-timesteps_per_output = int(1300*5.0)
+dt = 0.5*10
+timesteps_per_output = 1300/10
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
