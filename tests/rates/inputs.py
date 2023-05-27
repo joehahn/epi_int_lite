@@ -45,7 +45,23 @@ J2 = 0.01
 initial_orbits = {
     'shape':'log-e',
     'e':(1.0e-6, 1.0e-2),
+    'e_prime':0.0,
+    'w_prime':0.0
 }
 
 #output folder
 output_folder = 'output'
+
+#parse any optional commandline modifications to the above, note these modifications will be ignored by Jupyter
+import argparse
+import json
+parser = argparse.ArgumentParser() 
+parser.add_argument('-m', '--modified_params', type=str, dest='modified_params', required=False)
+args, unknown_args = parser.parse_known_args()
+modified_params = None
+if (args.modified_params):
+    modified_params_str = args.modified_params
+    modified_params = json.loads(modified_params_str)
+    print 'modified_params =', modified_params
+    for key, val in modified_params.iteritems():
+        exec(key + '=val')
