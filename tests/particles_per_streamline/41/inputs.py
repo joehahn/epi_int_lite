@@ -31,8 +31,8 @@ fast_gravity = False
 shear_viscosity = 3.0e-13
 bulk_viscosity = shear_viscosity
 
-#ring kinematic bulk viscosity, set bulk_viscosity < 0 to turn off
-bulk_viscosity = shear_viscosity
+#add fictitious torque at inner and outer streamlines, to oppose any radial spreading
+confine_edges = False
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
@@ -51,3 +51,17 @@ initial_orbits = {
 
 #output folder
 output_folder = 'output'
+
+#parse any optional commandline modifications to the above, note these modifications will be ignored by Jupyter
+import argparse
+import json
+parser = argparse.ArgumentParser() 
+parser.add_argument('-m', '--modified_params', type=str, dest='modified_params', required=False)
+args, unknown_args = parser.parse_known_args()
+modified_params = None
+if (args.modified_params):
+    modified_params_str = args.modified_params
+    modified_params = json.loads(modified_params_str)
+    print 'modified_params =', modified_params
+    for key, val in modified_params.iteritems():
+        exec(key + '=val')
