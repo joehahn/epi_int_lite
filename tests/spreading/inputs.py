@@ -29,7 +29,7 @@ fast_gravity = False
 
 #ring kinematic shear and bulk viscosity, set < 0 to turn off
 shear_viscosity = 1.0e-12
-bulk_viscosity = 1.5*shear_viscosity
+bulk_viscosity = 1.0*shear_viscosity
 
 #add fictitious torque at inner and outer streamlines, to oppose any radial spreading
 confine_edges = False
