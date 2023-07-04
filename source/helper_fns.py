@@ -458,7 +458,7 @@ def restore_output(output_folder):
         monitor = pickle.load(fp)
     return r, t, vr, vt, times, monitor
 
-#print eta as needed, and end simulation if monitor says something bad happened
+#print eta as needed, and end simulation if monitor says something bad happened to a self_interacting ringlet
 import time as tm
 def update_display(number_of_outputs, total_number_of_outputs, dt, timestep, monitor):
     monitor['current_time'] = int(tm.time())
@@ -469,10 +469,11 @@ def update_display(number_of_outputs, total_number_of_outputs, dt, timestep, mon
         '    number of orbits = ' + str(int(timestep*dt/2.0/np.pi)) + \
         '    eta (minutes) = ', eta_min
     continue_sim = True
-    for key in ['streamline_crossing_timestep', 'nan_timestep']:
-        if (monitor[key]):
-            print 'sim terminated at timestep = ' + str(timestep)
-            continue_sim = False
+    if (monitor['self_interacting'] == True):
+        for key in ['streamline_crossing_timestep', 'nan_timestep']:
+            if (monitor[key]):
+                print 'sim terminated at timestep = ' + str(timestep)
+                continue_sim = False
     return continue_sim
 
 #initialize streamlines
@@ -547,9 +548,15 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #convert planetocentric coordinates to mixed-center coordinates
     r, t, vr, vt = planeto2mixed(total_ring_mass, r, t, vr, vt)
     
+    #ringlet is self_interacting if gravity or viscosity or pressure is turned on
+    self_interacting = False
+    if ((G_ring > 0) or (shear_viscosity > 0) or (bulk_viscosity > 0) or (Q_ring > 0)):
+        self_interacting = True
+        
     #this dict is used to track execution time and when streamlines cross or nan is generated
     start_time = int(tm.time())
-    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 'nan_timestep':None}
+    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 
+        'nan_timestep':None, 'self_interacting':self_interacting}
 
     return r, t, vr, vt, c, monitor
 
