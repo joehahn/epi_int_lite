@@ -112,7 +112,7 @@ so divide simulation time $t$ by $2\pi$ and multiply
 by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
-(see Appendix \ref{sec:Appendix B}), and all simulations
+(see Appendix \ref{sec:Appendix A}), and all simulations
 adopt Saturn-like values of $J_2=0.01$ and $R_p=r_0/2$ where $R_p$ is the planet's
 mean radius.
 
@@ -204,15 +204,15 @@ Dissipative collisions also transmits linear momentum in the perpendicular direc
 which results in the additional acceleration
 \begin{equation}
 \label{eqn:bulk_viscosity}
-    A_{\nu, \perp}=-\frac{1}{\sigma}\frac{\partial {\cal G}}{\partial r} 
+    A_{\nu, \perp}=-\frac{1}{\sigma}\frac{\partial {\cal G}}{\partial r},
 \end{equation}
 where the radial flux of linear momentum due to ringlet viscosity is
 \begin{equation}
     \label{eqn:G}
     {\cal G} = -\left(\frac{4}{3}\nu_s + \nu_b\right)\sigma\frac{\partial v_r}{\partial r}
-        -\left(\nu_b - \frac{2}{3}\nu_s\right)\frac{\sigma v_r}{r}
+        -\left(\nu_b - \frac{2}{3}\nu_s\right)\frac{\sigma v_r}{r},
 \end{equation}
-$\nu_b$ is the ringlet's kinematic bulk viscosity and $v_r$ is the paricle's radial velocity
+$\nu_b$ is the ringlet's kinematic bulk viscosity, and $v_r$ is the paricle's radial velocity
 \citep{HS13}.
 
 In the hydrodynamic approximation there is also the acceleration due to ringlet pressure $p$
@@ -311,7 +311,9 @@ $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{in
 so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
 the inner streamline's, which in turn causes the streamlines' separations along
 the ringlet's pre-periapse side (where $\varphi < 0$) to differ slightly from that int the post-periapse ($\varphi>0$) zone.
-Which in turn makes the ringlet's surface density asymmetric, see Fig.\ \ref{fig:radial_sigma_nominal}.
+Which in turn makes the ringlet's surface density asymmetric {\it i.e.}\ is
+maximal just prior to periapse, see
+Figs.\ \ref{fig:nominal_sigma_vs_longitude}--\ref{fig:radial_sigma_nominal}.
 
 \begin{figure}
 \plotone{figs/e_nominal.pdf}
@@ -378,9 +380,7 @@ as these are the terms that contribute to the nonlinearity parameter of \cite{BG
 \end{equation}
 See also Fig.\ \ref{fig:de_prime_nominal} which plot's the nominal
 ringlet's dimensionless eccentricity gradient $e'$, dimensionless periapse twist $\tilde{\omega}'$,
-and nonlinearity parameter $q$ versus time. Most of the simulations examined here have
-$|\tilde{\omega}'|\ll|e'|$ so that $q\simeq|e'|$ (excepting those
-described in Section \ref{subsec:partial}), and all simulated self-confining ringlets
+and nonlinearity parameter $q$ versus time. All simulated self-confining ringlets
 have a positive eccenticity gradient and a negative periapse twist such that
 the outer ringlet's periapse trails the inner ringlet's, consistent with the findings of
 \cite{BGT83}.\vfil
