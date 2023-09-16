@@ -33,7 +33,7 @@ bulk_viscosity = 1.0*shear_viscosity
 
 #add fictitious torques at inner and/or outer streamlines, to oppose any radial spreading
 confine_inner_edge = False
-confine_outer_edge = False
+confine_outer_edge = True
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
