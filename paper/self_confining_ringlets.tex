@@ -306,11 +306,14 @@ the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{in
 and longitude of periapse difference
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$,
 which both settle into equilibrium values after the ringlet arrives at the self-confining
-state. In all simulations examined here, the ringlet's periapse twist 
+state. 
+
+In all self-confing ringlet simulations examined here, the ringlet's periapse twist 
 $\Delta\tilde{\omega} = \tilde{\omega}_{\text{outer}} - \tilde{\omega}_{\text{inner}}$ is negative,
 so the outer streamline's longitude of periapse $\tilde{\omega}$ trails
 the inner streamline's, which in turn causes the streamlines' separations along
-the ringlet's pre-periapse side (where $\varphi < 0$) to differ slightly from that int the post-periapse ($\varphi>0$) zone.
+the ringlet's pre-periapse side (where $\varphi = \theta - \tilde{\omega} < 0$) 
+to differ slightly from the post-periapse ($\varphi>0$) side.
 Which in turn makes the ringlet's surface density asymmetric {\it i.e.}\ is
 maximal just prior to periapse, see
 Figs.\ \ref{fig:nominal_sigma_vs_longitude}--\ref{fig:radial_sigma_nominal}.
@@ -1077,6 +1080,23 @@ This research was supported by the National Science Foundation via Grant No.\ AS
 \section{Appendix A}
 \label{sec:Appendix A}
 
+The drift step implemented in the original epi\_int code utilized the epicyclic equations of \cite{BL94}
+to advance an unperturbed particle along it trajectory about an oblate planet. Those equations
+convert a particle's spatial coordinates $r, v_r, \theta, v_\theta$
+into epicyclic orbit elements $a,e,M,\tilde{\omega}$ that are easily advanced by timestep
+$\Delta t$, after which the epicyclic elements are converted back to spatial coordinates
+with an accuracy to ${\cal O}(e^2)$. Note though that the epicyclic equations are not reversible;
+every conversion from spatial to epicyclic coordinates or vice-versa results in error of order ${\cal O}(e^3)$,
+and that causes the orbits of the epi\_int particles to slowly drift due to this numerical error. 
+But that slow numerical drift
+was not problematic for the relatively short epi\_int simulations reported in \cite{HS13} that evolved
+Saturn's B ring for $\sim10^4$ orbit periods. However a viscous self-gravitating
+ringlet must be evolved for $10^5$ to $10^6$ orbit periods in order for self-confinement to occur,
+and simulations having those longer execution times were being defeated by this orbital drift. 
+The remedy then is to derive al alternate an alternate set of epicyclic equations that
+{\em are} reversible, which means that epi\_int\_lite's drift step will not be a significant
+source of numerical error.
+
 Derive the more accurate drift step used by epi\_int\_lite...
 
 Show that angular velocity $\omega=v_\theta/r\simeq\Omega(1+2e\cos M)$ to
@@ -1100,8 +1120,8 @@ where $m_1 = m_r/N_r$ is the mass of a single streamline.
 
 Compare epi\_int\_lite to theoretical predictions
 
-\section{Appendix D}
-\label{sec:Appendix D}
+\section{Appendix C}
+\label{sec:Appendix C}
 
 This examines the viscous evolution of a narrow eccentric non-gravitating
 ringlet that is identical to the nominal ringlet of Section \ref{subsec:nominal} but
@@ -1144,14 +1164,14 @@ viscous spreading.
     }
 \end{figure}
 
-\section{Appendix E}
-\label{sec:Appendix E}
+\section{Appendix D}
+\label{sec:Appendix D}
 
 This Appendix will use the orbit elements derived in Appendix \ref{sec:Appendix A} to
 derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}, and then Eqn.\ (\ref{eqn:L_nu}).
 
-\section{Appendix F}
-\label{sec:Appendix F}
+\section{Appendix E}
+\label{sec:Appendix E}
 
 Viscous and gravitational energy transport...
 
