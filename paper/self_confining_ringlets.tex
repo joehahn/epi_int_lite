@@ -1081,21 +1081,67 @@ This research was supported by the National Science Foundation via Grant No.\ AS
 \label{sec:Appendix A}
 
 The drift step implemented in the original epi\_int code utilized the epicyclic equations of \cite{BL94}
-to advance an unperturbed particle along it trajectory about an oblate planet. Those equations
-convert a particle's spatial coordinates $r, v_r, \theta, v_\theta$
+to advance an unperturbed particle along its trajectory about an oblate planet. Those equations
+convert a particle's spatial coordinates $r, \theta, v_r, v_\theta$
 into epicyclic orbit elements $a,e,M,\tilde{\omega}$ that are easily advanced by timestep
 $\Delta t$, after which the epicyclic elements are converted back to spatial coordinates
 with an accuracy to ${\cal O}(e^2)$. Note though that the epicyclic equations are not reversible;
-every conversion from spatial to epicyclic coordinates or vice-versa results in error of order ${\cal O}(e^3)$,
-and that causes the orbits of the epi\_int particles to slowly drift due to this numerical error. 
-But that slow numerical drift
+every conversion from spatial to epicyclic coordinates or vice-versa also introduces an 
+error of order ${\cal O}(e^3)$, and the accumulation of those errors causes the orbits of the epi\_int particles to 
+slowly drift over time.  But that slow numerical drift
 was not problematic for the relatively short epi\_int simulations reported in \cite{HS13} that evolved
-Saturn's B ring for $\sim10^4$ orbit periods. However a viscous self-gravitating
-ringlet must be evolved for $10^5$ to $10^6$ orbit periods in order for self-confinement to occur,
+Saturn's B ring for typically $\sim10^4$ orbit periods. However the viscous self-gravitating
+ringlets considered here must be evolved for $10^5$ to $10^6$ orbit periods in order for self-confinement to occur,
 and simulations having those longer execution times were being defeated by this orbital drift. 
-The remedy then is to derive al alternate an alternate set of epicyclic equations that
-{\em are} reversible, which means that epi\_int\_lite's drift step will not be a significant
+The remedy is to derive an alternate set of epicyclic equations that
+{\em are} reversible such that the epi\_int\_lite's drift step will not be a significant
 source of numerical error.
+
+The equation of motion for an unperturbed particle in orbit about the central planet is 
+\begin{equation}
+    \label{eqn:EOM}
+    \ddot{\mathbf{r}}=-\nabla\Phi
+\end{equation}
+where the planet's gravitational potential is
+\begin{equation}
+    \label{eqn:Phi}
+    \Phi = -\frac{GM}{r} - \frac{J_2GMR^2}{2r^3}
+\end{equation}
+where $M$ is the planet's mass, $R$ its radius, $J_2$ its second zonal harmonic due to oblateness,
+and with higher-order $J_{n>2}$ terms ignored here. The angular part of Eqn.\ (\ref{eqn:EOM}) is
+\begin{equation}
+    \label{eqn:angular_EOM}
+    \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = -\frac{\partial\Phi}{\partial\theta} = 0
+\end{equation}
+so the particle's specific angular momentum $h=r^2\dot{\theta}=r v_\theta$ is conserved {\it i.e.}
+\begin{equation}
+    \label{eqn:theta-dot}
+    \dot{\theta} = \frac{h}{r^2},
+\end{equation}
+and inserting the above into the radial part of Eqn.\ (\ref{eqn:EOM}) yields
+\begin{equation}
+    \label{eqn:radial_EOM}
+    \ddot{r} = \frac{h^2}{r^3} -\frac{GM}{r^2} - \frac{3J_2GMR^2}{2r^4}.
+\end{equation}
+Solving the above to first-order accuracy would then yield
+\begin{eqnarray}
+    \label{eqn:linearized_soln}
+    r &\simeq& a(1-e\cos M) \nonumber\\
+    \theta &\simeq& \frac{\Omega}{\kappa}(M+2e\sin M) + \tilde{\omega} \nonumber\\
+    v_r = \dot{r} &\simeq& ea\kappa\sin M \nonumber\\
+    v_\theta = r\dot{\theta} &\simeq& a\Omega(1 + e\cos M)
+\end{eqnarray}
+where $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
+that have errors of order ${\cal O}(e^2)$. Equations (\ref{eqn:linearized_soln})
+are easily inverted, which would then provide epicyclic
+orbit elements $a$, $e$, $\tilde{\omega}$, $M$ as functions of the particle's 
+spatial coordinates $r$, $\theta$, $v_r$, $v_\theta$, but applying them
+here would be even more problematic since the conversion from spatial coordinates to
+orbit elements would accrue ${\cal O}(e^2)$ errors during every drift step, which is even
+worse that the rate at which epi\_int's drift step accrues errors.
+
+This fix is to...
+
 
 Derive the more accurate drift step used by epi\_int\_lite...
 
