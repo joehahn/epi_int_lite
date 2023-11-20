@@ -1085,7 +1085,7 @@ to advance an unperturbed particle along its trajectory about an oblate planet. 
 convert a particle's spatial coordinates $r, \theta, v_r, v_\theta$
 into epicyclic orbit elements $a,e,M,\tilde{\omega}$ that are easily advanced by timestep
 $\Delta t$, after which the epicyclic elements are converted back to spatial coordinates
-with an accuracy to ${\cal O}(e^2)$. Note though that the epicyclic equations are not reversible;
+with an accuracy to ${\cal O}(e^2)$. Note though that those epicyclic equations are not reversible;
 every conversion from spatial to epicyclic coordinates or vice-versa also introduces an 
 error of order ${\cal O}(e^3)$, and the accumulation of those errors causes the orbits of the epi\_int particles to 
 slowly drift over time.  But that slow numerical drift
@@ -1123,7 +1123,7 @@ and inserting the above into the radial part of Eqn.\ (\ref{eqn:EOM}) yields
     \label{eqn:radial_EOM}
     \ddot{r} = \frac{h^2}{r^3} -\frac{GM}{r^2} - \frac{3J_2GMR^2}{2r^4}.
 \end{equation}
-Solving the above to first-order accuracy would then yield
+Solving the above to first-order accuracy ordinarily yields
 \begin{eqnarray}
     \label{eqn:linearized_soln}
     r &\simeq& a(1-e\cos M) \nonumber\\
@@ -1137,7 +1137,7 @@ where
     \Omega(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 + \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2} \nonumber\\
     \kappa(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 - \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2},
 \end{eqnarray}
-with $\Omega$ being the particle's orbital frequency and $\kappa$ its epicyclic
+with $\Omega$ being the particle's mean orbital frequency and $\kappa$ its epicyclic
 frequency. In the above,  $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
 that have errors of order ${\cal O}(e^2)$. Equations (\ref{eqn:linearized_soln})
 are easily inverted, which would then provide epicyclic
@@ -1154,7 +1154,7 @@ angular coordinate, $\theta=(\Omega/\kappa)(M+2e\sin M) + \tilde{\omega}$,
 so that $\dot{\theta} =\Omega(1+2e\cos M)$. Then require the constant $h=r^2\dot{\theta}=a^2\Omega$
 be satisfied exactly, which provides the revised expression for $r$ as a function of orbit elements,
 $r = a/\sqrt{1+2e\cos M}$, noting that this expression differs from that in Eqn.\ (\ref{eqn:linearized_soln}) 
-by an amount of order ${\cal O}(e^2)$, which is this solution's allowed error.
+by an amount of order ${\cal O}(e^2)$ which is this solution's allowed error.
 Using the above it is then straightforward to complete the revisions to Eqn.\ (\ref{eqn:linearized_soln}):
 \begin{eqnarray}
     \label{eqn:revised_linearized_soln}
