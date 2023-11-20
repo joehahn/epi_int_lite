@@ -1131,7 +1131,14 @@ Solving the above to first-order accuracy would then yield
     v_r = \dot{r} &\simeq& ea\kappa\sin M \nonumber\\
     v_\theta = r\dot{\theta} &\simeq& a\Omega(1 + e\cos M)
 \end{eqnarray}
-where $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
+where
+\begin{eqnarray}
+    \label{eqn:omega_kappa}
+    \Omega(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 + \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2} \nonumber\\
+    \kappa(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 - \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2},
+\end{eqnarray}
+with $\Omega$ being the particle's orbital frequency and $\kappa$ its epicyclic
+frequency. In the above,  $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
 that have errors of order ${\cal O}(e^2)$. Equations (\ref{eqn:linearized_soln})
 are easily inverted, which would then provide epicyclic
 orbit elements $a$, $e$, $\tilde{\omega}$, $M$ as functions of the particle's 
@@ -1140,10 +1147,58 @@ here would be even more problematic since the conversion from spatial coordinate
 orbit elements would accrue ${\cal O}(e^2)$ errors during every drift step, which is even
 worse that the rate at which epi\_int's drift step accrues errors.
 
-This fix is to...
+The remedy is to choose an alternate set of equations (\ref{eqn:linearized_soln}) that also
+solve the equation of motion (\ref{eqn:EOM}) to the same accuracy while  
+satisfying Eqn.\ (\ref{eqn:theta-dot}) exactly. Begin with the above expression for the
+angular coordinate, $\theta=(\Omega/\kappa)(M+2e\sin M) + \tilde{\omega}$,
+so that $\dot{\theta} =\Omega(1+2e\cos M)$. Then require the constant $h=r^2\dot{\theta}=a^2\Omega$
+be satisfied exactly, which provides the revised expression for $r$ as a function of orbit elements,
+$r = a/\sqrt{1+2e\cos M}$, noting that this expression differs from that in Eqn.\ (\ref{eqn:linearized_soln}) 
+by an amount of order ${\cal O}(e^2)$, which is this solution's allowed error.
+Using the above it is then straightforward to complete the revisions to Eqn.\ (\ref{eqn:linearized_soln}):
+\begin{eqnarray}
+    \label{eqn:revised_linearized_soln}
+    r &=& \frac{a}{\sqrt{1+2e\cos M}} \nonumber\\
+    \theta &=& \frac{\Omega}{\kappa}(M+2e\sin M) + \tilde{\omega} \nonumber\\
+    v_r = \dot{r} &=& \frac{ea\kappa\sin M}{(1 + 2e\cos M)^{3/2}}  = ea\kappa\sin M\left(\frac{r}{a}\right)^3\nonumber\\
+    v_\theta = r\dot{\theta} &=& a\Omega\sqrt{1 + 2e\cos M} = \frac{a^2\Omega}{r}
+\end{eqnarray}
+where $\Omega$ and $\kappa$ are Eqns.\ (\ref{eqn:omega_kappa}) and $M=\kappa t$.
 
+Eqns.\ (\ref{eqn:revised_linearized_soln}) must also be inverted so
+that the particle's epicyclic orbit elements $a, e, \tilde{\omega}, M$ can be obtained
+from the particle's spatial coordinates $r, \theta, v_r, v_\theta$, which is done via
+the following:
 
-Derive the more accurate drift step used by epi\_int\_lite...
+\begin{enumerate}
+
+\item Calculate the particle's specific angular momentum $h=r v_\theta$ and then solve 
+$h^2 = a^4\Omega^2 = GMa[1 + (3J_2/2)(R/a)^2]$
+for the particle's semimajor axis $a$, which is
+\begin{equation}
+    \label{eqn:a}
+    a = R\left(C + \sqrt{C^2 - 3J_2/2}\right)
+\end{equation}
+where constant $C=h^2/2GMR$.
+
+\item Calculate $\Omega$ and $\kappa$ using Eqns.\ (\ref{eqn:omega_kappa})
+
+\item Note that $e\sin M = (v_r/a\kappa)(a/r)^3$ and $e\cos M = [(a/r)^2 - 1]/2$, which 
+provides the particle's eccentricity via $e = \sqrt{(e\sin M)^2 + (e\cos M)^2}$
+and its mean anomaly $M$ from $\tan M = e\sin M/e\cos M$.
+
+\item The particle's longitude of periapse is 
+$\tilde{\omega} = \theta - (\Omega/\kappa)(M + 2e\sin M)$.
+
+\end{enumerate}
+These equations satisfy the equation of motion (\ref{eqn:EOM}) to accuracy ${\cal O}(e)$ and
+with errors of order ${\cal O}(e^2)$. To advance a particle during epi\_int\_lite's drift step from 
+time $t$ to time $t + \Delta t$, use the above steps 1-4 to convert the particle's spatial
+coordinates $r, \theta, v_r, v_\theta$ to epicyclic orbit elements $a,e,M,\tilde{\omega}$,
+update the particle's mean anomaly via $M\rightarrow\kappa(t + \Delta t)$, and then use
+Eqns.\ (\ref{eqn:revised_linearized_soln}) to compute the particle's revised spatial coordinates.
+And because steps 1-4 convert coordinates to elements exactly, epi\_int\_lite's drift step 
+is not a significant source of numerical error.
 
 Show that angular velocity $\omega=v_\theta/r\simeq\Omega(1+2e\cos M)$ to
 first order in $e$. Then show that
