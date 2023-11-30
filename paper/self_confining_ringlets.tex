@@ -97,7 +97,7 @@ unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Append
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
 to that used by the parent code, see \cite{HS13} for additional details. The epi\_int\_lite 
 source code is available at https://github.com/joehahn/epi\_int\_lite, and the
-code's numerical quality is benchmarked in Appendix \ref{sec:Appendix B}
+code's numerical quality is benchmarked in Appendix \ref{sec:Appendix C}
 where the output of several numerical experiments are compared against theoretical expectations.
 
 Calculations by epi\_int\_lite use natural units with gravitation constant $G=1$, 
@@ -468,6 +468,7 @@ Angular momentum is transported radially through the ring via viscosity and self
 so ${\cal F}_L={\cal F}_{L,\nu} + {\cal F}_{L,g}$,
 where the ringlet's viscous flux of angular momentum is
 \begin{equation}
+    \label{eqn:F_nu_1}
     {\cal F}_{L,\nu}(r, \theta) = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 when Eqn.\ (\ref{eqn:F_nu_theta}) is written as a function of spatial coordinates and
@@ -482,20 +483,20 @@ the above simplifies to
     \label{eqn:F_nu_varphi}
     {\cal F}_{L,\nu}(a, \varphi) = {\cal F}_{L,\nu,c}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
-where $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse
-and ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
+where the angular shear $\omega'=\partial\omega/\partial r$ in Eqn.\ (\ref{eqn:F_nu_1})
+is derived in Appendix \ref{sec:Appendix B},
+$\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse,
+${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$,
-with Eqn.\ (\ref{eqn:F_nu_varphi}) assuming  that
-$|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$
-(see \citealt{BGT82} and Appendix \ref{sec:Appendix E}). Integrating the above
+and Eqn.\ (\ref{eqn:F_nu_varphi}) assumes that $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$
+(\citealt{BGT82}). Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
     \label{eqn:L_nu}
     {\cal L}_{L,\nu}(a) = \oint {\cal F}_{L,\nu}(a, \varphi)rd\varphi = {\cal L}_{L,\nu,c}\frac{1-\frac{4}{3}e'^2}{(1-e'^2)^{3/2}},
 \end{equation}
 which is the torque that one streamline exerts on its exterior neighbor due to viscous friction
-(\citealt{BGT82} and Appendix \ref{sec:Appendix E}),
-with ${\cal L}_{L,\nu,c}=3\pi\nu_s\sigma_0a^2\Omega$
+(\citealt{BGT82}) with ${\cal L}_{L,\nu,c}=3\pi\nu_s\sigma_0a^2\Omega$
 being the viscous angular momentum luminosity of a circular streamline.
 
 \citet{BGT82} examine angular momentum transport through a viscous eccentric but non-gravitating ringlet, 
@@ -1097,7 +1098,7 @@ The remedy is to derive an alternate set of epicyclic equations that
 {\em are} reversible such that the epi\_int\_lite's drift step will not be a significant
 source of numerical error.
 
-The equation of motion for an unperturbed particle in orbit about the central planet is 
+Begin with the equation of motion for an unperturbed particle in orbit about the central planet, 
 \begin{equation}
     \label{eqn:EOM}
     \ddot{\mathbf{r}}=-\nabla\Phi
@@ -1118,12 +1119,12 @@ so the particle's specific angular momentum $h=r^2\dot{\theta}=r v_\theta$ is co
     \label{eqn:theta-dot}
     \dot{\theta} = \frac{h}{r^2},
 \end{equation}
-and inserting the above into the radial part of Eqn.\ (\ref{eqn:EOM}) yields
+and inserting that into the radial part of Eqn.\ (\ref{eqn:EOM}) yields
 \begin{equation}
     \label{eqn:radial_EOM}
     \ddot{r} = \frac{h^2}{r^3} -\frac{GM}{r^2} - \frac{3J_2GMR^2}{2r^4}.
 \end{equation}
-Solving the above to first-order accuracy ordinarily yields
+Solving the above to first-order accuracy ${\cal O}(e^1)$ ordinarily yields
 \begin{eqnarray}
     \label{eqn:linearized_soln}
     r &\simeq& a(1-e\cos M) \nonumber\\
@@ -1132,13 +1133,16 @@ Solving the above to first-order accuracy ordinarily yields
     v_\theta = r\dot{\theta} &\simeq& a\Omega(1 + e\cos M)
 \end{eqnarray}
 where
-\begin{eqnarray}
-    \label{eqn:omega_kappa}
-    \Omega(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 + \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2} \nonumber\\
-    \kappa(a) &=& \sqrt{\frac{GM}{a^3}}\left[1 - \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2},
-\end{eqnarray}
-with $\Omega$ being the particle's mean orbital frequency and $\kappa$ its epicyclic
-frequency. In the above,  $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
+\begin{equation}
+    \label{eqn:omega}
+    \Omega(a) = \sqrt{\frac{GM}{a^3}}\left[1 + \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2}
+\end{equation}
+is the particle's mean orbital frequency and 
+\begin{equation}
+    \label{eqn:kappa}
+    \kappa(a) = \sqrt{\frac{GM}{a^3}}\left[1 - \frac{3}{2}J_2\left(\frac{R}{a}\right)^2\right]^{1/2}
+\end{equation}
+its epicyclic frequency. In the above,  $a$, $e$, $\tilde{\omega}$ and $M=\kappa t$ are the epicyclic orbit elements
 that have errors of order ${\cal O}(e^2)$. Equations (\ref{eqn:linearized_soln})
 are easily inverted, which would then provide epicyclic
 orbit elements $a$, $e$, $\tilde{\omega}$, $M$ as functions of the particle's 
@@ -1155,7 +1159,7 @@ so that $\dot{\theta} =\Omega(1+2e\cos M)$. Then require the constant $h=r^2\dot
 be satisfied exactly, which provides the revised expression for $r$ as a function of orbit elements,
 $r = a/\sqrt{1+2e\cos M}$, noting that this expression differs from that in Eqn.\ (\ref{eqn:linearized_soln}) 
 by an amount of order ${\cal O}(e^2)$ which is this solution's allowed error.
-Using the above it is then straightforward to complete the revisions to Eqn.\ (\ref{eqn:linearized_soln}):
+It is then straightforward to complete the revisions to Eqn.\ (\ref{eqn:linearized_soln}):
 \begin{eqnarray}
     \label{eqn:revised_linearized_soln}
     r &=& \frac{a}{\sqrt{1+2e\cos M}} \nonumber\\
@@ -1163,7 +1167,7 @@ Using the above it is then straightforward to complete the revisions to Eqn.\ (\
     v_r = \dot{r} &=& \frac{ea\kappa\sin M}{(1 + 2e\cos M)^{3/2}}  = ea\kappa\sin M\left(\frac{r}{a}\right)^3\nonumber\\
     v_\theta = r\dot{\theta} &=& a\Omega\sqrt{1 + 2e\cos M} = \frac{a^2\Omega}{r}
 \end{eqnarray}
-where $\Omega$ and $\kappa$ are Eqns.\ (\ref{eqn:omega_kappa}) and $M=\kappa t$.
+where $\Omega$ and $\kappa$ are Eqns.\ (\ref{eqn:omega}--\ref{eqn:kappa}) and $M=\kappa t$.
 
 Eqns.\ (\ref{eqn:revised_linearized_soln}) must also be inverted so
 that the particle's epicyclic orbit elements $a, e, \tilde{\omega}, M$ can be obtained
@@ -1181,11 +1185,11 @@ for the particle's semimajor axis $a$, which is
 \end{equation}
 where constant $C=h^2/2GMR$.
 
-\item Calculate $\Omega$ and $\kappa$ using Eqns.\ (\ref{eqn:omega_kappa})
+\item Calculate $\Omega$ and $\kappa$ using Eqns.\ (\ref{eqn:omega}--\ref{eqn:kappa}).
 
-\item Note that $e\sin M = (v_r/a\kappa)(a/r)^3$ and $e\cos M = [(a/r)^2 - 1]/2$, which 
+\item Note that $e\sin M = (v_r/a\kappa)(a/r)^3$ and $e\cos M = \onehalf[(a/r)^2 - 1]$, which 
 provides the particle's eccentricity via $e = \sqrt{(e\sin M)^2 + (e\cos M)^2}$
-and its mean anomaly $M$ from $\tan M = e\sin M/e\cos M$.
+and its mean anomaly $M$ inferred from $\tan M = e\sin M/e\cos M$.
 
 \item The particle's longitude of periapse is 
 $\tilde{\omega} = \theta - (\Omega/\kappa)(M + 2e\sin M)$.
@@ -1200,14 +1204,24 @@ Eqns.\ (\ref{eqn:revised_linearized_soln}) to compute the particle's revised spa
 And because steps 1-4 convert coordinates to elements exactly, epi\_int\_lite's drift step 
 is not a significant source of numerical error.
 
-Show that angular velocity $\omega=v_\theta/r\simeq\Omega(1+2e\cos M)$ to
-first order in $e$. Then show that
+\section{Appendix B}
+\label{sec:Appendix B}
+
+Derive the angular shear $\partial\omega/\partial r$.
+The angular velocity $\omega=v_\theta/r=\Omega(a/r)^2$ by Eqn.\ (\ref{eqn:revised_linearized_soln}) so
+$\omega \simeq\Omega(1+2e\sin\varphi)$
+to first order in $e$ and relative longitude $\varphi=\theta -\tilde{\omega}\simeq M$.
+Thus $\partial\omega/\partial a \simeq -(3\Omega/2a)(1-\frac{4}{3}e'\cos\varphi)$
+since $J_2$ and $e$ are small though
+the eccentricity gradient $e'=a(\partial e/\partial a)$ might not be small. Likewise
+$r\simeq a(1-e\cos\varphi)$ so $\partial r/\partial a\simeq 1-e'\cos\varphi$ and so
 \begin{equation}
     \label{eqn:domega-dr}
-    \omega' = \frac{d\omega}{dr} \simeq -\left(\frac{3\Omega}{2a}\right)
-        \frac{1-\frac{4}{3}e'\cos M}{1-e'\cos M}
+    \omega' = \frac{\partial\omega}{\partial r} = 
+        \frac{\partial\omega}{\partial a}/\frac{\partial r}{\partial a}
+        \simeq -\left(\frac{3\Omega}{2a}\right) \frac{1-\frac{4}{3}e'\cos \varphi}{1-e'\cos \varphi},
 \end{equation}
-to lowest order in $e$ where mean anomaly $M\simeq\theta-\tilde{\omega}$.
+which interestingly changes sign near periapse when the eccentricity gradient is large enough, $e'>3/4$.
 
 Show that the streamline's linear density is
 \begin{equation}
@@ -1216,13 +1230,13 @@ Show that the streamline's linear density is
 \end{equation}
 where $m_1 = m_r/N_r$ is the mass of a single streamline.
 
-\section{Appendix B}
-\label{sec:Appendix B}
+\section{Appendix C}
+\label{sec:Appendix C}
 
 Compare epi\_int\_lite to theoretical predictions
 
-\section{Appendix C}
-\label{sec:Appendix C}
+\section{Appendix D}
+\label{sec:Appendix D}
 
 This examines the viscous evolution of a narrow eccentric non-gravitating
 ringlet that is identical to the nominal ringlet of Section \ref{subsec:nominal} but
@@ -1265,14 +1279,9 @@ viscous spreading.
     }
 \end{figure}
 
-\section{Appendix D}
-\label{sec:Appendix D}
 
-This Appendix will use the orbit elements derived in Appendix \ref{sec:Appendix A} to
-derive Eqn.\ \ref{eqn:F_nu_varphi} from \ref{eqn:F_nu_theta}, and then Eqn.\ (\ref{eqn:L_nu}).
-
-\section{Appendix E}
-\label{sec:Appendix E}
+\section{Appendix F}
+\label{sec:Appendix F}
 
 Viscous and gravitational energy transport...
 
