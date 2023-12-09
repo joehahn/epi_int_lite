@@ -9,7 +9,7 @@ from helper_fns import get_lambda, accelerations
 
 #compute angular momentum flux and luminosity
 def calculate_angular_momentum_flux(total_ring_mass, number_of_streamlines, particles_per_streamline, J2, Rp, G_ring, 
-        shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, times, fast_gravity, confine_edges):
+        shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, times, fast_gravity, confine_inner_edge, confine_outer_edge):
     angular_momentum_flux_list = []
     angular_momentum_luminosity_list = []
     for t_idx, _ in enumerate(times):
@@ -28,7 +28,7 @@ def calculate_angular_momentum_flux(total_ring_mass, number_of_streamlines, part
         vtc = vt_now[middle_index-1:middle_index+1,:]
         wtc = wt_now[middle_index-1:middle_index+1,:]
         #accelerations
-        Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, rc, tc, vrc, vtc, fast_gravity, confine_edges)
+        Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, rc, tc, vrc, vtc, fast_gravity, confine_inner_edge, confine_outer_edge)
         #angular_momentum_flux
         angular_momentum_flux = lambda_*rc*At
         angular_momentum_flux = angular_momentum_flux[-1]
@@ -53,7 +53,7 @@ def calculate_angular_momentum_flux(total_ring_mass, number_of_streamlines, part
 
 #compute energy flux and luminosity
 def calculate_energy_flux(total_ring_mass, number_of_streamlines, particles_per_streamline, J2, Rp, G_ring, 
-        shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, times, fast_gravity, confine_edges):
+        shear_viscosity, bulk_viscosity, c, r, t, vr, vt, wt, times, fast_gravity, confine_inner_edge, confine_outer_edge):
     energy_flux_list = []
     energy_luminosity_list = []
     for t_idx, _ in enumerate(times):
@@ -72,7 +72,7 @@ def calculate_energy_flux(total_ring_mass, number_of_streamlines, particles_per_
         vtc = vt_now[middle_index-1:middle_index+1,:]
         wtc = wt_now[middle_index-1:middle_index+1,:]
         #accelerations
-        Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, rc, tc, vrc, vtc, fast_gravity, confine_edges)
+        Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, rc, tc, vrc, vtc, fast_gravity, confine_inner_edge, confine_outer_edge)
         #angular_momentum_flux
         energy_flux = lambda_*(Ar*vrc + At*vtc)
         energy_flux = energy_flux[-1]

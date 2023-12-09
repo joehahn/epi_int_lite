@@ -175,6 +175,18 @@ towards that streamline with acceleration
 \end{equation}
 where $\Delta$ is the particle's distance from the streamline.
 
+The streamline's linear density $\lambda$ is inferred from a streamline's total
+mass, $m_1=m_r/N_s=\int_0^{2\pi}\lambda d\ell$
+where the integration is about the streamline's circumference. Replacing
+$d\ell$ with $vdt$ where $v$ is the velocity of the streamline's particles
+allows replacing the spatial integral with a timewise integral,
+$m_1=\int_0^{T}\lambda vdt = \lambda v T$ where the streamline's
+orbital period $T=2\pi/\Omega$ and $\Omega$ its mean orbital frequency, hence
+\begin{equation}
+\label{eqn:lambda}
+    \lambda=\frac{m_1\Omega}{2\pi v}.
+\end{equation}
+
 The hydrodynamic approximation is used here to account for
 the dissipation that occurs as particles in adjacent particle streamlines
 shear past and collide with the perturbed particle,
@@ -1222,13 +1234,6 @@ $r\simeq a(1-e\cos\varphi)$ so $\partial r/\partial a\simeq 1-e'\cos\varphi$ and
         \simeq -\left(\frac{3\Omega}{2a}\right) \frac{1-\frac{4}{3}e'\cos \varphi}{1-e'\cos \varphi},
 \end{equation}
 which interestingly changes sign near periapse when the eccentricity gradient is large enough, $e'>3/4$.
-
-Show that the streamline's linear density is
-\begin{equation}
-    \label{eqn:lambda}
-    \lambda = \frac{m_1\Omega}{2\pi v}
-\end{equation}
-where $m_1 = m_r/N_r$ is the mass of a single streamline.
 
 \section{Appendix C}
 \label{sec:Appendix C}
