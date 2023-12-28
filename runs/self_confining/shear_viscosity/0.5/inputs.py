@@ -13,7 +13,7 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 2720
+timesteps_per_output = 2210
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -29,7 +29,7 @@ fast_gravity = False
 
 #ring kinematic shear and bulk viscosity, set < 0 to turn off
 shear_viscosity = 0.5e-13
-bulk_viscosity = 1.0*shear_viscosity
+bulk_viscosity = 1.0e-13
 
 #add fictitious torques at inner and/or outer streamlines, to oppose any radial spreading
 confine_inner_edge = False
