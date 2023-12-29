@@ -13,14 +13,14 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 1700
+timesteps_per_output = 850
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
 radial_width = 0.0001
 
 #total ring mass
-total_ring_mass = 1.0e-10
+total_ring_mass = 0.2e-10
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=False since there is very little speed benefit when the fast_gravity approximation is used
