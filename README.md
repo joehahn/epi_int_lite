@@ -3,7 +3,7 @@
 by Joe Hahn,<br />
 jmh.datasciences@gmail.com,<br />
 10 January 2018<br />
-git branch=master
+git branch=lindblad_resonance
 
 
 ### Intro:
