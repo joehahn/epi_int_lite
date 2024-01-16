@@ -7,20 +7,20 @@
 #define input input parameters
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 2
-particles_per_streamline = 241
+number_of_streamlines = 16
+particles_per_streamline = 32
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.5
-timesteps_per_output = 1700
-total_number_of_outputs = 1000
+dt = 0.1
+timesteps_per_output = 2000
+total_number_of_outputs = 100
 
 #ring radial width assuming circular orbits
-radial_width = 0.0001
+radial_width = 1.1e-3
 
 #total ring mass
-total_ring_mass = 1.0e-10
+total_ring_mass = 6.91e-10
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=False since there is very little speed benefit when the fast_gravity approximation is used
@@ -32,8 +32,8 @@ shear_viscosity = 1.0e-13
 bulk_viscosity = 1.0*shear_viscosity
 
 #add fictitious torques at inner and/or outer streamlines, to oppose any radial spreading
-confine_inner_edge = False
-confine_outer_edge = False
+confine_inner_edge = True
+confine_outer_edge = True
 
 #ring pressure scales with Toomre's Q_ring, set Q_ring < 0 to turn off
 Q_ring = -1.0
@@ -42,12 +42,19 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.01
 
+#perturbations from satellite's m^th Lindblad resonance, set m_s_final < 0 to turn off
+satellite = {
+    'm_s_final' : -6.5969e-8,
+    't_grow_s' : 5.0e3, 
+    'a_s' : 1.578325914739137,
+    'm' : 2,
+    'lc' : 1.0,
+    'dlc' : 1.5
+}
+
 #choose ringlet's initial orbits
 initial_orbits = {
-    'shape':'eccentric',
-    'e':0.01,
-    'e_prime':0.0,
-    'w_prime':0.0
+    'shape':'circular',
 }
 
 #output folder
