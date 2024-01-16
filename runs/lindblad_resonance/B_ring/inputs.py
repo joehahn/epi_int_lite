@@ -42,11 +42,13 @@ Q_ring = -1.0
 Rp = 0.5
 J2 = 0.01
 
-#perturbations from satellite's m^th Lindblad resonance, set m_s_final < 0 to turn off
+#perturbations from satellite's m^th Lindblad resonance, set mass_final < 0 to turn off
 satellite = {
-    'm_s_final' : -6.5969e-8,
-    't_grow_s' : 5.0e3, 
-    'a_s' : 1.578325914739137,
+    'mass_final' : 6.5969e-8,
+    'time_grow' : 5.0e3,
+    'mass': 0.0,
+    'r' : 1.578325914739137,
+    't' : 0.0,
     'm' : 2,
     'lc' : 1.0,
     'dlc' : 1.5

@@ -56,6 +56,12 @@ while (number_of_outputs < total_number_of_outputs):
         a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
         #advance mean anomaly during drift step
         M = drift(a, M, J2, Rp, dt)
+        #update satellite orbit as needed
+        if (satellite['mass_final'] > 0):
+            time = monitor['current_timestep']*dt
+            Omg_sat = Omega(J2, Rp, satellite['r'])
+            satellite['t'] = adjust_angle(time*Omg_sat)
+            satellite['mass'] = satellite['mass_final']*(1.0 - np.exp(-time/satellite['time_grow']))
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick coordinates to account for central body's motion about center of mass

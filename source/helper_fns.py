@@ -183,6 +183,28 @@ def ring_gravity(lambda_, G_ring, r, t, vr, vt, fast_gravity):
         At -= A*sin_phi
     return Ar, At
 
+#acceleration due to satellite's m^th lindblad resonance
+def satellite_lindblad_resonance(satellite, r, t):
+    mass_sat = satellite['mass']
+    r_sat = satellite['r']
+    t_sat = satellite['t']
+    m = satellite['m']
+    lc = satellite['lc']
+    dlc = satellite['dlc']
+    factor = mass_sat/(r_sat*r_sat)
+    fn = dlc
+    if (m == 1):
+        fn -= 1.0
+    angle = m*(t - t_sat)
+    Ar = factor*fn*np.cos(angle)
+    beta = r/r_sat
+    fn = lc/beta
+    if (m == 1):
+        fn -= 1.0
+    fn *= m
+    At = -factor*fn*np.sin(angle)
+    return Ar, At
+
 #acceleration due to pressure P
 def A_P(lambda_, sd, P, t, delta_P, delta_r):
     dPdr = df_dr(delta_P, delta_r)
@@ -277,11 +299,10 @@ def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
         if (bulk_viscosity > 0.0):
             Ar += ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
     #acceleration due to fictitious satellite's m^th Lindblad resonance
-    if (satellite['m_s_final'] > 0):
-        #A = satellite_lindblad_resonance(rw, tw)
-        #    Ar += A[0]
-        #    At += A[1]
-        pass
+    if (satellite['mass_final'] > 0):
+        A = satellite_lindblad_resonance(satellite, rw, tw)
+        Ar += A[0]
+        At += A[1]
     #add confinement torque at ring edges, as needed
     if (confine_inner_edge or confine_outer_edge):
         At = edge_torques(rw, At, confine_inner_edge, confine_outer_edge)
@@ -567,7 +588,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         
     #this dict is used to track execution time and when streamlines cross or nan is generated
     start_time = int(tm.time())
-    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 
+    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':0, 'streamline_crossing_timestep':None, 
         'nan_timestep':None, 'self_interacting':self_interacting}
 
     return r, t, vr, vt, c, monitor
