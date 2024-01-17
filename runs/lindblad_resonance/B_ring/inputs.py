@@ -7,17 +7,17 @@
 #define input input parameters
 
 #set number of streamlins and particles per streamline
-number_of_streamlines = 16
-particles_per_streamline = 32
+number_of_streamlines = 130
+particles_per_streamline = 50
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
-dt = 0.1
-timesteps_per_output = 2000
-total_number_of_outputs = 100
+dt = 0.2
+timesteps_per_output = 1000
+total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
-radial_width = 1.1e-3
+radial_width = 0.00563
 
 #total ring mass
 total_ring_mass = 6.91e-10
@@ -39,15 +39,15 @@ confine_outer_edge = True
 Q_ring = -1.0
 
 #oblateness parameters
-Rp = 0.5
-J2 = 0.01
+Rp = 0.513
+J2 = 0.01629071
 
 #perturbations from satellite's m^th Lindblad resonance, set mass_final < 0 to turn off
 satellite = {
-    'mass_final' : 6.5969e-8,
-    'time_grow' : 5.0e3,
+    'mass_final' : 6.5994e-8,
+    'time_grow' : 3.0e4,
     'mass': 0.0,
-    'r' : 1.578325914739137,
+    'r' : 1.578465,
     't' : 0.0,
     'm' : 2,
     'lc' : 1.0,

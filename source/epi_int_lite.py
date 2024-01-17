@@ -60,7 +60,7 @@ while (number_of_outputs < total_number_of_outputs):
         if (satellite['mass_final'] > 0):
             time = monitor['current_timestep']*dt
             Omg_sat = Omega(J2, Rp, satellite['r'])
-            satellite['t'] = adjust_angle(time*Omg_sat)
+            satellite['t'] = (time*Omg_sat)%(2*np.pi)
             satellite['mass'] = satellite['mass_final']*(1.0 - np.exp(-time/satellite['time_grow']))
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
