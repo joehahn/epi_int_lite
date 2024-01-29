@@ -8,12 +8,12 @@
 
 #set number of streamlins and particles per streamline
 number_of_streamlines = 64
-particles_per_streamline = 16
+particles_per_streamline = 8
 number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 10000
+timesteps_per_output = 20000
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
@@ -45,9 +45,9 @@ J2 = 0.016932376630835
 #perturbations from satellite's m^th Lindblad resonance, set mass_final < 0 to turn off
 satellite = {
     'mass_final' : 6.5969e-8,
-    'time_grow' : 5.0e5,
+    'time_grow' : 1.0e6,
     'mass': 0.0,
-    'r' : 1.5814351268355915,
+    'r' : 1.5815932703482751,
     't' : 0.0,
     'm' : 2,
     'lc' : 0.3705530411759321,
