@@ -50,8 +50,6 @@ satellite = {
     'r' : 1.5815115989527513,
     't' : 0.0,
     'm' : 2,
-    'lc' : 0.3706184400476837,
-    'dlc' : 1.4782684814403924
 }
 
 #choose ringlet's initial orbits

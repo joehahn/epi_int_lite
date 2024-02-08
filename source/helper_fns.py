@@ -160,6 +160,24 @@ def delta_f(f, t):
 def df_dr(delta_f, delta_r):
     return delta_f/delta_r
 
+#integrand of laplace coefficient
+def lc_integrand(t, m, s, beta):
+    num = (2/np.pi)*np.cos(m*t)
+    den = (1 + beta**2 - 2*beta*np.cos(t))**s
+    intgrnd = num/den
+    return intgrnd
+
+#calculate laplace coefficient
+from scipy.integrate import quad
+def lc(beta, m, s):
+    lc = quad(lc_integrand, 0, np.pi, args=(m,s,beta))
+    return lc[0]
+
+#derivative of lc wrt beta
+from scipy.misc import derivative
+def dlc(beta, m, s):
+    return derivative(lc, beta, dx=1e-8, args=(m,s))
+    
 #acceleration due to ring self-gravity
 def ring_gravity(lambda_, G_ring, r, t, vr, vt, fast_gravity):
     if  (fast_gravity == True):
@@ -562,6 +580,17 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #compute streamlines' linear density 
     lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     
+    #setup for satellite resonance
+    if (satellite['mass_final'] > 0):
+        m = satellite['m']
+        r_sat = satellite['r']
+        beta = r.mean()/r_sat
+        s = 0.5
+        from helper_fns import lc, dlc
+        satellite['lc'] = lc(beta, m, s)
+        satellite['dlc'] = dlc(beta, m, s)
+        print 'satellite = ', satellite
+
     #ring sound speed c
     c = 0.0
     if (Q_ring > 0.0):

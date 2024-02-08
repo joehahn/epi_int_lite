@@ -10,6 +10,7 @@
 
 #read input parameters
 import numpy as np
+from helper_fns import *
 execfile('inputs.py')
 print 'number_of_streamlines =', number_of_streamlines
 print 'particles_per_streamline =', particles_per_streamline
@@ -32,7 +33,6 @@ print 'initial_orbits =', initial_orbits
 print 'output_folder =', output_folder
 
 #initialize orbits
-from helper_fns import *
 r, t, vr, vt, c, monitor = initialize_streamline(number_of_streamlines, particles_per_streamline,
     radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, 
     confine_inner_edge, confine_outer_edge, Q_ring, J2, Rp, satellite, initial_orbits)
