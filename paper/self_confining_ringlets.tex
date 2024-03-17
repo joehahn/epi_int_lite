@@ -994,11 +994,10 @@ ringlet composed of $N_s=2$ streamlines.
     \caption{
         \label{fig:e_vs_da_streamlines}
         A suite of ringlets are evolved, these ringlets have the same properties as the
-        nominal ringlet except they contain various numbers of streamlines $2\le N_s\le14$,
-        with plot legend indicating the simulation's number of streamlines $N_s$.
+        nominal ringlet except they contain varied numbers of streamlines $2\le N_s\le14$,
+        with $N_s$ indicated by the plot legend.
         Simulated ringlets' final eccentricities $e$ are plotted versus their relative
-        semimajor axis $\Delta a=a-\bar{a}$ where $\bar{a}$ is the mean semimajor
-        axis of all particles in each ringlet. 
+        semimajor axis $\Delta a=a-\bar{a}$ where $\bar{a}$ is the ringlet's mean semimajor axis. 
     }
 \end{figure}
 \begin{figure}
@@ -1007,12 +1006,55 @@ ringlet composed of $N_s=2$ streamlines.
         \label{fig:delta_wt_vs_da_streamlines}
         Simulated ringlets' final relative longitudes of periapse 
         $\Delta\tilde{\omega} = \tilde{\omega} - \bar{\omega}$ are plotted versus their relative
-        semimajor axis $\Delta a=a-\bar{a}$, where $\bar{a}$ is the mean semimajor axes 
-        of all particles in the ringlet, and $\bar{\omega}$ is their mean longitude of periapse.
-        Plot legend indicates each simulation's number of streamlines $N_s$.
+        semimajor axis $\Delta a=a-\bar{a}$, where $\bar{a}$ is the ringlet's mean semimajor axes 
+        and $\bar{\omega}$ is their mean longitude of periapse, and number of streamlines $N_s$
+        is indicated in the plot legend. 
     }
 \end{figure}
 
+\subsubsection{surface density and sharp edges}
+\label{subsubsec:sharp_edges}
+
+The main shortcoming of the $N_s=2$ simulation is that it reveals nothing about a ringlet's
+possible sharp edges, since a two-streamline ringlet always has artificially sharp edges.
+To examine this further, Fig.\ \ref{fig:periapse_sigma_vs_r_streamlines.pdf} shows the radial 
+surface density profile along the periapse direction for the $2\le N_s\le14$ ringlets 
+that were simulated in Section \ref{subsec:num_streamlines}. That plot shows that all ringlets'
+edges are sharp after they arrive in the self-confining state, regardless of $N_s$. When self-confining,
+each streamline is approximately equidistant (within $25\%$) from their neighbors, which causes
+ringlet surface density $\sigma$ to be remain constant (within $25\%$) in the ringlet interior, 
+which then plummets to zero beyond the ringlet's boundaries. Ditto for the surface density
+profiles seen along the ringlets' apoapse direction, Fig.\ \ref{fig:apoapse_sigma_vs_r_streamlines.pdf}.
+Note that if a vicous ringlet were instead unconfined, then its positive angular momentum flux
+would have repelled the edgemost streamlines away from the interior streamlines, 
+which in turn would have caused the ringlet's surface density
+to taper smoothly to zero at the ringlet's edges, as is seen in Fig.\ 1 of \cite{P81}.
+
+
+Chiang's model
+
+Lewis paper
+
+\begin{figure}
+    \plotone{figs/periapse_sigma_vs_r_streamlines.pdf}
+    \caption{
+        \label{fig:periapse_sigma_vs_r_streamlines.pdf}
+        Radial surface density profiles $\sigma(\Delta r)$ 
+        of the $2\le N_s\le14$ ringlets of Section \ref{subsec:num_streamlines}
+        plotted along the ringlets' direction of periapse.
+        Surface density $\sigma$ is shown in units of the ringlet's mean surface density $\bar{\sigma}$,
+        and radial distance $\Delta r = r - r_{\text{mid}}$ is measured relative to chord's midpoint
+        and in unit of the ringlet's semimajor axis width $\Delta a=a_{\text{outer}}-a_{\text{inner}}$. 
+    }
+\end{figure}
+\begin{figure}
+    \plotone{figs/apoapse_sigma_vs_r_streamlines.pdf}
+    \caption{
+        \label{fig:apoapse_sigma_vs_r_streamlines.pdf}
+        Radial surface density profiles $\sigma(\Delta r)$ 
+        of the $2\le N_s\le14$ plotted along the ringlets' direction of apoapse.
+    }
+\end{figure}
 
 \section{ringlet origin scenarios}
 \label{sec:origin}
