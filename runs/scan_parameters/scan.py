@@ -6,6 +6,13 @@
 #
 #this launches multiple concurrent epi_int simulations having varied input parameters, executes in 36 hours 
 
+#Howto: execute this script several times. 
+#During 1st execution, make sure that file df_results.parquet does not exist and that unconfined_only= False.
+#Then execute scan.ipynb through paragraph[12] to create df_results.parquet
+#Then execute scan.py two (about 2 days to complete) then scan.ipynb to update df_results.parquet
+#Then set unconfined_only=True, execute scan.py, then execute scan.ipynb
+#Repeat until all plots in scan.ipynb have converged
+
 #set number of concurrent processes
 N_processes = 7
 
@@ -103,15 +110,11 @@ df_timesteps = df
 df = df_timesteps
 df['output_folder'] = 'permutations/'
 df.output_folder += 'sim_id_' + df.sim_id.astype(str) #+ '!'
-#df.output_folder += 'total_ring_mass=' + df.total_ring_mass.astype(str) + '!'
-#df.output_folder += 'shear_viscosity=' + df.shear_viscosity.astype(str) + '!'
-#df.output_folder += 'bulk_viscosity=' + df.shear_viscosity.astype(str) + '!'
-#df.output_folder += 'radial_width=' + df.radial_width.astype(str) + '!'
-#df.output_folder += 'timesteps_per_output=' + df.timesteps_per_output.astype(str) + '!'
 df_output = df
 
-#only re-run sims having previous_outcome=unconfined
-unconfined_only = True
+#only re-run sims having previous_outcome=unconfined...set this False on first entry, then True to avoid re-executing unnecessary sims
+#unconfined_only = True
+unconfined_only = False
 df = df_output
 print ('df.shape = ', df.shape)
 if (unconfined_only):
