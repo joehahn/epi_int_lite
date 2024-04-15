@@ -7,9 +7,9 @@
 #this launches multiple concurrent epi_int simulations having varied input parameters, executes in 36 hours 
 
 #Howto: execute this script several times. 
-#During 1st execution, make sure that file df_results.parquet does not exist and that unconfined_only= False.
+#During 1st execution, make sure that file df_results.parquet does not exist and that unconfined_only=False.
 #Then execute scan.ipynb through paragraph[12] to create df_results.parquet
-#Then execute scan.py two (about 2 days to complete) then scan.ipynb to update df_results.parquet
+#Then execute scan.py (about 2 days to complete) then scan.ipynb to update df_results.parquet
 #Then set unconfined_only=True, execute scan.py, then execute scan.ipynb
 #Repeat until all plots in scan.ipynb have converged
 
