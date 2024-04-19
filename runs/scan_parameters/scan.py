@@ -113,8 +113,8 @@ df.output_folder += 'sim_id_' + df.sim_id.astype(str) #+ '!'
 df_output = df
 
 #only re-run sims having previous_outcome=unconfined...set this False on first entry, then True to avoid re-executing unnecessary sims
-#unconfined_only = True
-unconfined_only = False
+unconfined_only = True
+#unconfined_only = False
 df = df_output
 print ('df.shape = ', df.shape)
 if (unconfined_only):
