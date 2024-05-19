@@ -801,7 +801,7 @@ ringlets have a larger periapse twist $|\tilde{\omega}'|$.
         Eccentricity gradient $e'$ versus time $t/\tau_{dyn}$ for a sample of 28 self-confining
         ringlets such that their eccentricity gradients $e'$ span the range of values
         exhibited by the simulations reported in Fig.\ \ref{fig:sim_grid_da}. 
-        The ringlet's dynamical timescale $\tau_{dyn}$ is time when its nonlinearity parameter $q$ exceeds $0.6$.
+        The ringlet's dynamical timescale $\tau_{dyn}$ is time the when its nonlinearity parameter $q$ exceeds $0.6$.
         Sample ringlets have initial $2.5\times10^{-5}\le\Delta a\le2.0\times10^{-4}$,
         $10^{-14}\le m_r\le10^{-10}$, and $10^{-14}\le \nu_s\le10^{-11}$.
         Horizontal black lines indicated the observed eccentricity gradients 
@@ -938,18 +938,21 @@ where $e_0$ is the ringlet's initial eccentricity and
 \end{equation}
 is the ringlet's eccentricity damping timescale.
 These expectations are also confirmed in Fig.\ \ref{fig:e_vs_tau_e}, which plots
-$e(t)/e_0$ versus time $t/\tau_e$ using Eqns.\ (\ref{eqn:e(t)}--\ref{eqn:tau_e}),
-for each of the numbered simulations seen in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID},
-with good agreement seen between theory and numerical simulation.
+$e(t)/e_0$ versus time $t/\tau_e$ for the sample of 28 simulations 
+shown in Fig.\ \ref{fig:e_prime_q_vs_time}, with the dashed curve
+indicating the theoretial predictions of Eqns.\ (\ref{eqn:e(t)}--\ref{eqn:tau_e}).
+That all simulated curves have slopes similar to the dashed line tells us that
+Eqns.\ (\ref{eqn:e(t)}--\ref{eqn:tau_e}) are a good indicator of outcomes across
+a wide variety of ringlet parameters.
 \begin{figure}
     \plotone{figs/e_vs_tau_e.pdf}
     \caption{
         \label{fig:e_vs_tau_e}
-        Plot of $e(t)/e_0$ versus time $t/\tau_e$ for each of the 
-        numbered simulations seen in Figs.\ \ref{fig:sim_grid_da}--\ref{fig:q_vs_ID},
+        Plot of $e(t)/e_0$ versus time $t/\tau_e$ for the sample of 28
+        simulations shown in Fig.\ \ref{fig:e_prime_q_vs_time},
         while the dashed curve is the expected behavior, Eqn.\ (\ref{eqn:e(t)}).
-        These simulations have values of $\tau_e$ ranging over...,
-        and thick red curve is the nominal ringlet whose ID=345.
+        Simulations have $\tau_e$ ranging over 
+        $2.5\times10^6 \le \tau_e \le 2.5\times10^9$.
     }
 \end{figure}
 
@@ -969,7 +972,8 @@ the nominal model considered here, which is only $\sim10^3$ years for a ringlet 
 $a\sim10^{10}$ cm about Saturn. Recall from Section \ref{subsec:nominal}
 that the viscous lifetime of a non-self-confining
 nominal ringlet is only $\tau_\nu/2\pi\sim500$ orbits, so self-confinement evidently
-extends the lifetime of a narrow eccentric ringlet by factor of $\sim3000$. But self-confinement
+extends the lifetime of a narrow eccentric ringlet by an additional 
+factor of $\sim3000$. But self-confinement
 does not solve the ringlet's lifetime problem, because self-confinement is ultimately
 defeated by viscous damping of the ringlet's eccentricity.
 
