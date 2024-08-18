@@ -117,8 +117,8 @@ physical values for $M$ and $r_0$ and multiplying accordingly, and when this tex
 it assumes Saturn's mass $M=5.68\times10^{29}$ gm and a characteristic
 ring radius $r_0=1.0\times10^{10}$ cm. Simulation time $t$ is in units of $T_{\text{orb}}/2\pi$
 where $T_{\text{orb}} = 2\pi\sqrt{r_0^3/GM}$ is the orbit period at $r_0$, 
-so divide simulation time $t$ by $2\pi$ and multiply
-by $T_{\text{orb}}$ to convert simulation time from natural to physical units.
+so multiply time $t$ by $T_{\text{orb}}/2\pi$ 
+to convert from natural to physical units.
 The simulated particles' motions during the drift step are also
 sensitive to the $J_2$ portion of the primary's non-spherical gravity component 
 (see Appendix \ref{sec:Appendix A}), and all simulations
@@ -375,7 +375,7 @@ The nominal ringlet's eccentricity evolution.}
     \plotone{figs/radial_sigma_nominal.pdf}
     \caption{
         \label{fig:radial_sigma_nominal}
-        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t/\tau_\nu=100$
+        Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t=100\tau_\nu$
         when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
         relative to $r_{mid}$, which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}$,
         with those radial distances $r - r_{mid}$ measured in units of the ringlet's final semimajor axis width $\Delta a$,
@@ -509,7 +509,7 @@ where the angular shear $\omega'=\partial\omega/\partial r$ in Eqn.\ (\ref{eqn:F
 is derived in Appendix \ref{sec:Appendix B},
 $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse,
 ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
-circular streamline of semimajor axis $a$ and angular speed $\Omega(a)$,
+circular streamline of semimajor axis $a$ that has angular speed $\Omega(a)$,
 and Eqn.\ (\ref{eqn:F_nu_varphi}) assumes that $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$
 (\citealt{BGT82}). Integrating the above
 around the streamline's circumference then yields its angular momentumum luminosity,
@@ -676,8 +676,8 @@ the influence of the ringlet's viscosity and gravity still conspire such that th
 orbit-integrated luminosities ${\cal L}_{E}=\oint ({\cal F}_{E,\nu}+{\cal F}_{E,g})rd\varphi$ are zero 
 once the ringlet has settled into the self-confining state.
 
-Note that Fig.\ \ref{fig:nominal_energy_luminosity} also shows that 
-the ringlet's gravitational energy luminosity is zero. Which is to be expected since 
+Figure \ref{fig:nominal_energy_luminosity} also shows that 
+the ringlet's gravitational energy luminosity is zero at all times. Which is to be expected since 
 the streamlines' gravitating ellipses only interact via their secular
 perturbations, and secular perturbations do no work \citep{BC61}, hence ${\cal L}_{E,g}=0$.
 That this quantity evaluates to zero within $\pm5\times10^{-24}$ (in nautural units) can also be regarded
@@ -1083,22 +1083,23 @@ published models to date.
     }
 \end{figure}
 
-\section{ringlet origin scenarios}
+\section{self--confining ringlet origin scenario}
 \label{sec:origin}
 
 Here we use the preceding results to speculate about the origin of narrow eccentric planetary ringlets.
-If these ringlets are truly self-confining, then they are extremely young, only $\sim{\cal O}(1000)$ years 
+If such ringlets are truly self-confining, then they are extremely young, only $\sim{\cal O}(1000)$ years 
 old per Eqn.\ (\ref{eqn:tau_e}) and Section \ref{subsec:eccentricity}. Our preferred least-speculative origin scenario 
 (which is still quite speculative) proposes that
 the ringlet precursor was originally an especially large ring particle that was orbiting elsewhere such as
-within a nearby dense planetary ring, presumably as an embedded moonlet aka propeller (\cite{Tetal10}). 
+within a nearby dense planetary ring, presumably as an embedded moonlet aka propeller (\citealt{Tetal10}). 
 If that embedded moonlet happened to 
 form near the edge of the dense planetary ring, then the moonlet's reaction to
-the shepherding torque that it exerts on the ring [which is the radial integral of Eqn.\ (79) of \cite{GT82}] would
+the shepherding torque that it exerts across the dense ring [which is $-1\times$ 
+the radial integral of Eqn.\ (71) of \cite{GT82}] would
 cause that moonlet to migrate towards and then beyond the ring's edge. And if a dense planetary ring can spawn
 one such moonlet, it can also spawn additional moonlets. 
 
-The radial migration rate due to the ring-shepherding torque
+A moonlet's radial migration rate due to the ring-shepherding torque also
 varies with moonlet mass, so a larger moonlet will eventually overtake a smaller moonlet that is orbiting beyond it.
 Indeed, calculations by \cite{PS01} suggest that satellite Prometheus emerged from the outer edge of Saturn's A
 ring $\sim10^7$ years ago, and that it will have a close encounter with nearby Pandora in another $\sim10^7$ years.
@@ -1108,7 +1109,8 @@ collisional debris would result. Viscous particle-particle
 collisions would then cause that young ringlet to spread radially (Fig.\ \ref{fig:da_nominal}) 
 while its self-gravity would pump up its eccentricity gradient (Fig. \ref{fig:de_prime_nominal})
 which, if sufficiently vigorous, would cause it to settle into the self-confining state that is
-sharp-edged like most observed narrow eccentric ringlets. Nonetheless, self-confinement is temporary
+sharp-edged (Fig.\ \ref{fig:apoapse_sigma_vs_r_streamlines.pdf}) like most observed narrow eccentric ringlets. 
+Nonetheless, self-confinement is temporary
 and lasts only $\sim{\cal O}(1000)$ years due to the ringlet's viscosity damping its eccentricity until its inner edge gets circularized. Which would would cause the ringlet's $q$ to drop below the $q\simeq\sqrt{3}/2$ threshold
 for self-confinement, the ringlet would again spread radially, and its edges would lose their sharpness.
 
@@ -1117,11 +1119,11 @@ implies that dense planetary rings are frequently forming and emitting small emb
 due to their gravitational shepherding of that ring, towards and then beyond the nearby ring-edge
 where they are later disrupted after colliding with other such moonlets. The resulting debris quickly
 shears out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
-until it settles temporarily into the self-confining state, which is also sharp-edged. 
+until it settles temporarily into the self-confining state, which is sharp-edged. 
 The next step in any assessment of the viability
 of this least-speculative ringlet origin scenario would require estimating the various timescales that are relevant here,
 namely, the moonlet's formation timescale, the moonlet's migration timescale, its lifetime versus collisional
-distruption, and the ringlet's self-confinement lifetime, to confirm that none of these lifetimes are so
+disruption, and the ringlet's self-confinement lifetime, to confirm that none of these lifetimes are so
 long as to cast doubt on this ringlet origin scenario. That more detailed analysis is deferred to a followup
 study.
 
@@ -1133,41 +1135,55 @@ Main findings:
 
 \begin{enumerate}
 
-\item Simulations show that narrow eccentric ringlets having a wide variety of initial 
-physical properties (mass, initial width, viscosity) do evolve
-into the self-confining state (see Fig.\ \ref{fig:sim_grid_da}), 
-provided that the ringlet's initial eccentricity is sufficiently high (Section \ref{subsec:e-variations}). 
-Self-gravity causes the ringlet's eccentricity gradient $e'$ to grow over time until they near the
-$\simeq e'\simeq\sqrt{3}/2\simeq0.866$ threshold where viscous angular momentum flux
-reversal is nearly complete and there is {\em almost} no radial orbit-averaged
-transmission of angular momentum due to the ringlet's viscous friction.
+\item Simulations show that viscous self-gravitating
+narrow eccentric ringlets having a wide variety of initial 
+physical properties (mass, width, and viscosity) do evolve
+into the self-confining state, see Fig.\ \ref{fig:sim_grid_da}.
 
-Simulations also show that these self-confining ringlets all have a small 
-periapse twist $|w'|\ll e'$ so that the
-ringlet's nonlinearity parameter is dominated by their eccentricity gradient
-$q=\sqrt{e'^2 + \tilde{\omega}'^2}\simeq e'$.
+\item Self-gravity causes the ringlet's nonlinearity parameter $q$, 
+which is the RMS sum of the ringlet's dimensionless eccentricity gradient $e'=ade/da$ 
+and its dimensionless periapse twist $\tilde{\omega}' = ead\tilde{\omega}/da$,
+to grow over time until its nears the $q\simeq\sqrt{3}/2\simeq0.9$ threshold where 
+the ringlet's orbit-averaged angular momentum flux due to ringlet viscosity + self-gravity reversal is zero.
 
-\item Self confining ringlets have $L_E=0$
+\item Gravitating ringlets that are self-confining have small but positive 
+({\it i.e.}\ radially outwards) viscous angular momentum luminosity
+that is counterbalanced by its negative gravitational angular momentum luminosity
+(Section \ref{subsec:viscous_flux}). Ringlet self-gravity is also
+why self-confining ringlets have a nonlinearity parameter $q\simeq0.9$
+that is slightly larger than the $q = \sqrt{3}/2 \simeq 0.866$
+threshold that is expected of viscous non-gravitating ringlets
+\citep{BGT82}.
+
+\item The ringlet's total energy luminosity is zero after the ringlet has settled into
+the self-confining state (Section \ref{subsec:gravitational_flux}). 
+The ringlet's gravitational energy luminosity is also
+zero at all times, consistent with secular theory. 
+
+\item Self-confining ringlets have sharp edges 
 
 \item Self-confining narrow eccentric planetary ringlets are also short lived,
-only $\sim{\cal O}(1000)$ years. This is due to the ringlet's viscosity, which damps its 
+only $\sim{\cal O}(10^6)$ orbits or $\sim{\cal O}(10^3)$ years. This is due to the ringlet's viscosity, which damps its 
 eccentricity until its inner edge gets circularized, which would cause the ringlet's 
 $q$ to drop below the $q\simeq\sqrt{3}/2$ threshold for self-confinement. Ringlet viscosity would
-again transmit a radial flux of angular momentum that is outwards, so this circularizing ringlet would 
-again resume spreading radially, and it would lose its sharp edges.
+again transmit an  outwards flux of angular momentum, so this circularizing ringlet would 
+again resume spreading radially and would lose its sharp edges.
 
 \item We speculate that a sharp-edged self-confining narrow eccentric planetary ringlet first originated as
 an exceptionally large ring particle that formed within a nearby dense planetary ring.
-Possibly as a small embedded moonlet like those that are the presumed source of the propeller objects
+Possibly as a small embedded moonlet like those that are the presumed cause of the propeller structures
 seen in Saturn's main A ring. If that embedded moonlet is orbiting near the dense ring's edge, then
-its reaction to the gravitational shepherding torque that the moonlet exerts on the ring would
+its reaction to the gravitational shepherding torque that it exerts across the ring would
 cause that moonlet to migrate towards and then beyond the dense ring's edge. If so, then 
 a dense planetary ring can also birth multiple such moonlets. The ring-torque would also 
-cause the largest moonlet to overtake any smaller moonlets, which will encourage
+cause the largest moonlet to overtake any smaller migrating moonlets, which will encourage
 moonlet-moonlet scattering and eventual collision. A disruptive moonlet collision
 would generate debris that would quickly
-shears out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
-until it settles temporarily into the self-confining state, which is sharp-edged. 
+shear out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
+until it settles temporarily into the self-confining state that is sharp-edged. 
+
+\item All simulations described here use the epi\_int\_lite streamline integrator
+whose source code is available at https://github.com/joehahn/epi\_int\_lite.
 
 \end{enumerate}
 
