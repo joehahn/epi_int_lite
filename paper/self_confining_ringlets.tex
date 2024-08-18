@@ -873,7 +873,7 @@ have eccentricities $e$ that decay at the expected rates.
 
 Viscous friction within the ringlet is a result of dissipative collisions among ringlet particles.
 Particle collisions generate heat that is radiated into space, and the source of that radiated energy
-is the ringlet's orbital energy $E_r=-m_rGM/2a + E_{sg}$ where $m_r$ is the ringlet's total
+is the ringlet's total energy $E_r=-m_rGM/2a + E_{sg}$ where $m_r$ is the ringlet's total
 mass, $a$ its semimajor axis, and $E_{sg}$ is the ringlet's energy due to its self gravity
 which is contant when the ringlet is self-confining. 
 Collisions conserve angular momentum, so the ringlet's total angular momentum
@@ -1138,12 +1138,12 @@ Main findings:
 \item Simulations show that viscous self-gravitating
 narrow eccentric ringlets having a wide variety of initial 
 physical properties (mass, width, and viscosity) do evolve
-into the self-confining state, see Fig.\ \ref{fig:sim_grid_da}.
+into the self-confining state, Fig.\ \ref{fig:sim_grid_da}.
 
 \item Self-gravity causes the ringlet's nonlinearity parameter $q$, 
 which is the RMS sum of the ringlet's dimensionless eccentricity gradient $e'=ade/da$ 
 and its dimensionless periapse twist $\tilde{\omega}' = ead\tilde{\omega}/da$,
-to grow over time until its nears the $q\simeq\sqrt{3}/2\simeq0.9$ threshold where 
+to grow over time until it exceeds the $q\simeq\sqrt{3}/2\simeq0.866$ threshold where 
 the ringlet's orbit-averaged angular momentum flux due to ringlet viscosity + self-gravity reversal is zero.
 
 \item Gravitating ringlets that are self-confining have small but positive 
@@ -1155,10 +1155,22 @@ that is slightly larger than the $q = \sqrt{3}/2 \simeq 0.866$
 threshold that is expected of viscous non-gravitating ringlets
 \citep{BGT82}.
 
+\item Simulated ringlets that do settle into self-confinement have final eccentricity
+gradients $0.04\lesssim e' \lesssim 0.9$, Fig.\ \ref{fig:e_prime_q_vs_time}. Since all such ringlets 
+have $q\simeq0.9$, this means that ringlets having smaller eccentricity gradients $e'$
+also have larger periapse twist $\tilde{\omega}'$, which could be due to higher 
+ringlet viscosity (Section \ref{subsec:viscosity-variations}).
+
 \item The ringlet's total energy luminosity is zero after the ringlet has settled into
 the self-confining state (Section \ref{subsec:gravitational_flux}). 
 The ringlet's gravitational energy luminosity is also
 zero at all times, consistent with secular theory. 
+
+\item Ringlet viscosity also circularizes the ringlet in time $\tau_e\sim10^6$ orbits $\sim1000$ years
+(Section \ref{subsec:eccentricity}). After viscosity has reduced the eccentricity of the ringlet's 
+inner edge to zero, the ringlet's  eccentricity gradient $e'$ will then shrink over time, its
+angular momentum flux reversal will cease, and viscous spreading will resume. 
+Gravitational self-confinement of a narrow eccentric ringlet is only temporary.
 
 \item Self-confining ringlets have sharp edges 
 
