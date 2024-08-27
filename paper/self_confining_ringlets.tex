@@ -1192,38 +1192,8 @@ a dense planetary ring can also birth multiple such moonlets. The ring-torque wo
 cause the largest moonlet to overtake any smaller migrating moonlets, which will encourage
 moonlet-moonlet scattering and eventual collision. A disruptive moonlet collision
 would generate debris that would quickly
-shear out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
-until it settles temporarily into the self-confining state that is sharp-edged.
-
-
-So in summary, this purportedly least-speculative ringlet origin scenario
-implies that dense planetary rings are frequently forming and emitting small embedded moonlets that then migrate away, 
-due to their gravitational shepherding of that ring, towards and then beyond the nearby ring-edge
-where they are later disrupted after colliding with other such moonlets. The resulting debris quickly
-shears out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
-until it settles temporarily into the self-confining state, which is sharp-edged. 
-The next step in any assessment of the viability
-of this least-speculative ringlet origin scenario would require estimating the various timescales that are relevant here,
-namely, the moonlet's formation timescale, the moonlet's migration timescale, its lifetime versus collisional
-disruption, and the ringlet's self-confinement lifetime, to confirm that none of these lifetimes are so
-long as to cast doubt on this ringlet origin scenario. That more detailed analysis is deferred to a followup
-study. (Section \ref{sec:origin}).
-
-\item We speculate that a sharp-edged self-confining narrow eccentric planetary ringlet first originated as
-an exceptionally large ring particle that formed within a nearby dense planetary ring.
-Possibly as a small embedded moonlet like those that are the presumed cause of the propeller structures
-seen in Saturn's main A ring. If that embedded moonlet is orbiting near the dense ring's edge, then
-its reaction to the gravitational shepherding torque that it exerts across the ring would
-cause that moonlet to migrate towards and then beyond the dense ring's edge. If so, then 
-a dense planetary ring can also birth multiple such moonlets. The ring-torque would also 
-cause the largest moonlet to overtake any smaller migrating moonlets, which will encourage
-moonlet-moonlet scattering and eventual collision. A disruptive moonlet collision
-would generate debris that would quickly
-shear out into a low-eccentricity ringlet whose self-gravity excites its eccentricity gradient
-until it settles temporarily into the self-confining state that is sharp-edged. 
-
-\item All simulations described here use the epi\_int\_lite streamline integrator
-whose source code is available at https://github.com/joehahn/epi\_int\_lite.
+shear out into a low-eccentricity ringlet whose self-gravity could excite its eccentricity gradient
+until it settles into the self-confining state that is sharp-edged, albeit temporarily. 
 
 \end{enumerate}
 
@@ -1231,7 +1201,43 @@ whose source code is available at https://github.com/joehahn/epi\_int\_lite.
 \section{followup studies}
 \label{sec:followup}
 
-Possible followup studies...
+Here we list possible followup studies that could also be pursued using the epi\_int\_lite streamline integrator:
+
+\begin{enumerate}
+
+\item {\it Nonlinear spiral density waves}: analytics theories exist but they are complex and challenging to employ
+(Borderies, Shu), whereas for some the execution of an epi\_int\_lite simulation 
+might be the simpler/faster way forward. Spiral density waves are nonlinear
+when the surface density variation due to the wave is comparable to the ring's undisturbed surface density
+{\it i.e.}\ $|\Delta\sigma|\sim\sigma_0$. Which means that, since $\sigma=\lambda/\Delta r$, 
+then streamline separations $\Delta r$ need only shrink by a factor of two to make a density wave nonlinear.
+Eccentricities associated with the wave are still small, 
+which means that the streamline-integrator approach is well suited for simulating 
+nonlinear density waves, which we have confirmed via unpublished experiments. French paper?
+
+\item {\it Incompressible nonlinear spiral density waves}: one can imagine that a sufficiently vigorous nonlinear
+density wave could drive particle densities high enough such that ring particles in the affected region are packed 
+shoulder-to-shoulder such that further compaction is impossible, 
+and that region becomes incompressible. We suspect that these incompressible
+patches could also result in shocks and/or vertical splashing as the wave drives 
+additional ring particles into the affected regions. Which surely would alter the wave's dynamics and may
+lead to new and possibly observable phenomena. Note that the equation of state (EOS) employed by
+epi\_int\_lite assumes that the ring is a compressible particle gas, but that EOS could easily be adapted
+to account for the additional forces that would result as particles enter into or recoil
+from these traveling incompressbile patches that are sustained by the wave. 
+Of particular interest is in Maxwell ringlet...
+
+\item NL spiral bending waves
+
+\item gap embedded moonlets
+
+\item exo-asteroid belts perturbed by exoplanets, and lopsided circumstellar debris disks
+
+All simulations described here use the epi\_int\_lite streamline integrator
+whose source code is available at https://github.com/joehahn/epi\_int\_lite.
+
+\end{enumerate}
+
 
 \acknowledgments
 \section{Acknowledgments}
