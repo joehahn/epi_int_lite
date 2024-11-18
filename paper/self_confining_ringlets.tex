@@ -130,7 +130,7 @@ unperturbed motion around an oblate planet (detailed in Appendix \ref{sec:Append
 Otherwise epi\_int\_lite's treatment of ring self--gravity and viscosity are identical
 to that used by the parent code, and see \cite{HS13} for additional details. The epi\_int\_lite 
 source code is available at https://github.com/joehahn/epi\_int\_lite, and the
-code's numerical quality is benchmarked in Appendix \ref{sec:Appendix C}
+code's numerical quality is benchmarked in Appendix \ref{sec:Appendix B}
 where the output of several numerical experiments are compared against theoretical expectations.
 
 Calculations by epi\_int\_lite use natural units with gravitation constant $G=1$, 
@@ -346,7 +346,7 @@ and in units of its initial radial width $\Delta a_0$.}
 
 Figure \ref{fig:e_nominal} shows that the outer streamline's eccentricity initially grows at the
 expense of the inner streamline's, and that is a consequence the self-gravitating ringlet's
-secular perturbations of itself, which is also demonstrated in Appendix \ref{sec:Appendix D}. 
+secular perturbations of itself, which is also demonstrated in Appendix \ref{sec:Appendix C}. 
 Figure \ref{fig:de_nominal} shows
 the ringlet's eccentricity difference $\Delta e = e_{\text{outer}} - e_{\text{inner}}$
 and longitude of periapse difference
@@ -530,7 +530,7 @@ the above simplifies to
     {\cal F}_{L,\nu}(a, \varphi) = {\cal F}_{L,\nu,c}\frac{1-\frac{4}{3}e'\cos\varphi}{(1-e'\cos\varphi)^2}
 \end{equation}
 where the angular shear $\omega'=\partial\omega/\partial r$ in Eqn.\ (\ref{eqn:F_nu_1})
-is derived in Appendix \ref{sec:Appendix B},
+is derived in Appendix \ref{sec:Appendix A}, Eqn.\ (\ref{eqn:domega-dr}). In the above,
 $\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse,
 ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ that has angular speed $\Omega(a)$,
@@ -1424,12 +1424,9 @@ coordinates $r, \theta, v_r, v_\theta$ to epicyclic orbit elements $a,e,M,\tilde
 update the particle's mean anomaly via $M\rightarrow\kappa(t + \Delta t)$, and then use
 Eqns.\ (\ref{eqn:revised_linearized_soln}) to compute the particle's revised spatial coordinates.
 And because steps 1-4 convert coordinates to elements exactly, epi\_int\_lite's drift step 
-is not a significant source of numerical error.
+is not a significant source of numerical error.\\
 
-\section{Appendix B}
-\label{sec:Appendix B}
-
-Derive the angular shear $\partial\omega/\partial r$.
+Lastly we derive the streamlines' angular shear $\partial\omega/\partial r$.
 The angular velocity $\omega=v_\theta/r=\Omega(a/r)^2$ by Eqn.\ (\ref{eqn:revised_linearized_soln}) so
 $\omega \simeq\Omega(1+2e\sin\varphi)$
 to first order in $e$ where relative longitude $\varphi=\theta -\tilde{\omega}\simeq M$.
@@ -1443,15 +1440,48 @@ $r\simeq a(1-e\cos\varphi)$ so $\partial r/\partial a\simeq 1-e'\cos\varphi$ and
         \frac{\partial\omega}{\partial a}/\frac{\partial r}{\partial a}
         \simeq -\left(\frac{3\Omega}{2a}\right) \frac{1-\frac{4}{3}e'\cos \varphi}{1-e'\cos \varphi},
 \end{equation}
-which interestingly changes sign near periapse when the eccentricity gradient is large enough, $e'>3/4$.
+which interestingly changes sign near periapse, $\varphi\simeq0$, when the eccentricity gradient is large enough, 
+$e'\gtrsim3/4$.
+
+
+\section{Appendix B}
+\label{sec:Appendix B}
+
+Compare epi\_int\_lite to theoretical predictions.\\
+
+Figure \ref{fig:viscous_spreading} compares simulation against theory for non-gravitating ringlet.\\
+
+
+\begin{figure}
+    \plotone{figs/sigma_spreading.pdf}
+    \caption{
+        \label{fig:viscous_spreading}
+        Radial spreading of a narrow circular viscous non-gravitating ringlet, simulation versus theory.
+    }
+\end{figure}
+
+Figure \ref{fig:equilibrium} compares simulation against theory for gravitating ringlet.\\
+
+\begin{figure}
+    \plotone{figs/equilibrium.png}
+    \caption{
+        \label{fig:equilibrium}
+        equilibrium $e'$ for inviscid gravitating ringlet, simulation versus theory.
+    }
+\end{figure}
+
+Figure \ref{fig:libration} compares simulation against theory for gravitating ringlet.\\
+
+\begin{figure}
+    \plotone{figs/libration.png}
+    \caption{
+        \label{fig:libration}
+        Libration frequency for inviscid gravitating ringlet, simulation versus theory.
+    }
+\end{figure}
 
 \section{Appendix C}
 \label{sec:Appendix C}
-
-Compare epi\_int\_lite to theoretical predictions
-
-\section{Appendix D}
-\label{sec:Appendix D}
 
 This examines the viscous evolution of a narrow eccentric non-gravitating
 ringlet that is identical to the nominal ringlet of Section \ref{subsec:nominal} but
