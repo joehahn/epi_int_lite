@@ -1450,38 +1450,46 @@ $e'\gtrsim3/4$.
 This Appendix compares the evolution of epi\_int\_lite simulations to theoretical predictions for 
 narrow viscous ringlets, and for narrow gravitating ringlets.\\
 
-Figure \ref{fig:viscous_spreading} examines the radial spreading of a narrow viscous non-gravitating ringlet.
-The simulated ringlet has the same physical properties as the nominal ringlet except that it is instead circular and has 
-many more streamlines than the $N_s=2$ simulation of Section \ref{subsec:nominal}.
+\subsubsection{viscous evolution}
+\label{subsubsec:viscous evolution}
+
+The test described in Fig.\ \ref{fig:viscous_spreading}
+examines the radial spreading of a narrow viscous non-gravitating ringlet.
+The simulated ringlet has the same physical properties as the nominal ringlet except that it is circular and 
+it has many more streamlines than the $N_s=2$ simulation of Section \ref{subsec:nominal}.
 Each colored curve indicates the ringlet's radial surface density profile $\sigma(r)$ at 
 various times $t$. Note the the simulated surface density profiles (dashed curves with dots)
 track nicely with the theoretical prediction (solid curves) of \cite{P81}. Which is a good indicator that
-epi\_int\_lite is calculating a ringlet's viscous evolution correctly.
+epi\_int\_lite is computing the ringlet's viscous evolution correctly.
 
 
 \begin{figure}
     \plotone{figs/sigma_spreading.pdf}
     \caption{
         \label{fig:viscous_spreading}
-        Radial spreading of a narrow circular viscous non-gravitating ringlet, simulation (dashed curves with dots)
-        versus theory (solid curves).
+        Radial spreading of a initially narrow circular viscous non-gravitating ringlet,
+        simulation (dashed curves with dots) versus theory (solid curves).
         The simulated ringlet has the same physical properties as the nominal ringlet:
         total mass $m_r=10^{-10}$, initial semimajor axis width
         $\Delta a_0=10^{-4}$, shear viscosity $\nu_s=10^{-13}$, and bulk viscosity $\nu_b=\nu_s$.
         However this simulated ringlet is composed of $N_s=13$ streamlines instead of two, 
         and all streamlines are initially circular, $e=0$. And because a circular ringlet
-        is always axisymmetric only $N_p=3$ particles per streamline are used here. 
+        is always axisymmetric only $N_p=3$ particles per streamline need be used here. 
         Each colored curve indicates the ringlet's radial surface density profile
         $\sigma(r)/\bar{\sigma}$ versus radial distance $r/r_{mid}$ at various times $t/\tau_\nu$,
         where $\tau_\nu$ is the viscous timescale and $r_{mid}$ is the radius of the ringlet's middle.
-        Solid theoretical curves are from Eqn.\ (2.13) of \cite{P81} and the constant $\bar{\sigma}=m_r/\pi r_{mid}^2$.
+        Solid theoretical curves are from Eqn.\ (2.13) of \cite{P81}
+        where the constant $\bar{\sigma}=m_r/\pi r_{mid}^2$.
     }
 \end{figure}
+
+\subsubsection{self gravitating ringlets}
+\label{subsubsec:self gravitating ringlets}
 
 Figure \ref{fig:equilibrium} compares simulation against theory for gravitating ringlet.\\
 
 \begin{figure}
-    \plotone{figs/equilibrium.png}
+    \plotone{figs/equilibrium.pdf}
     \caption{
         \label{fig:equilibrium}
         equilibrium $e'$ for inviscid gravitating ringlet, simulation versus theory.
