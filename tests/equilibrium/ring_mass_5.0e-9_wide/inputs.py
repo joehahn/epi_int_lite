@@ -13,14 +13,14 @@ number_of_particles = number_of_streamlines*particles_per_streamline
 
 #set timestamp, timesteps per output, and total number of outputs
 dt = 0.5
-timesteps_per_output = 400
+timesteps_per_output = 160
 total_number_of_outputs = 1000
 
 #ring radial width assuming circular orbits
-radial_width = 1.0e-3
+radial_width = 3.0e-3
 
 #total ring mass
-total_ring_mass = 1.5e-10
+total_ring_mass = 5.0e-9
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
@@ -45,8 +45,8 @@ J2 = 0.01
 #choose ringlet's initial orbits
 initial_orbits = {
     'shape':'eccentric',
-    'e':5.0e-3,
-    'e_prime':0.8935016061827108,
+    'e':0.01,
+    'e_prime':0.7498996448015881,
     'w_prime':0.0
 }
 
