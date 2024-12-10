@@ -1486,7 +1486,28 @@ epi\_int\_lite is computing the ringlet's viscous evolution correctly.
 \subsubsection{self gravitating ringlets}
 \label{subsubsec:self gravitating ringlets}
 
-Figure \ref{fig:equilibrium} compares simulation against theory for gravitating ringlet.\\
+\cite{BGT83AJpaper} show that a gravitating ringlet has an equilibrium eccentricity difference
+$\Delta e^0=e_\text{outer} - e_\text{inner}$ such that the entire ringlet will precess as rigid body with its streamlines
+having zero relative motions. And when their equation for $\Delta e^0$ is multiplied by $a/\Delta a$
+we then have the ringlet's equilibrium dimensionless eccentricity gradient,
+\begin{equation}
+    \label{eqn:e_prime_eq}
+    e'_{eq} = a\frac{\Delta e^0}{\Delta a} = \frac{21\pi}{4}\frac{eJ_2}{m_r/M}\left(\frac{R_p}{a}\right)^2
+        \left(\frac{\Delta a}{a}\right)^2\frac{1}{H(q)}
+\end{equation}
+where the nonlinearity parameter $q=|e'|$ since $\tilde{\omega}'=0$ when an inviscid ringlet is in equilibrium, and the function
+\begin{equation}
+    \label{eqn:H(q)}
+    H(q) = \frac{1 - \sqrt{1-q^2}}{q^2\sqrt{1-q^2}}. 
+\end{equation}
+\cite{BGT83AJpaper} also show that when the ringlet is displaced slightly from equilibrium, $e'$ will librate about
+the equilibrium point, Eqn\ (\ref{eqn:e_prime_eq}). Which makes it straightforward to iteratively determine
+a ringlet's equilibrium $e'_{eq}$ numerically via a handful of quick epi\_int\_lite simulations, the results of which are 
+summarized in Fig.\ \ref{fig:equilibrium} which compares simulated ringlet 
+equilibria (dots) with theory (continuous curves) 
+for a variety of inviscid gravitating ringlets. That Figure shows that the agreement between the epi\_int\_lite simulations
+and theoretical expectations is overall very good, though modest discrepancies do exist for the higher-mass ringlets
+having small equilibrium $e'_{eq}$.
 
 \begin{figure}
     \plotone{figs/equilibrium.pdf}
