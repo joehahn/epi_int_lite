@@ -20,7 +20,7 @@ total_number_of_outputs = 1000
 radial_width = 5.0e-4 
 
 #total ring mass
-total_ring_mass = 5.0e-11
+total_ring_mass = 6.5e-11
 
 #ring's gravitation constant is usually G_ring=1 but set G_ring < 0 to turn off ring gravity.
 #Also set fast_gravity=True for approximate gravity that is 2x faster and almost as accurate.
@@ -46,7 +46,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':0.0025,
-    'e_prime':0.6563564453222109,
+    'e_prime':0.571025969905059,
     'w_prime':0.0
 }
 
