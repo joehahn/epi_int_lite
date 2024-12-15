@@ -46,7 +46,7 @@ J2 = 0.01
 initial_orbits = {
     'shape':'eccentric',
     'e':0.005,
-    'e_prime':0.6761475205224862,
+    'e_prime':0.7046168898076435,
     'w_prime':0.0
 }
 
