@@ -1523,13 +1523,33 @@ having smaller equilibrium $e'_{eq}$.
     }
 \end{figure}
 
-Figure \ref{fig:libration} compares simulation against theory for two styles of inviscid ($\nu=0$) gravitating ringlets.\\
+\cite{BGT83AJpaper} show that when a ringlet is displaced slightly from equilibrium, it 
+librates about the equilibrium point, Eqn.\ (\ref{eqn:e_prime_eq}), 
+with angular frequency $\Omega_\text{lib}$ given by their Eqn.\ (30).
+So a ringlet's libration period is
+\begin{equation}
+    \label{eqn:T_lib}
+    T_\text{lib} = \frac{2\pi}{\Omega_\text{lib}} = 
+        \frac{\pi}{H(q)}\left(\frac{M}{m_r}\right)\left(\frac{\Delta a}{a}\right)^2 T_\text{orb}
+\end{equation}
+where $T_\text{orb}$ is the ringlet's orbital period. Figure \ref{fig:libration} shows $T_\text{lib}$ for the ringlets of 
+Fig (\ref{fig:equilibrium}). That Fig.\ compares predicted libration periods (dashed curves) versus simulated $T_\text{lib}$
+(dotted curves) for the narrow and wide suite of ringlets. The right halves of the blue and green curves show that the
+higher-mass simulated ringlets' have libration periods $T_\text{lib}$ that are in excellent agreement with theory, 
+Eqn.\ (\ref{eqn:T_lib}). However significant disagreement exists in the left half of these curves, which corresponds to the
+lower-mass narrow \& wide ringlets. This disagreement is a consequence of the simulated ringlets' evolution
+violating a key assumption of the \citep{BGT83AJpaper} derivation: 
+that the ringlet's libration amplitude $A$ stays constant during a libration
+cycle. In all of the simulations reported on in Fig.\ \ref{fig:libration}, the ringlet's libration amplitude does 
+vary over time, but those simulations show the their fractional variations $\Delta A/A$ are progressively smaller
+in the higher-mass ringlets...
 
 \begin{figure}
     \plotone{figs/libration.pdf}
     \caption{
         \label{fig:libration}
-        Libration frequency for inviscid gravitating ringlet, simulation versus theory.
+        Libration frequency for inviscid gravitating ringlet, simulations (dotted curves) versus theoretical
+        expectation, Eqn.\ (\ref{eqn:T_lib}), dashed curves.
     }
 \end{figure}
 
