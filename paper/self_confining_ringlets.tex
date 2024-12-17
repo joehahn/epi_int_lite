@@ -1507,8 +1507,8 @@ a ringlet's equilibrium $e'_{eq}$ numerically via a handful of short epi\_int\_l
 summarized in Fig.\ \ref{fig:equilibrium} which compares simulated ringlet 
 equilibria (dots) with theory (continuous curves) 
 for a variety of inviscid gravitating ringlets. That Figure shows that the agreement between the epi\_int\_lite simulations
-and theoretical expectations is overall very good, though modest discrepancies do exist for the higher-mass ringlets
-having smaller equilibrium $e'_{eq}$.
+and theoretical expectations, Eqn.\ (\ref{eqn:e_prime_eq}), is overall very good, 
+though modest discrepancies do exist for the higher-mass ringlets whose equilibrium $e'_{eq}$ are small.
 
 \begin{figure}
     \plotone{figs/equilibrium.pdf}
@@ -1523,18 +1523,19 @@ having smaller equilibrium $e'_{eq}$.
     }
 \end{figure}
 
-\cite{BGT83AJpaper} show that when a ringlet is displaced slightly from equilibrium, it 
-librates about the equilibrium point, Eqn.\ (\ref{eqn:e_prime_eq}), 
-with angular frequency $\Omega_\text{lib}$ given by their Eqn.\ (30).
+And when a ringlet is displaced slightly from equilibrium, it 
+librates about the equilibrium point (\ref{eqn:e_prime_eq}) 
+with angular frequency $\Omega_\text{lib}$ given by Eqn.\ (30) of \cite{BGT83AJpaper}.
 So a ringlet's libration period is
 \begin{equation}
     \label{eqn:T_lib}
     T_\text{lib} = \frac{2\pi}{\Omega_\text{lib}} = 
         \frac{\pi}{H(q)}\left(\frac{M}{m_r}\right)\left(\frac{\Delta a}{a}\right)^2 T_\text{orb}
 \end{equation}
-where $T_\text{orb}$ is the ringlet's orbital period. Figure \ref{fig:libration} shows $T_\text{lib}$ for the ringlets of 
-Fig (\ref{fig:equilibrium}). That Fig.\ compares predicted libration periods (dashed curves) versus simulated $T_\text{lib}$
-(dotted curves) for the narrow and wide suite of ringlets. The right halves of the blue and green curves show that the
+where $T_\text{orb}$ is the ringlet's orbital period, which is shown in Fig.\ \ref{fig:libration} for the 
+simulated ringlets of Fig \ref{fig:equilibrium}. 
+That Fig.\ compares predicted libration periods (dashed curves) versus simulated $T_\text{lib}$
+(dotted curves) for the suite of narrow and wide ringlets. The rightmost halves of the blue and green curves show that the
 higher-mass simulated ringlets' have libration periods $T_\text{lib}$ that are in excellent agreement with theory, 
 Eqn.\ (\ref{eqn:T_lib}). However significant disagreement exists in the left half of these curves, which corresponds to the
 lower-mass narrow \& wide ringlets. This disagreement is a consequence of the simulated ringlets' evolution
@@ -1548,8 +1549,9 @@ in the higher-mass ringlets...
     \plotone{figs/libration.pdf}
     \caption{
         \label{fig:libration}
-        Libration frequency for inviscid gravitating ringlet, simulations (dotted curves) versus theoretical
-        expectation, Eqn.\ (\ref{eqn:T_lib}), dashed curves.
+        Libration period $T_\text{lib}$ versus ringlet mass $m_r$ for the suite of narrow and wide ringlets
+        simulated in Fig.\ \ref{fig:equilibrium}. Dotted curves are the simulated outcomes while dashed
+        curves are the theoretical predictions, Eqn.\ (\ref{eqn:T_lib}).
     }
 \end{figure}
 
