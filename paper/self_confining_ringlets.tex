@@ -1487,8 +1487,9 @@ epi\_int\_lite is computing the ringlet's viscous evolution correctly.
 \label{subsubsec:self gravitating ringlets}
 
 \cite{BGT83AJpaper} show that a gravitating ringlet has an equilibrium eccentricity difference 
-$\Delta e^0=e_\text{outer} - e_\text{inner}$ that is stationary. They also show that when a ringlet is in equilibrium,
-it will precess as rigid body with its streamlines experiencing zero relative motions. 
+$\Delta e^0=e_\text{outer} - e_\text{inner}$ that is stationary. 
+Which means that if a ringlet is in equilibrium,
+it will precess as rigid body with its streamlines experiencing zero relative motions and with steady $\Delta e$ over time.
 Multiplying their expression for the equilibrium $\Delta e^0$ by $a/\Delta a$
 then provides the ringlet's equilibrium dimensionless eccentricity gradient:
 \begin{equation}
@@ -1523,8 +1524,8 @@ though modest discrepancies do exist for the higher-mass ringlets whose equilibr
     }
 \end{figure}
 
-And when a ringlet is displaced slightly from equilibrium, it 
-librates about the equilibrium point (\ref{eqn:e_prime_eq}) 
+And when a ringlet is displaced slightly from equilibrium, it will
+librate about the equilibrium point (\ref{eqn:e_prime_eq}) 
 with angular frequency $\Omega_\text{lib}$ given by Eqn.\ (30) of \cite{BGT83AJpaper}.
 So a ringlet's libration period is
 \begin{equation}
@@ -1534,24 +1535,32 @@ So a ringlet's libration period is
 \end{equation}
 where $T_\text{orb}$ is the ringlet's orbital period, which is shown in Fig.\ \ref{fig:libration} for the 
 simulated ringlets of Fig \ref{fig:equilibrium}. 
-That Fig.\ compares predicted libration periods (dashed curves) versus simulated $T_\text{lib}$
-(dotted curves) for the suite of narrow and wide ringlets. The rightmost halves of the blue and green curves show that the
+That Figure compares predicted libration periods (dashed curves) versus simulated $T_\text{lib}$
+(dotted curves) for the suite of narrow and wide ringlets. The rightmost portions of the blue and green curves show that the
 higher-mass simulated ringlets' have libration periods $T_\text{lib}$ that are in excellent agreement with theory, 
-Eqn.\ (\ref{eqn:T_lib}). However significant disagreement exists in the left half of these curves, which corresponds to the
-lower-mass narrow \& wide ringlets. This disagreement is a consequence of the simulated ringlets' evolution
-violating a key assumption of the \citep{BGT83AJpaper} derivation: 
-that the ringlet's libration amplitude $A$ stays constant during a libration
-cycle. In all of the simulations reported on in Fig.\ \ref{fig:libration}, the ringlet's libration amplitude does 
-vary over time, but those simulations show the their fractional variations $\Delta A/A$ are progressively smaller
-in the higher-mass ringlets...
+Eqn.\ (\ref{eqn:T_lib}). However significant disagreement exists in the leftmost portions
+of these curves, which corresponds to the lower-mass narrow \& wide ringlets. 
+This disagreement is a consequence of the simulated ringlets' evolution
+violating a key assumption of the \cite{BGT83AJpaper} derivation: 
+that the ringlet's libration amplitude $A$ and its libration frequency $\Omega_\text{lib}$ are constant during a libration
+cycle. In all of the simulations reported on in Fig.\ \ref{fig:libration}, the ringlet's libration amplitude and
+frequency do vary over time, but those simulations show the their fractional variations $\Delta A/A$ and 
+$\Delta\Omega_\text{lib}/\Omega_\text{lib}$ 
+are progressively smaller in the higher-mass ringlets. For instance the three lowest-mass blue and green
+simulations in Fig.\ \ref{fig:libration} have $\Delta A/A>0.5$ while that quantity is significantly smaller
+for the higher-mass ringlets. From this we conclude that the lower-mass simulations 
+are exploring parameter space where the theoretical predictions do not apply. And that the higher-mass simulations 
+are in excellent agreement with theory.
 
 \begin{figure}
     \plotone{figs/libration.pdf}
     \caption{
         \label{fig:libration}
         Libration period $T_\text{lib}$ versus ringlet mass $m_r$ for the suite of narrow and wide ringlets
-        simulated in Fig.\ \ref{fig:equilibrium}. Dotted curves are the simulated outcomes while dashed
-        curves are the theoretical predictions, Eqn.\ (\ref{eqn:T_lib}).
+        also simulated in Fig.\ \ref{fig:equilibrium}. Dotted curves are the simulated outcomes while dashed
+        curves are from Eqn.\ (\ref{eqn:T_lib}) derived in \citep{BGT83AJpaper}. Note that outcomes for the lower-mass ringlet
+        simulations do disagree with theory, but they are exploring a parameter space where the 
+        assumptions utilized in the derivation do not apply. 
     }
 \end{figure}
 
