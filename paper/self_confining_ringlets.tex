@@ -48,8 +48,13 @@ Viscous Self--Gravitating Narrow Eccentric Planetary Ringlets}
 \author{Thomas Rimlinger}
 \affiliation{University of Maryland}
 
-\author{Lucy Luu}
-\affiliation{University of Maryland}
+%\author{Lucy Luu}
+%\affiliation{University of Maryland}
+\author[0000-0003-4769-3273]{Yuxi(Lucy) Lu}
+\affiliation{Department of Astronomy, The Ohio State University, Columbus, 140 W 18th Ave, OH 43210, USA}
+\affiliation{Center for Cosmology and Astroparticle Physics (CCAPP), 
+The Ohio State University, 191 W. Woodruff Ave., Columbus, OH 43210, USA}
+\affiliation{American Museum of Natural History, Central Park West, Manhattan, NY, USA}
 
 
 %abstract
@@ -1121,12 +1126,15 @@ form near the edge of the dense planetary ring, then the moonlet's reaction to
 the shepherding torque that it exerts across the dense ring [which is $-1\times$ 
 the radial integral of Eqn.\ (71) of \cite{GT82}] would
 cause that moonlet to migrate towards and then beyond the ring's edge. And if a dense planetary ring can spawn
-one such moonlet, it can also spawn additional moonlets. 
+one such moonlet, it can also spawn additional moonlets. \cite{CSC10} also propose such 
+for the origin for all the small satellites orbiting just beyond Saturn's A ring:
+Atlas, Prometheus, Pandora, Epimethius, and Janus.
 
 A moonlet's radial migration rate due to the ring-shepherding torque also
 varies with moonlet mass, so a larger moonlet will eventually overtake a smaller moonlet that is orbiting beyond it.
 Indeed, calculations by \cite{PS01} suggest that satellite Prometheus emerged from the outer edge of Saturn's A
-ring $\sim10^7$ years ago, and that it will have a close encounter with nearby Pandora in another $\sim10^7$ years.
+ring $\sim10^7$ years ago, and that it will have a close encounter with the smaller satellite
+Pandora that is currently orbiting just exterior to Prometheus in another $\sim10^7$ years.
 Multiple close moonlet-moonlet encounters would then pump up moonlet eccentricities until they collide. If that collision
 is sufficiently vigorous to disrupt one or both moonlets, then a narrow eccentric planetary ringlet composed of
 collisional debris would result. Viscous particle-particle
@@ -1265,7 +1273,19 @@ a spiral bending wave, whose wavelength $\lambda_b$ shrinks as it propagates, wi
 eventually go nonlinear in a way that might spawn a spiral density wave
 that could be observable in Cassini observations of Saturn's rings.
 
-\item {\it Asymmetric circumstellar debris disk}: a debris disk is a dusty circumstellar disk that is often foundin orbit about younger stars, $\sim10^{7-9}$ years \citep{Matthews18}, 
+\item {\it Galactic spiral structure}: the main difference between planetary and galactic trajectories
+is in their precession rates. Planetary orbits precess slowly, 
+$|\dot{\tilde{\omega}}|=|\Omega-\kappa|\ll\Omega$, whereas galactic trajectories,
+which can also be described by equations like Eqn.\ (\ref{eqn:revised_linearized_soln}),
+precess rapidly, $|\dot{\tilde{\omega}}|\sim\cal{O}($$\Omega)$. Which suggests
+that epi\_int\_lite could also be used to simulate galactic spiral stucture
+when the code is provided with appropriate functions for $\Omega(r)$ and $\kappa(r)$.
+Epi\_int\_lite is also quite general in that it can simulate waves in both 
+gravity and pressure dominated disks, and
+additional perturbations from a central bar would be straightforward to include.
+
+\item {\it Asymmetric circumstellar debris disk}: a debris disk is a dusty circumstellar disk that 
+is often foundin orbit about younger stars, $\sim10^{7-9}$ years \citep{Matthews18}, 
 and is a possible signature of ongoing planet formation. Many such star-disk systems are suspected of hosting an unseen
 planetesimal `birth ring', wherein collisions among those planetesimals generates dust whose smaller grains are 
 launched into very wide eccentric orbits due to stellar radiation pressure \citep{SC06}.
@@ -1295,6 +1315,7 @@ and readers are encouraged to reach out if they wish to use that code in their r
 \section{Acknowledgments}
 \label{sec:Acknowledgments}
 
+The authors thank Joe Spitale for comments about this work.
 This research was supported by the National Science Foundation via Grant No.\ AST-1313013.
 
 
