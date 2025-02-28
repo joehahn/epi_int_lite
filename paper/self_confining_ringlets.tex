@@ -62,7 +62,7 @@ The Ohio State University, 191 W. Woodruff Ave., Columbus, OH 43210, USA}
 
 Narrow eccentric planetary ringlets have sharp edges, sizable eccentricity gradients, and a 
 confinement mechanism that prevents radial spreading due to ring viscosity. 
-Most proposed ringlet confinement mechanisms pressume that there are one or more 
+Most proposed ringlet confinement mechanisms presume that there are one or more 
 shepherd satellites whose gravitational perturbations keeps the ringlet confined radially, 
 but the absence of such shepherds in Cassini observations of Saturn's rings
 casts doubt upon those ringlet confinement mechanisms.
@@ -391,8 +391,8 @@ The nominal ringlet's eccentricity evolution.}
     \plotone{figs/nominal_sigma_vs_longitude.pdf}
     \caption{
         \label{fig:nominal_sigma_vs_longitude}
-        Nominal ringlet's surface density $\sigma(\varphi)$ versus relative
-        longitude $\varphi$ at selected times $t$ and plotted in units of ringlet's initial
+        Nominal ringlet's surface density $\sigma(\varphi)$ versus true anomaly 
+        $\varphi$ at selected times $t$ and plotted in units of ringlet's initial
         mean surface density $\sigma_0$. Note that the ringlet's surface
         density maxima occurs just before peripase,  and is due to the ringlet's
         negative periapse twist 
@@ -406,7 +406,7 @@ The nominal ringlet's eccentricity evolution.}
         \label{fig:radial_sigma_nominal}
         Radial profiles of the nominal ringlet's surface density $\sigma(\varphi)$ at time $t=100\tau_\nu$
         when the ringlet is self-confining. Each surface density profile is plotted versus radial distance $r$ 
-        relative to $r_{mid}$, which is the ringlet's midpoint along relative longitude $\varphi = \theta-\tilde{\omega}$,
+        relative to $r_{mid}$, which is the ringlet's midpoint along true anomaly $\varphi = \theta-\tilde{\omega}$,
         with those radial distances $r - r_{mid}$ measured in units of the ringlet's final semimajor axis width $\Delta a$,
         and surface density is shown in units of the ringlet's longitudinally-averaged surface density $\sigma_0$.
         Radial surface density profiles are plotted along the ringlet's periapse ($\varphi=0$, blue curve), which is 
@@ -536,7 +536,7 @@ the above simplifies to
 \end{equation}
 where the angular shear $\omega'=\partial\omega/\partial r$ in Eqn.\ (\ref{eqn:F_nu_1})
 is derived in Appendix \ref{sec:Appendix A}, Eqn.\ (\ref{eqn:domega-dr}). In the above,
-$\varphi=\theta-\tilde{\omega}$ is the longitude relative to periapse,
+$\varphi=\theta-\tilde{\omega}$ is the true anomaly {\it i.e.}\ the longitude relative to periapse,
 ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ that has angular speed $\Omega(a)$,
 and Eqn.\ (\ref{eqn:F_nu_varphi}) assumes that $|\tilde{\omega}'|\ll e'$ so that $q\simeq e'$
@@ -584,7 +584,7 @@ self-confinement. This is due to the ringlet's self-gravity,
 which also transports a flux of angular momentum ${\cal F}_{L,g}$ radially through the ringlet.
 
 Figure \ref{fig:F_nu_nominal} shows the nominal ringlet's viscous angular momentum flux
-${\cal F}_{L,\nu}$ versus relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
+${\cal F}_{L,\nu}$ versus true anomaly $\varphi=\theta-\tilde{\omega}$ at selected times $t$.
 Early in the ringlet's evolution when time $t \le 10\tau_\nu$ (blue, orange, green, red, purple 
 and brown curves),
 the ringlet is in regime 1 since $e'<0.75$ and ${\cal F}_{L,\nu}(\varphi)>0$ at all longitudes.
@@ -610,8 +610,8 @@ so radial spreading has ceased and the ringlet is self-confining.
     \plotone{figs/nominal_shear.pdf}
     \caption{
         \label{fig:nominal_shear}
-        The nominal ringlet's angular shear $\partial\omega/\partial r$ is plotted versus relative 
-        longitude $\varphi$ at selected moments in time; this quantity is negative where the inner streamline
+        The nominal ringlet's angular shear $\partial\omega/\partial r$ is plotted versus true 
+        anomaly $\varphi$ at selected moments in time; this quantity is negative where the inner streamline
         has the higher angular speed $\omega=v_\theta/r$. When the simulation starts, the
         ringlet has eccentricity $e=0.01$ and eccentricity gradient $e'=0$ 
         so $\partial\omega/\partial r\simeq-3\Omega/2r\simeq-1.5$ when evaluated natural units (blue curve).
@@ -632,7 +632,7 @@ so radial spreading has ceased and the ringlet is self-confining.
         Eqn.\ (\ref{eqn:F_nu_varphi}), is plotted 
         in units of ${\cal F}_{L,\nu,c}$ (the angular momentum flux in a circular ringlet)
         and versus the ringlet's
-        relative longitude $\varphi=\theta-\tilde{\omega}$ at selected times $t/\tau_\nu$, 
+        true anomaly $\varphi=\theta-\tilde{\omega}$ at selected times $t/\tau_\nu$, 
         with the ringlet's eccentricy gradient $e'$ also indicated.
     }
 \end{figure}
@@ -667,7 +667,7 @@ so radial spreading has ceased and the ringlet is self-confining.
         \label{fig:F_vs_longitude_nominal}
         The nominal ringlet's viscous angular momentum flux ${\cal F}_{L,\nu}(\varphi)$ (blue curve) is computed
         via Eqn.\ (\ref{eqn:F_nu_theta}) and plotted in units of a circular ringlet's flux ${\cal F}_{L,\nu,c}$
-        versus relative longitude $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
+        versus true anomaly $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
         as well as the ringlet's gravitational angular momentum flux ${\cal F}_{L,g}(\varphi)$
         (orange curve via Eqn.\ \ref{eqn:F_L}).
     }
@@ -719,7 +719,7 @@ as another test of the epi\_int\_lite integrator's numerical quality.
         \label{fig:nominal_energy_flux}
         Blue curve is the nominal ringlet's viscous energy flux ${\cal F}_{E,\nu}(\varphi)$, plotted 
         in units of a circular ringlet's viscous energy flux ${\cal F}_{E,\nu,c}$ 
-        and versus the ringlet's relative longitude $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
+        and versus the ringlet's true anomaly $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
         as well as the ringlet's gravitational energy flux ${\cal F}_{E,g}(\varphi)$.
     }
 \end{figure}
@@ -1450,7 +1450,7 @@ is not a significant source of numerical error.\\
 Lastly we derive the streamlines' angular shear $\partial\omega/\partial r$.
 The angular velocity $\omega=v_\theta/r=\Omega(a/r)^2$ by Eqn.\ (\ref{eqn:revised_linearized_soln}) so
 $\omega \simeq\Omega(1+2e\sin\varphi)$
-to first order in $e$ where relative longitude $\varphi=\theta -\tilde{\omega}\simeq M$.
+to first order in $e$ where true anomaly $\varphi=\theta -\tilde{\omega}\simeq M$.
 Thus $\partial\omega/\partial a \simeq -(3\Omega/2a)(1-\frac{4}{3}e'\cos\varphi)$
 since $J_2$ and $e$ are small though
 the eccentricity gradient $e'=a(\partial e/\partial a)$ might not be small. Likewise
