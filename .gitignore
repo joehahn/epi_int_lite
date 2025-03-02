@@ -1,4 +1,5 @@
 private
+output
 *.pyc
 *.ipynb_checkpoints
 */*/*.pyc
