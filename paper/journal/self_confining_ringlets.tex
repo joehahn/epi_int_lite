@@ -553,7 +553,7 @@ eccentricity gradient $e'=a\partial e/\partial a$ might not be, so
     \label{eqn:sigma2}
     \sigma \simeq \frac{\sigma_0}{1-e'\cos\varphi}
 \end{equation}
-where $\sigma_0 = \lambda/\Delta a$ is the ringlet's initial surface density assuming
+where $\sigma_0 = \lambda/\Delta a$ would be the ringlet's initial surface density assuming
 its initial $e'$ was zero and $\varphi=\theta-\tilde{\omega}$ is the true anomaly 
 {\it i.e.}\ the longitude relative to periapse.
 }
@@ -705,7 +705,13 @@ so radial spreading has ceased and the ringlet is self-confining.
         via Eqn.\ (\ref{eqn:F_nu_theta}) and plotted in units of a circular ringlet's flux ${\cal F}_{L,\nu,c}$
         versus true anomaly $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
         as well as the ringlet's gravitational angular momentum flux ${\cal F}_{L,g}(\varphi)$
-        (orange curve) {\bf computed using Eqn.\ (\ref{eqn:grav_ang_mom_flux}).}
+        (orange curve) 
+        {\bf 
+        computed via Eqns.\ (\ref{eqn:gravity}) and (\ref{eqn:grav_ang_mom_flux}).
+        Dashed curve show the approximate gravitational flux, 
+        Eqn.\ (\ref{eqn:F_L_grav_approx}), which agrees very well with the exact flux (solid curve) 
+        that is derived from this simulation.
+        }
     }
 \end{figure}
 
@@ -879,8 +885,8 @@ ringlets have a larger periapse twist $|\tilde{\omega}'|$.
 
 We also note the \cite{Fetal24} study of the Uranian ringlets (abbreviated here as F24)
 which reports observed values for $e'$ and $\tilde{\omega}'$
-for nine ringlets; see quantities $q_{em}=e'$ and $q_{\tilde{\omega}m}=\tilde{\omega}'$ where $m=1$
-in Table 14 of F24. Nearly all of the ringlets monitored in F24 have 
+for nine ringlets; see quantities $q_{em}=e'$ and $q_{\tilde{\omega}m}=\tilde{\omega}'$ for
+the $m=1$ rows in Table 14 of F24. Nearly all of the ringlets monitored in F24 have 
 nonlinearity parameters $q=\sqrt{q_{em}^2 + q_{\tilde{\omega}m}^2}<0.66$ that are significantly
 smaller than the $q\simeq0.9$ achieved by the self-confining ringlets simulated 
 here\footnote{The exception (F24) is Uranus' $\beta$ ringlet whose $q\simeq1.2$ is so large as to imply that
@@ -1521,6 +1527,44 @@ $e'\gtrsim3/4$.
 \section{Appendix B}
 \label{sec:Appendix B}
 
+{\bf
+
+Write the gravitational angular momentum flux ${\cal F}_{L,g}=\lambda r A^1_{g,\theta}$
+in terms of orbit elements, for a ringlet composed of two streamlines. The one-sided gravitational
+acceleration that the inner streamline exerts on a particle in the outer streamline is
+$A^1_g=-2G\lambda/\Delta$. The perturbing streamline's orientation relative to the particle
+is illustrated Figure 3 of \cite{HS13}, which shows that the particle's tangential acceleration
+is $A^1_{g,\theta}\simeq-(v_r/v_\theta)A^1_g$ where $v_r$ and $v_\theta$ are the perturbing 
+streamline's radial and azimuthal velocities at the point of minumum separation
+where $v_r/v_\theta\simeq e_0\sin\varphi$ by Eqns.\ (\ref{eqn:revised_linearized_soln}) 
+to first order in the inner streamline's 
+eccentricity $e_0$ and assuming $\kappa\simeq\Omega$. 
+The inner streamline's orbit elements 
+are designated $a_0$, $e_0$, $\tilde{\omega}_0$ while the outer streamline has
+$a_1 = a_0 + \Delta a$, $e_1 = e_0 + \Delta e$, 
+$\tilde{\omega}_1 = \tilde{\omega}_0 + \Delta \tilde{\omega}$, and
+the particle's  longitude relative to the inner streamline's periapse is 
+$\varphi\simeq\theta - \tilde{\omega}_0$.
+The streamline-particle separation is then
+\begin{equation}
+    \label{eqn:Delta}
+    \Delta = r_1 - r_0 \simeq (1 - e'\cos\varphi - \tilde{\omega}'\sin\varphi)\Delta a
+\end{equation}
+to first order in the small quantities $\Delta a$, $\Delta e$, and $\Delta\tilde{\omega}$
+and assuming $e_0\ll e'$, so the gravitation flux of angular momentum
+at the particle is 
+ \begin{equation}
+    \label{eqn:F_L_grav_approx}
+    {\cal F}_{L,g} \simeq 2eG\lambda^2\left(\frac{a}{\Delta a}\right)
+        \frac{\sin\varphi}{1 - e'\cos\varphi - \tilde{\omega}'\sin\varphi}
+\end{equation}
+where the streamline's linear density $\lambda=m_1/2\pi a = m_r/4\pi a$ for 
+a streamline whose mass $m_1=m_r/2$ is half the total ringlet mass $m_r$.
+}
+
+\section{Appendix C}
+\label{sec:Appendix C}
+
 This Appendix compares the evolution of epi\_int\_lite simulations to theoretical predictions for 
 narrow viscous ringlets, and for narrow gravitating ringlets.\\
 
@@ -1638,8 +1682,8 @@ are in excellent agreement with theory.
     }
 \end{figure}
 
-\section{Appendix C}
-\label{sec:Appendix C}
+\section{Appendix D}
+\label{sec:Appendix D}
 
 This examines the viscous evolution of a narrow eccentric non-gravitating
 ringlet that is identical to the nominal ringlet of Section \ref{subsec:nominal} but
