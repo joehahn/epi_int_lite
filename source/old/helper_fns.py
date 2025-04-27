@@ -177,7 +177,7 @@ def lc(beta, m, s):
 from scipy.misc import derivative
 def dlc(beta, m, s):
     return derivative(lc, beta, dx=1e-8, args=(m,s))
-    
+
 #acceleration due to ring self-gravity
 def ring_gravity(lambda_, G_ring, r, t, vr, vt, fast_gravity):
     if  (fast_gravity == True):
@@ -288,8 +288,7 @@ def edge_torques(r, At, confine_inner_edge, confine_outer_edge):
     return At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, viscosity
-def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, 
-        confine_inner_edge, confine_outer_edge, satellite):
+def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
@@ -350,8 +349,7 @@ def velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring
     #compute streamlines' linear density 
     lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     #radial acceleration due to ring gravity, viscosity, pressure
-    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, 
-        confine_inner_edge, confine_outer_edge, satellite)
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -590,7 +588,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         satellite['lc'] = lc(beta, m, s)
         satellite['dlc'] = dlc(beta, m, s)
         print 'satellite = ', satellite
-
+    
     #ring sound speed c
     c = 0.0
     if (Q_ring > 0.0):
@@ -600,8 +598,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         c = (Q_ring*np.pi*G*sd/Omg).mean()
     
     #adjust vt to compensate for ring's radial accelerations
-    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, 
-        fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     rAr = r*Ar
     for idx in range(number_of_streamlines):
         rAr[idx] = rAr[idx].mean()
@@ -617,7 +614,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         
     #this dict is used to track execution time and when streamlines cross or nan is generated
     start_time = int(tm.time())
-    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':0, 'streamline_crossing_timestep':None, 
+    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 
         'nan_timestep':None, 'self_interacting':self_interacting}
 
     return r, t, vr, vt, c, monitor

@@ -27,6 +27,7 @@ print 'confine_outer_edge =', confine_outer_edge
 print "Toomre's Q_ring =", Q_ring
 print 'Rp =', Rp
 print 'J2 =', J2
+print 'satellite =', satellite
 print 'initial_orbits =', initial_orbits
 print 'output_folder =', output_folder
 
@@ -34,7 +35,7 @@ print 'output_folder =', output_folder
 from helper_fns import *
 r, t, vr, vt, c, monitor = initialize_streamline(number_of_streamlines, particles_per_streamline,
     radial_width, total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity, 
-    confine_inner_edge, confine_outer_edge, Q_ring, J2, Rp, initial_orbits)
+    confine_inner_edge, confine_outer_edge, Q_ring, J2, Rp, satellite, initial_orbits)
 
 #prep for main loop
 timestep = 0
@@ -46,7 +47,7 @@ print 'evolving system...'
 while (number_of_outputs < total_number_of_outputs):
     #kick velocities forwards by timestep +dt/2
     r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
-        r, t, vr, vt, dt/2.0, fast_gravity, confine_inner_edge, confine_outer_edge)
+        r, t, vr, vt, dt/2.0, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     timesteps_since_output = 0
     while (timesteps_since_output < timesteps_per_output):
         #kick coordinates to account for central body's motion about center of mass
@@ -55,13 +56,19 @@ while (number_of_outputs < total_number_of_outputs):
         a, e, wt, M = coords2elem(J2, Rp, r, t, vr, vt)
         #advance mean anomaly during drift step
         M = drift(a, M, J2, Rp, dt)
+        #update satellite orbit as needed
+        if (satellite['mass_final'] > 0):
+            time = monitor['current_timestep']*dt
+            Omg_sat = Omega(J2, Rp, satellite['r'])
+            satellite['t'] = (time*Omg_sat)%(2*np.pi)
+            satellite['mass'] = satellite['mass_final']*(1.0 - np.exp(-time/satellite['time_grow']))
         #convert orbit elements to coordinates
         r, t, vr, vt = elem2coords(J2, Rp, a, e, wt, M)
         #kick coordinates to account for central body's motion about center of mass
         r, t, vr, vt = coordinate_kick(dt/2, total_ring_mass, r, t, vr, vt)    
         #kick velocities
         r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
-            r, t, vr, vt, dt, fast_gravity, confine_inner_edge, confine_outer_edge)
+            r, t, vr, vt, dt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
         #updates
         timestep += 1
         timesteps_since_output += 1
@@ -69,7 +76,7 @@ while (number_of_outputs < total_number_of_outputs):
         monitor = monitor_streamlines(monitor, r, t, timestep)
     #kick velocities backwards by timestep -dt/2
     r, t, vr, vt = velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
-        r, t, vr, vt, -dt/2.0, fast_gravity, confine_inner_edge, confine_outer_edge)
+        r, t, vr, vt, -dt/2.0, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     #save output
     rz, tz, vrz, vtz, timestepz = store_system(rz, tz, vrz, vtz, timestepz, r, t, vr, vt, total_ring_mass, timestep)
     number_of_outputs += 1

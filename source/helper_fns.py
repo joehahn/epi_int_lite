@@ -160,6 +160,24 @@ def delta_f(f, t):
 def df_dr(delta_f, delta_r):
     return delta_f/delta_r
 
+#integrand of laplace coefficient
+def lc_integrand(t, m, s, beta):
+    num = (2/np.pi)*np.cos(m*t)
+    den = (1 + beta**2 - 2*beta*np.cos(t))**s
+    intgrnd = num/den
+    return intgrnd
+
+#calculate laplace coefficient
+from scipy.integrate import quad
+def lc(beta, m, s):
+    lc = quad(lc_integrand, 0, np.pi, args=(m,s,beta))
+    return lc[0]
+
+#derivative of lc wrt beta
+from scipy.misc import derivative
+def dlc(beta, m, s):
+    return derivative(lc, beta, dx=1e-8, args=(m,s))
+
 #acceleration due to ring self-gravity
 def ring_gravity(lambda_, G_ring, r, t, vr, vt, fast_gravity):
     if  (fast_gravity == True):
@@ -181,6 +199,28 @@ def ring_gravity(lambda_, G_ring, r, t, vr, vt, fast_gravity):
             sin_phi = vri/vi
         Ar += A*cos_phi
         At -= A*sin_phi
+    return Ar, At
+
+#acceleration due to satellite's m^th lindblad resonance
+def satellite_lindblad_resonance(satellite, r, t):
+    mass_sat = satellite['mass']
+    r_sat = satellite['r']
+    t_sat = satellite['t']
+    m = satellite['m']
+    lc = satellite['lc']
+    dlc = satellite['dlc']
+    factor = mass_sat/(r_sat*r_sat)
+    fn = dlc
+    if (m == 1):
+        fn -= 1.0
+    angle = m*(t - t_sat)
+    Ar = factor*fn*np.cos(angle)
+    beta = r/r_sat
+    fn = lc/beta
+    if (m == 1):
+        fn -= 1.0
+    fn *= m
+    At = -factor*fn*np.sin(angle)
     return Ar, At
 
 #acceleration due to pressure P
@@ -248,7 +288,7 @@ def edge_torques(r, At, confine_inner_edge, confine_outer_edge):
     return At
 
 #calculate radial and tangential accelerations due to ring gravity, pressure, viscosity
-def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge):
+def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite):
     #wrap ring around in longitude
     rw = wrap_ring(r, longitude=False)
     tw = wrap_ring(t, longitude=True)
@@ -275,6 +315,11 @@ def accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr,
             At += ring_shear_viscosity(shear_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
         if (bulk_viscosity > 0.0):
             Ar += ring_bulk_viscosity(shear_viscosity, bulk_viscosity, lw, sdw, rw, tw, vrw, vtw, vw, delta_rw)
+    #acceleration due to fictitious satellite's m^th Lindblad resonance
+    if (satellite['mass_final'] > 0):
+        A = satellite_lindblad_resonance(satellite, rw, tw)
+        Ar += A[0]
+        At += A[1]
     #add confinement torque at ring edges, as needed
     if (confine_inner_edge or confine_outer_edge):
         At = edge_torques(rw, At, confine_inner_edge, confine_outer_edge)
@@ -296,7 +341,7 @@ def get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt):
 
 #velocity kicks due to ring gravity, viscosity, pressure
 def velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring_mass, number_of_streamlines, \
-        r, t, vr, vt, dt, fast_gravity, confine_inner_edge, confine_outer_edge):
+        r, t, vr, vt, dt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite):
     #convert mixed-center coordinates to planetocentric
     r, t, vr, vt = mixed2planeto(total_ring_mass, r, t, vr, vt)
     #order particles by longitude
@@ -304,7 +349,7 @@ def velocity_kick(J2, Rp, G_ring, shear_viscosity, bulk_viscosity, c, total_ring
     #compute streamlines' linear density 
     lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     #radial acceleration due to ring gravity, viscosity, pressure
-    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge)
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     #kick velocity
     vr += Ar*dt
     vt += At*dt
@@ -482,7 +527,7 @@ def update_display(number_of_outputs, total_number_of_outputs, dt, timestep, mon
 #initialize streamlines
 def initialize_streamline(number_of_streamlines, particles_per_streamline, radial_width,
     total_ring_mass, G_ring, fast_gravity, shear_viscosity, bulk_viscosity,
-    confine_inner_edge, confine_outer_edge, Q_ring, J2, Rp, initial_orbits):
+    confine_inner_edge, confine_outer_edge, Q_ring, J2, Rp, satellite, initial_orbits):
     
     #initialize particles in circular orbits
     a_streamlines = np.linspace(1.0, 1.0 + radial_width, num=number_of_streamlines)
@@ -533,6 +578,17 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
     #compute streamlines' linear density 
     lambda_ = get_lambda(total_ring_mass, number_of_streamlines, J2, Rp, r, t, vr, vt)
     
+    #setup for satellite resonance
+    if (satellite['mass_final'] > 0):
+        m = satellite['m']
+        r_sat = satellite['r']
+        beta = r.mean()/r_sat
+        s = 0.5
+        from helper_fns import lc, dlc
+        satellite['lc'] = lc(beta, m, s)
+        satellite['dlc'] = dlc(beta, m, s)
+        print 'satellite = ', satellite
+    
     #ring sound speed c
     c = 0.0
     if (Q_ring > 0.0):
@@ -542,7 +598,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         c = (Q_ring*np.pi*G*sd/Omg).mean()
     
     #adjust vt to compensate for ring's radial accelerations
-    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge)
+    Ar, At = accelerations(lambda_, G_ring, shear_viscosity, bulk_viscosity, c, r, t, vr, vt, fast_gravity, confine_inner_edge, confine_outer_edge, satellite)
     rAr = r*Ar
     for idx in range(number_of_streamlines):
         rAr[idx] = rAr[idx].mean()
