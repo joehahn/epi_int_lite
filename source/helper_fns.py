@@ -614,7 +614,7 @@ def initialize_streamline(number_of_streamlines, particles_per_streamline, radia
         
     #this dict is used to track execution time and when streamlines cross or nan is generated
     start_time = int(tm.time())
-    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':None, 'streamline_crossing_timestep':None, 
+    monitor = {'start_time':start_time, 'current_time':start_time, 'current_timestep':0, 'streamline_crossing_timestep':None, 
         'nan_timestep':None, 'self_interacting':self_interacting}
 
     return r, t, vr, vt, c, monitor
