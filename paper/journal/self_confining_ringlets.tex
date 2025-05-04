@@ -19,9 +19,9 @@
 %\citestyle{aa}
 
 %journal
-\received{not yet}
-\revised{not yet}
-\accepted{not yet}
+\received{March 4, 2025}
+\revised{April 20, 2025}
+\accepted{May 1, 2025}
 \submitjournal{\apj, March 3, 2025}
 
 %short names
@@ -66,7 +66,6 @@ Most proposed ringlet confinement mechanisms presume that there are one or more
 shepherd satellites whose gravitational perturbations keeps the ringlet confined radially, 
 but the absence of such shepherds in Cassini observations of Saturn's rings
 casts doubt upon those ringlet confinement mechanisms.
-
 The following uses a suite of N-body simulations to explore an alternate scenario,
 whereby ringlet self-gravity drives a narrow eccentric ringlet into a 
 self--confining state. These simulations show that, under a wide variety of initial conditions,
@@ -78,13 +77,11 @@ the ringlet's orbit-averaged angular momentum flux due to viscosity + self-gravi
 The absence of any net radial angular momentum transfer through the ringlet 
 means that the ringlet has settled into a self-confining state, {\it i.e.} it does 
 not spread radially due to its viscosity, and simulations also show that such ringlets have sharp edges.
-
 Nonetheless, viscosity still circularizes the ringlet in time $\tau_e\sim10^6$ orbits $\sim1000$ years, 
 which will cause the ringlet's nonlinearity parameter to shrink below the 
 $q\simeq\sqrt{3}/2$ threshold and allows radial spreading to resume. Either sharp-edged
 narrow eccentric ringlets are transient phenomena, or exterior perturbations 
 are also sustaining the ringlet's eccentricity.
-
 We then speculate about how such ringlets might come to be.
 
 \end{abstract}
@@ -121,6 +118,12 @@ cause the ringlet to get narrower over time.
 That suggestion also motivates this study,
 which uses the epi\_int\_lite N-body integrator to investigate whether a 
 viscous and self--gravitating ringlet might evolve into a self-confining state.
+
+We also note that Uranus hosts several narrow eccentric ringlets, but Section \ref{subsec:variations}
+uses results from a recent study of the Uranian ringlets (\citealt{Fetal24})
+to argue that these are not candidates for the self-confinement
+mechanism that is considered here; see Section \ref{subsec:variations} for details.
+
 
 \section{epi\_int\_lite}
 \label{sec:epi_int_lite}
@@ -182,7 +185,7 @@ would no longer be computed reliably.
 \subsection{N-body method}
 \label{subsec:N-body method}
 
-The epi\_int\_lite N-body integrator uses the same {\bf second-order sympletic} drift-kick
+The epi\_int\_lite N-body integrator uses the same second-order sympletic drift-kick
 scheme used by the MERCURY Nbody algorithm \citep{C99}, except that
 epi\_int\_lite particles that do not interact with each other directly.
 Rather, epi\_int\_lite particles
@@ -197,7 +200,7 @@ is widely used in theoretical studies of planetary rings (c.f.\ \citealt{GT79, B
 as well as in N-body studies of rings \citep{HS13, RHH16}. The great benefit of the streamline concept
 in numerical work is that it allows one to swiftly track the 
 global evolution of the ringlet's streamlines numerically
-using only a modest numbers of trace particles, typically $N_sN_p\sim500$.
+using only a modest numbers of tracer particles, typically $N_sN_p\sim500$.
 
 The simulations reported on here account for streamline gravity
 and ringlet viscosity. Because a ringlet is narrow, all particles
@@ -228,14 +231,12 @@ The hydrodynamic approximation is used here to account for
 the dissipation that occurs as particles in adjacent particle streamlines
 shear past and collide with the perturbed particle,
 without having to monitor individual particle-particle collisions.
-The particle's {\bf Eulerian} acceleration due to the ring particles' shear viscosity is
+The particle's Eulerian acceleration due to the ring particles' shear viscosity is
 \begin{equation}
 \label{eqn:shear_viscosity}
     A_{\nu,\parallel}=-\frac{1}{\sigma r}\frac{\partial {\cal F}_L}{\partial r},
 \end{equation}
-where $r$ is the particle's radial coordinate, 
-{\bf
-$\sigma$ is the surface density
+where $r$ is the particle's radial coordinate, $\sigma$ is the surface density
 \begin{equation}
     \label{eqn:sigma}
     \sigma = \frac{\lambda}{\Delta r}
@@ -243,7 +244,6 @@ $\sigma$ is the surface density
 where $\Delta r$ is the radial separation between the particle
 and the perturbing streamline (and see Section 2.3.3 of \cite{HS13} for details
 about how that is evaluated numerically),
-}
 and ${\cal F}_{L,\nu}$ is the flux of angular momentum
 that is transported radially across the particle's streamline
 due to its collisions with particles in adjacent streamlines, {\it i.e.}\
@@ -252,8 +252,7 @@ due to its collisions with particles in adjacent streamlines, {\it i.e.}\
     {\cal F}_{L,\nu} = -\nu_s \sigma r^2\frac{\partial\omega}{\partial r}
 \end{equation}
 where $\nu_s$ is the ringlet's kinematic shear viscosity
-and $\omega=v_\theta/r$ is the particle's angular velocity
-{\bf (Appendix A of \citealt{HS13})}.
+and $\omega=v_\theta/r$ is the particle's angular velocity (Appendix A of \citealt{HS13}).
 The acceleration $A_{\nu,\parallel }$ is parallel to the perturbed particle's streamline
 {\it i.e.}\ parallel to particle's velocity vector
 $\mathbf{v}=\dot{\mathbf{r}}=v_r\hat{r} + v_\theta\hat{\theta}$ 
@@ -487,7 +486,6 @@ segment is
 where $A^1_\theta$ is the tangential component of the one-sided acceleration,
 and the streamline's linear mass density $\lambda$ is computed using Eqn.\ (\ref{eqn:lambda}).
 The radial angular momentum flux, Eqn.\ (\ref{eqn:F_L}), is due to the ringlet's viscosity and self-gravity,
-{\bf 
 so ${\cal F}_L = {\cal F}_{L,\nu} + {\cal F}_{L,g}$ where
 \begin{align}
     {\cal F}_{L,\nu} = \lambda r A^1_{\nu,\theta} \label{eqn:viscous_ang_mom_flux}\\
@@ -498,7 +496,6 @@ The particle's one-sided gravitational acceleration $A^1_{g,\theta}$ is straight
 it is merely the tangential component of the gravitational accelerations exerted by
 all streamlines orbiting interior to the particle, while the viscous angular momentum
 flux is Eqn.\ (\ref{eqn:F_nu_theta}) derived in \cite{HS13}.
-}
 
 The work that the interior streamlines exert on $\delta m$ as that segment travels a small distance
 $\delta\mathbf{r}=\mathbf{v}\delta t$ in time $\delta t$
@@ -545,7 +542,6 @@ where the ringlet's viscous flux of angular momentum is
 \end{equation}
 when Eqn.\ (\ref{eqn:F_nu_theta}) is written as a function of spatial coordinates and
 angular velocity $\omega=\dot{\theta}$. 
-{\bf
 The ring's surface density $\sigma$ is Eqn.\ (\ref{eqn:sigma}) where $\Delta r\simeq\Delta a(1-e'\cos\varphi)$
 when it is assumed that the ringlet's eccentricity $e$ is small but its
 eccentricity gradient $e'=a\partial e/\partial a$ might not be, so 
@@ -556,7 +552,6 @@ eccentricity gradient $e'=a\partial e/\partial a$ might not be, so
 where $\sigma_0 = \lambda/\Delta a$ would be the ringlet's initial surface density assuming
 its initial $e'$ was zero and $\varphi=\theta-\tilde{\omega}$ is the true anomaly 
 {\it i.e.}\ the longitude relative to periapse.
-}
 Now consider a small arc of  ring material of length $d\ell$, 
 so ${\cal F}_{L,\nu}d\ell$ is the torque that arc exert exerts on
 ring matter just exterior due to viscous friction,
@@ -571,11 +566,8 @@ where the angular shear $\omega'=\partial\omega/\partial r$ in Eqn.\ (\ref{eqn:F
 is derived in Appendix \ref{sec:Appendix A}, Eqn.\ (\ref{eqn:domega-dr}), and
 ${\cal F}_{L,\nu,c}=\frac{3}{2}\nu_s\sigma_0a\Omega$ is the viscous angular momentum flux through a
 circular streamline of semimajor axis $a$ that has angular speed $\Omega(a)$.
-{
-\bf
 Note that Eqn.\ (\ref{eqn:F_nu_varphi}) is equivalent to Eqn.\ (18) of \cite{BGT82}
 provided $|\tilde{\omega}'|\ll e'$ such that $q\simeq e'$. 
-}
 
 Integrating the above around the streamline's circumference then yields its angular momentumum luminosity,
 \begin{equation}
@@ -705,13 +697,11 @@ so radial spreading has ceased and the ringlet is self-confining.
         via Eqn.\ (\ref{eqn:F_nu_theta}) and plotted in units of a circular ringlet's flux ${\cal F}_{L,\nu,c}$
         versus true anomaly $\varphi$ at the simulation's end time $t=100\tau_\nu$, 
         as well as the ringlet's gravitational angular momentum flux ${\cal F}_{L,g}(\varphi)$
-        (orange curve) 
-        {\bf 
-        computed via Eqns.\ (\ref{eqn:gravity}) and (\ref{eqn:grav_ang_mom_flux}).
+        (orange curve) computed via Eqns.\ (\ref{eqn:gravity}) and (\ref{eqn:grav_ang_mom_flux}).
         Dashed curve show the approximate gravitational flux, 
-        Eqn.\ (\ref{eqn:F_L_grav_approx}), which agrees very well with the exact flux (solid curve) 
+        Eqn.\ (\ref{eqn:F_L_grav_approx}), which is derived in Appendix \ref{sec:Appendix B} 
+        agrees very well with the exact flux (solid curve) 
         that is derived from this simulation.
-        }
     }
 \end{figure}
 
@@ -730,6 +720,8 @@ transport of angular momentum is inwards as
 ring-matter approaches periapse where $\varphi<0$, 
 and is outwards ${\cal F}_{L,g}(\varphi)>0$ post-periapse, with that asymmetry being due to the ringlet's
 negative periapse twist, $\tilde{\omega}'<0$ (Fig.\ \ref{fig:de_prime_nominal}).
+See also Appendix \ref{sec:Appendix B}, which derives the ringlet's gravitational angular momentum flux
+${\cal F}_{L,g}(\varphi)$ as a function of its eccentricity gradient $e'$. 
 
 Figure \ref{fig:nominal_energy_flux} shows the ringlet's energy fluxes 
 due to viscosity (blue curve) and gravity (orange) at simulation end.
@@ -881,8 +873,6 @@ ringlets have a larger periapse twist $|\tilde{\omega}'|$.
     }
 \end{figure}
 
-{\bf
-
 We also note the \cite{Fetal24} study of the Uranian ringlets (abbreviated here as F24)
 which reports observed values for $e'$ and $\tilde{\omega}'$
 for nine ringlets; see quantities $q_{em}=e'$ and $q_{\tilde{\omega}m}=\tilde{\omega}'$ for
@@ -894,7 +884,6 @@ this ringlet is very disturbed, its steamlines are crossing (e.g.\ \citealt{BGT8
 and that ring particles are crashing into each other.}. 
 From this we conclude that the Uranian ringlets are unlike those simulated here.
 
-}
 
 \subsubsection{variations with ringlet viscosity}
 \label{subsec:viscosity-variations}
@@ -941,7 +930,7 @@ and is destined to spread forever.
     \caption{
         \label{fig:e0}
         Simulations of seven nominal ringlets having a variety of initial eccentricities $0\le e_0\le 0.04$.
-        Curves give each ringlet's semimajor axis width $\Delta a$ in units of its initial $\Delta a_0$
+        Curves show each ringlet's semimajor axis width $\Delta a$ in units of its initial $\Delta a_0$
         versus time $t/\tau_\nu$, and show that higher-$e$ ringlets settle into self-confinement
         sooner than the lower-$e$ ringlets.
     }
@@ -1373,9 +1362,9 @@ and readers are encouraged to reach out if they wish to use that code in their r
 
 This research was supported by the National Science Foundation via Grant No.\ AST-1313013.
 A portion of this paper as well as the epi\_int\_lite integrator
-was composed and developed while at the Water Tank karaoke bar in northwest Austin TX, and the authors thank
-proprietor James Stryker for his hospitality.
-The authors also thank Joe Spitale for comments about this work.
+were composed and developed while at the Water Tank karaoke bar in northwest Austin TX, 
+and the authors thank proprietor James Stryker for his hospitality.
+The authors also thank Joe Spitale and an anonymous review for their comments about this work.
 
 
 \appendix
@@ -1527,8 +1516,6 @@ $e'\gtrsim3/4$.
 \section{Appendix B}
 \label{sec:Appendix B}
 
-{\bf
-
 Write the gravitational angular momentum flux ${\cal F}_{L,g}=\lambda r A^1_{g,\theta}$
 in terms of orbit elements, for a ringlet composed of two streamlines. The one-sided gravitational
 acceleration that the inner streamline exerts on a particle in the outer streamline is
@@ -1560,7 +1547,7 @@ at the particle is
 \end{equation}
 where the streamline's linear density $\lambda=m_1/2\pi a = m_r/4\pi a$ for 
 a streamline whose mass $m_1=m_r/2$ is half the total ringlet mass $m_r$.
-}
+
 
 \section{Appendix C}
 \label{sec:Appendix C}
