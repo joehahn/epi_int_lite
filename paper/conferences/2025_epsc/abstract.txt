@@ -1,0 +1,8 @@
+Self-Confinement of Narrow Eccentric Planetary Ringlets
+Hahn, Hamilton, Rimlinger, and Lu
+
+Narrow eccentric planetary ringlets have sharp edges, sizable eccentricity gradients, and an unknown confinement mechanism that preserves the ringlet's narrow width despite ringlet's viscosity that would otherwise cause it to spread radially. One popular confinement mechanism suggests that a narrow ringlet is straddled by one or more unseen shepherd satellites whose gravitational perturbations confine the ringlet radially (Goldreich & Tremaine 1979, Goldreich et al 1995, Chiang & Goldreich 2000, Mosqueira & Estrada 2002). However the Cassini spacecraft did not detect any such shepherds, which casts doubt on this proposal (Longaretti 2018). 
+
+Nbody simulations of viscous self-gravitating ringlets are used to investigate whether ringlets might be self-confining. We find that under a wide range of initial conditions, the simulated ringlet's self-gravity pumps up the ringlet's eccentricity gradient until the ringlet's angular shear near periapse experiences a sign reversal, as anticipated by Borderies et al (1982, BGT). These Nbody simulations also show that when the angular shear reversal is vigorous enough, that causes the ringlet's orbit-averaged angular momentum flux to reverse sign, which in turn causes the ringlet to contract radially while also causing its surface density profile to sharpen at the ringlet edges.
+
+Viscous friction within the ringlet also causes the ringlet's mean eccentricity to decay over time, which will eventually reduce the ringlet's eccentricity gradient and ultimately defeat this confinement mechanism. Which means that self-confining ringlet's have a finite lifetime, and that lifetime will be assessed at conference time.
