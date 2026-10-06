@@ -1,7 +1,7 @@
 ## epi_int_lite
 
 by Joe Hahn,<br />
-jmh.datasciences@gmail.com,<br />
+joe.hahn@jmh-datasciences.com,<br />
 10 January 2018<br />
 git branch=master
 
